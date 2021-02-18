@@ -6,21 +6,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
-    <title>Archives - 스터디용 블로그 w/ Harry Kim</title>
+    <title>21-02-18 알고리즘 기초강의 - 스터디용 블로그 w/ Harry Kim</title>
     <meta name="author" content="Harry Kim">
     
     
     
-    <script type="application/ld+json">{}</script>
-    <meta name="description" content="개인 스터디용 페이지">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"이분검색(Binary search)\n정렬되지 않은 리스트에서 주어진 키가 존재하는가? - 순차 탐색\n정렬된 리스트에서 주어진 키가 존재하는가? - 이분 검색\n\n\n이분검색의 알고리즘 설계방식: 분할정복(Divide-and-Conquer)  :point_right: 정렬된 리스트 S에 어떤 키 x가 존재하는가?\n  :point_right: 존재하면 S에서 x의 위치, 아니면 -1을 리턴\n\n\nS의 정가운데 원소와 x를 비교하여 같으면 해당 위치를 리턴 아니라면,Divide: 정 가운데 원소를 기준으로 S를 두개의 리스트로 분할Conquer: x가 정가운데 원소보다 크면 오른쪽, 작으면 왼쪽을 재귀 호출Obtain: 선택한 리스트에서 얻은 답을 리턴\n\n\n\n파이썬으로 이분검색\n1234567891011def location (S, low, high):    if (low &gt; high):        return 0    else:        mid = (low + high) // 2        if (x == S[mid]):            return mid        elif (x &lt; S[mid]):            return location(S, low, mid -1)        else:            return location(S, mid+1, high)\n자바스크립트로 이분검색\n12345678910function location(arr, low = 0, high = arr.length) &#123;         if(low &gt; high)         return 0    else &#123;        let mid = Math.floor((low + high) / 2);        if(x === arr[mid]) return mid;        else if (x &lt; arr[mid]) return location(arr, low, mid-1);        else return location(arr, mid+1, high);    &#125;&#125;\n\n강의 내에서 x값은 전역변수를 사용하였음\n\n합병정렬\n합병정렬의 알고리즘 설계방식: 분할정복(Divide-and-Conquer)\nDivide: 원소가 n개인 S를 n/2개의 원소를 가진 두 개의 리스트로 분할Conquer: 왼쪽의 리스트와 오른쪽의 리스트를 각각 재귀적으로 합병정렬Obtain: 각각 정렬된 두 개의 리스트를 정렬된 하나의 리스트로 합병하여 리턴\n\n\n\n합병정렬 예시\n파이썬으로 합병정렬\n12345678910111213141516171819202122232425def mergesort (S):    n = len(S)    if (n &lt;= 1):        return S    else:        mid = n // 2        U = mergesort(S[0 : mid])        V = mergesort(S[mid: n])        return merge(U, V)def merge(U, V):    S = []    i = j = 0    while (i &lt; len(U) and j &lt; len(V)):        if(U[i] &lt; V[j]):            S.append(U[i])            i += 1        else:            S.append(V[j])            j += 1    if (i &lt; len(U)):        S += U[i : len(U)]    else:        S += V[j : len(V)]    return S\n자바스크립트로 합병정렬\n123456789101112131415161718192021function mergesort (arr) &#123;    if(arr.length === 1) return arr;        let mid = Math.floor(arr.length/2);    let leftSide = arr.slice(0, mid)    let rightSide = arr.slice(mid)        return merge(mergesort(leftSide), mergesort(rightSide));    &#125;function merge(left, right) &#123;    let result = [];    while (left.length !== 0 &amp;&amp; right.length !== 0) &#123;\t\tleft[0] &lt;= right[0]         ? result.push(left.shift())         : result.push(right.shift());\t&#125;    return [...result, ...left, ...right];&#125;\n\n합병정렬의 문제점\n배열을 추가적으로 사용하게 됨 → 메모리 사용의 비효율성\n\n\n\n합병정렬의 효율화\n123456789101112131415161718192021222324def mergesort2 (S, low, high):    if(low &lt; high):        mid = (low + high) // 2        mergesort2(S, low, mid)        mergesort2(S, mid + 1, high)        merge2(S, low, mid, high)def merge2(S, low, mid, high):    U = []    i = low    j = mid +1    while (i &lt;= mid and j &lt;= high):        if (S[i] &lt; S[j]):            U.append(S[i])            i += 1        else:            U.append(S[j])            j += 1    if (i &lt;= mid):        U += S[i : mid + 1]    else:        U += S[j : high + 1]    for k in range(low, high +1):        S[k] = U[k -low]\n자바스크립트로 합병정렬 조금 더 생각해보기\n123456789101112// 파이썬처럼 배열을 덜 정의하면서 효율적으로 구현하는 법은 더 검색해볼 것function mergesort (arr) &#123;    if(arr.length === 1) return arr;        let mid = Math.floor(arr.length/2);    let leftSide = arr.splice(0, mid)    // splice함수를 사용하면 arr를 조작하므로     // arr에는 자동적으로 rightSide만 남게 됨    return merge(mergesort(leftSide), mergesort(arr));    &#125;// merge 함수는 상동하므로 생략","dateCreated":"2021-02-18T10:18:16+09:00","dateModified":"2021-02-18T14:58:30+09:00","datePublished":"2021-02-18T10:18:16+09:00","description":"","headline":"21-02-18 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
+    <meta name="description" content="이분검색(Binary search) 정렬되지 않은 리스트에서 주어진 키가 존재하는가? - 순차 탐색 정렬된 리스트에서 주어진 키가 존재하는가? - 이분 검색   이분검색의 알고리즘 설계방식: 분할정복(Divide-and-Conquer)  :point_right: 정렬된 리스트 S에 어떤 키 x가 존재하는가?   :point_right: 존재하면 S에서 x의">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="스터디용 블로그 w&#x2F; Harry Kim">
-<meta property="og:url" content="http://example.com/archives/index.html">
+<meta property="og:title" content="21-02-18 알고리즘 기초강의">
+<meta property="og:url" content="http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/index.html">
 <meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
-<meta property="og:description" content="개인 스터디용 페이지">
+<meta property="og:description" content="이분검색(Binary search) 정렬되지 않은 리스트에서 주어진 키가 존재하는가? - 순차 탐색 정렬된 리스트에서 주어진 키가 존재하는가? - 이분 검색   이분검색의 알고리즘 설계방식: 분할정복(Divide-and-Conquer)  :point_right: 정렬된 리스트 S에 어떤 키 x가 존재하는가?   :point_right: 존재하면 S에서 x의">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/mergesort.png">
+<meta property="article:published_time" content="2021-02-18T01:18:16.000Z">
+<meta property="article:modified_time" content="2021-02-18T05:58:30.443Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/mergesort.png">
     
     
         
@@ -48,6 +52,8 @@
     
 
     
+        
+    
 </head>
 
     <body>
@@ -57,7 +63,7 @@
 
     
 
-<header id="header" data-behavior="2">
+<header id="header" data-behavior="5">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -84,7 +90,7 @@
             <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="2">
+<nav id="sidebar" data-behavior="5">
     <div class="sidebar-container">
         
         
@@ -172,30 +178,22 @@
 </nav>
 
             
-            <div id="main" data-behavior="2"
+            <div id="main" data-behavior="5"
                  class="
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                            aria-label=": 21-02-18 알고리즘 기초강의"
-                        >
-                            21-02-18 알고리즘 기초강의
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-02-18 알고리즘 기초강의
+        </h1>
+    
+    
+        <div class="post-meta">
     <time datetime="2021-02-18T10:18:16+09:00">
 	
 		    Feb 18, 2021
@@ -204,10 +202,13 @@
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="이분검색-Binary-search"><a href="#이분검색-Binary-search" class="headerlink" title="이분검색(Binary search)"></a>이분검색(Binary search)</h3><ul>
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="이분검색-Binary-search"><a href="#이분검색-Binary-search" class="headerlink" title="이분검색(Binary search)"></a>이분검색(Binary search)</h3><ul>
 <li>정렬되지 않은 리스트에서 주어진 키가 존재하는가? - 순차 탐색</li>
 <li>정렬된 리스트에서 주어진 키가 존재하는가? - 이분 검색</li>
 </ul>
@@ -248,162 +249,114 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mergesort2</span> (<span class="params">S, low, high</span>):</span></span><br><span class="line">    <span class="keyword">if</span>(low &lt; high):</span><br><span class="line">        mid = (low + high) // <span class="number">2</span></span><br><span class="line">        mergesort2(S, low, mid)</span><br><span class="line">        mergesort2(S, mid + <span class="number">1</span>, high)</span><br><span class="line">        merge2(S, low, mid, high)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge2</span>(<span class="params">S, low, mid, high</span>):</span></span><br><span class="line">    U = []</span><br><span class="line">    i = low</span><br><span class="line">    j = mid +<span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt;= mid <span class="keyword">and</span> j &lt;= high):</span><br><span class="line">        <span class="keyword">if</span> (S[i] &lt; S[j]):</span><br><span class="line">            U.append(S[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            U.append(S[j])</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt;= mid):</span><br><span class="line">        U += S[i : mid + <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        U += S[j : high + <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(low, high +<span class="number">1</span>):</span><br><span class="line">        S[k] = U[k -low]</span><br></pre></td></tr></table></figure>
 <p><strong>자바스크립트로 합병정렬 조금 더 생각해보기</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 파이썬처럼 배열을 덜 정의하면서 효율적으로 구현하는 법은 더 검색해볼 것</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergesort</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(arr.length === <span class="number">1</span>) <span class="keyword">return</span> arr;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor(arr.length/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">let</span> leftSide = arr.splice(<span class="number">0</span>, mid)</span><br><span class="line">    <span class="comment">// splice함수를 사용하면 arr를 조작하므로 </span></span><br><span class="line">    <span class="comment">// arr에는 자동적으로 rightSide만 남게 됨</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge(mergesort(leftSide), mergesort(arr));    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// merge 함수는 상동하므로 생략</span></span><br></pre></td></tr></table></figure>
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
             
+
+
         </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/17/21-02-17-%EC%8B%A4%ED%8C%A8%EC%9C%A8-%EA%B5%AC%ED%95%98%EA%B8%B0/"
-                            aria-label=": 21-02-17 실패율 구하기"
-                        >
-                            21-02-17 실패율 구하기
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-02-17T15:31:04+09:00">
-	
-		    Feb 17, 2021
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="문제"><a href="#문제" class="headerlink" title="문제"></a>문제</h2><p><strong>실패율은 다음과 같이 정의한다.</strong><br>스테이지에 도달했으나 아직 클리어하지 못한 플레이어의 수 / 스테이지에 도달한 플레이어 수</p>
-<p><strong>전체 스테이지의 개수 N</strong>, <strong>게임을 이용하는 사용자가 현재 멈춰있는 스테이지의 번호가 담긴 배열 stages</strong>가 매개변수로 주어질 때, 실패율이 높은 스테이지부터 <strong>내림차순</strong>으로 스테이지의 번호가 담겨있는 배열을 return 하도록 solution 함수를 완성하라.</p>
-<h4 id="통과한-코드-예시"><a href="#통과한-코드-예시" class="headerlink" title="통과한 코드 예시"></a>통과한 코드 예시</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function solution(N, stages) &#123;</span><br><span class="line">    let answer &#x3D; [];</span><br><span class="line">    for(let i &#x3D; 1; i &lt;&#x3D; N; i++) &#123;</span><br><span class="line">      let thisStageFailRate &#x3D; stages.filter(s &#x3D;&gt; s &#x3D;&#x3D;&#x3D; i).length</span><br><span class="line">      let otherUserFailRate &#x3D; stages.filter(s &#x3D;&gt; s &gt;&#x3D; i).length</span><br><span class="line">      if (thisStageFailRate &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">        answer.push(&#123;stage: i, failRate: 0&#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        answer.push(&#123;stage: i, failRate: thisStageFailRate&#x2F;otherUserFailRate&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return answer.sort((a,b) &#x3D;&gt; (b.failRate &#x3D;&#x3D;&#x3D; a.failRate) </span><br><span class="line">                       ? a.stage - b.stage : b.failRate - a.failRate)</span><br><span class="line">                 .map(each &#x3D;&gt; each.stage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="처음에-잘못-생각했던-것"><a href="#처음에-잘못-생각했던-것" class="headerlink" title="처음에 잘못 생각했던 것"></a>처음에 잘못 생각했던 것</h4><ol>
-<li>실패율을 계산할 때 해당 스테이지를 클리어하지 못한 사용자 / 전체 사용자로 계산했던 것<br>=&gt; <strong>현재 스테이지를 클리어하지 못한 사용자 / 현 스테이지보다 높은 스테이지로 넘어간 사용자 수</strong> 로 계산해야 했음</li>
-<li>실패율만 배열에 push 했던 것<br>=&gt; 배열에 스테이지값과 실패율을 각각 갖는 객체를 push하여 객체 내 실패율로 sort한 후에 스테이지 값을 return할 수 있도록 map 함수를 사용해야 했음</li>
-</ol>
-
-                    
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
                         
-
-
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
                     
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/17/21-02-17-%EC%8B%A4%ED%8C%A8%EC%9C%A8-%EA%B5%AC%ED%95%98%EA%B8%B0/"
+                    data-tooltip="21-02-17 실패율 구하기"
+                    aria-label="NEXT: 21-02-17 실패율 구하기"
+                >
                     
-                        <p>
-                            <a
-                                href="/2021/02/17/21-02-17-%EC%8B%A4%ED%8C%A8%EC%9C%A8-%EA%B5%AC%ED%95%98%EA%B8%B0/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/17/Github-%EB%B8%94%EB%A1%9C%EA%B7%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-w-Hexo/"
-                            aria-label=": Github 블로그 시작하기 w/ Hexo"
-                        >
-                            Github 블로그 시작하기 w/ Hexo
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-02-17T15:07:11+09:00">
-	
-		    Feb 17, 2021
-    	
-    </time>
-    
-</div>
-
-            </div>
             
-                <div class="postShorten-content">
-                    <h2 id="새롭게-깃헙-블로그를-만들어보았다-w-hexo"><a href="#새롭게-깃헙-블로그를-만들어보았다-w-hexo" class="headerlink" title="새롭게 깃헙 블로그를 만들어보았다 w/ hexo"></a>새롭게 깃헙 블로그를 만들어보았다 w/ hexo</h2><p><strong>1. 블로그를 시작하게 된 이유</strong></p>
-<ul>
-<li>첫째, 매일 커밋을 하고 있지만 정작 눈에 띄게 남는 것이 보이지 않아서</li>
-<li>둘째, 앞으로 <strong>코딩 테스트</strong>를 준비함에 있어 알고리즘은 똑부러지게 정리를 해야 할 것 같아서</li>
-<li>셋째, 책을 읽고 정리하는데 하나의 Readme.md로는 부족했기 때문에 (이 부분은 <a target="_blank" rel="noopener" href="https://github.com/harrykim14/Refactoring-2nd-Edition">리팩토링 2판</a> 페이지를 참조)</li>
-</ul>
-<p><strong>2. hexo를 택한 이유</strong></p>
-<ul>
-<li>Javascript가 익숙한 언어이고 cli도 잘 되어있으면서 무엇보다 hexo 공식문서가 어느정도 한글을 지원하고 있어 사용하기에 편할 것이라는 생각에 선택하게 됨</li>
-</ul>
-<p><strong>3. 앞으로 올릴 것들 및 올 한해 포부 등</strong></p>
-<ul>
-<li>자료구조 및 알고리즘 관련 내용을 매일같이 공부하고 공부한 만큼 업데이트를 할 예정</li>
-<li>공부하는 도중에 둘러보는 UI/UX 디자인 페이지와 새 기술 등에 관련된 내용도 정리할 예정</li>
-<li>올해에는 원하는 회사에 취업하기!</li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/02/17/Github-%EB%B8%94%EB%A1%9C%EA%B7%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-w-Hexo/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
         
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
         
         
-        <li class="pagination-number">page 1 of 1</li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+        
+    </div>
+</article>
 
 
 
@@ -414,6 +367,151 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/17/21-02-17-%EC%8B%A4%ED%8C%A8%EC%9C%A8-%EA%B5%AC%ED%95%98%EA%B8%B0/"
+                    data-tooltip="21-02-17 실패율 구하기"
+                    aria-label="NEXT: 21-02-17 실패율 구하기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
@@ -460,6 +558,8 @@
 
 <!--SCRIPTS END-->
 
+
+    
 
 
 
