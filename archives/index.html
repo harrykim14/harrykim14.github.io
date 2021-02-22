@@ -188,6 +188,146 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/02/22/21-02-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2-1/"
+                            aria-label=": 21-02-22 알고리즘 기초강의(2)"
+                        >
+                            21-02-22 알고리즘 기초강의(2)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-02-22T21:45:54+09:00">
+	
+		    Feb 22, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="최단경로와-플로이드-알고리즘"><a href="#최단경로와-플로이드-알고리즘" class="headerlink" title="최단경로와 플로이드 알고리즘"></a>최단경로와 플로이드 알고리즘</h3><ul>
+<li><p><strong>최단 경로 문제</strong></p>
+<ul>
+<li><p>주어진 그래프에서 모든 정점의 쌍에 대한 최단 경로를 구하기</p>
+</li>
+<li><p>G = (V, E)일 때, G는 Graph, V는 Vertex set, E는 Edge set</p>
+</li>
+<li><p>G는 방향성, 가중치 그래프로, <strong>V1</strong> -6→ <strong>V3</strong> 와 같은 것을 표로 표현</p>
+</li>
+<li><p>최단 경로는 단순 경로: 같은 정점을 두 번 거치지 않음</p>
+<p><img src="/images/floyd_figure_01.JPG"><br>figure 01) 그래프로 표현되는 경우</p>
+</li>
+</ul>
+</li>
+<li><p>최단 경로 문제의 이해</p>
+<ul>
+<li>Brute-force로 해결하기<ul>
+<li>각 정점들에서 다른 정점으로 가는 모든 경로를 구하고</li>
+<li>그 경로들 중에서 가장 짧은 경로를 찾는 방법</li>
+<li>효율성 분석: 모든 정점간 간선이 존재하면 O(n!)만큼 복잡해진다</li>
+</ul>
+</li>
+<li>최단 경로 문제는 최적화 문제(optimization problem)<ul>
+<li>최적화 문제는 하나 이상의 해답 후보가 있을 수 있음</li>
+<li>그 중에 가장 최적의 값을 가진 해답을 찾는 문제</li>
+</ul>
+</li>
+<li>Dynamic programming으로 해결하기<ol>
+<li><strong>재귀 관계식</strong>을 찾는다</li>
+</ol>
+<ul>
+<li> <strong>D</strong>: 각 정점의 쌍이 가지는 최단 경로의 길이를 나타내는 행렬</li>
+<li><strong>D[i][j]</strong>: V<del>i</del>에서 V<del>j</del>로 가는 최단 경로의 길이</li>
+<li>인접 행렬 W에서 최단 경로의 행렬 D와의 재귀 관계식을 구해야 함</li>
+</ul>
+<ol start="2">
+<li><strong>상향식 방법</strong>으로 해답을 구한다</li>
+</ol>
+<ul>
+<li>D^0^ = W로 초기화, 최종 목표는 D^n^ = D (D^0^, D^1^,…, D^n^)</li>
+</ul>
+<ol start="3">
+<li>행렬의 이해</li>
+</ol>
+<ul>
+<li>D^k^ : k개의 중간 정점을 지나는 최단 경로 길이의 행렬</li>
+<li>D^k^[i][j] : v<del>i</del>에서 v<del>j</del>로 k개의 중간 정점을 지나는 최단 경로 길이</li>
+<li>D^0^ : 다른 어떤 정점도 지나지 않는 최단 경로의 길이 (=W)</li>
+<li>D^n^ : 다른 모든 정점을 지날 수 있는 최단 경로의 길이 (=D)</li>
+</ul>
+<ol start="4">
+<li>재귀 관계식 구하기</li>
+</ol>
+<ul>
+<li>D^0^ = W, D^k^는 D^k-1^로부터 구함 (1 ≤ k ≤ n) </li>
+<li>D^k-1^[i][j]: v<del>i</del>에서 v<del>j</del>로 k-1개의 중간 정점을 지남</li>
+<li>D^k^[i][j]의 경우<br>→ 하나의 정점을 더 지나도 최단경로가 없는 경우<br>D^k^[i][j] = D^k-1^[i][j]<br>→ 하나의 정점을 더 지나면 최단경로가 되는 경우<br>D^k^[i][j] = D^k-1^[i][k] + D^k-1^[k][j]<br>(임의의 경로 = v가 갖는 열 내 k 번째 가중치 + 해당 k번째 v가 갖는 가중치)</li>
+</ul>
+<ol start="5">
+<li>최단 경로의 재귀 관계식<br>D^k^[i][j] = min(D^k-1^[i][j], D^k-1^[i][k] + D^k-1^[k][j])</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 플로이드 알고리즘</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">floyd</span> (<span class="params">W</span>):</span></span><br><span class="line">    D = W</span><br><span class="line">    n = <span class="built_in">len</span>(W)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                D[i][j] = <span class="built_in">min</span>(D[i][j], D[i][k] + D[k][j])</span><br><span class="line">    <span class="keyword">return</span> D</span><br></pre></td></tr></table></figure>
+<p><strong>자바스크립트로 플로이드 알고리즘</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> floyd = <span class="function"><span class="params">W</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [...W];</span><br><span class="line">    <span class="keyword">let</span> n = W.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k = <span class="number">0</span>; k &lt; n; k++) </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++)  </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; n; j++) </span><br><span class="line">                arr[i][j] = <span class="built_in">Math</span>.min(arr[i][j], arr[i][k] + arr[k][j])</span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>최단 길이는 구했으나, 최단 경로는?<ul>
+<li>최단 경로를 구하기 위해서는 과정을 기록해야 함</li>
+<li><strong>P[i][j]</strong>: v<del>i</del>에서 v<del>j</del>로 가는 최단 경로가 거쳐야 하는 새로운 정점<ul>
+<li>v<del>i</del>에서 v<del>j</del>로 가는 최단 경로 중간에 놓여있는 정점이 최소한 하나 있다면 그 놓여있는 정점 중에서 가장 큰 인덱스</li>
+<li>최단 경로의 중간에 놓여있는 정점이 없는 경우에는 -1</li>
+</ul>
+</li>
+<li><strong>P[i][j]</strong> 값이  -1이라면 간선이 최단경로</li>
+<li><strong>P[i][j]</strong> = k 라면 탐색해서 가장 길이가 짧은 값의 index를 탐색해야 함</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 최단 경로 구하기</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">floyd</span> (<span class="params">W</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W)</span><br><span class="line">    D = W</span><br><span class="line">    P = [[-<span class="number">1</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                <span class="keyword">if</span> (D[i][j] &gt; D[i][k] + D[k][j]):</span><br><span class="line">                    D[i][j] = D[i][k] + D[k][j]</span><br><span class="line">                    P[i][j] = k</span><br><span class="line">    <span class="keyword">return</span> D, P</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">path</span> (<span class="params">P, u, v</span>):</span></span><br><span class="line">    <span class="keyword">if</span>(P[u][v] != -<span class="number">1</span>):</span><br><span class="line">        path(P, u, P[u][v])</span><br><span class="line">        print(<span class="string">&#x27;v%d&#x27;</span> %(P[u][v]), end = <span class="string">&#x27;-&gt; &#x27;</span>)</span><br><span class="line">        path(P, P[u][v], v)</span><br><span class="line"></span><br><span class="line">D, P = floyd2(W)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(D)):</span><br><span class="line">    print(D[i])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(P)):</span><br><span class="line">    print(P[i])</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/02/22/21-02-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2-1/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/02/22/21-02-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                             aria-label=": 21-02-22 알고리즘 기초강의"
                         >
@@ -213,7 +353,10 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="동적-계획과-이항-계수"><a href="#동적-계획과-이항-계수" class="headerlink" title="동적 계획과 이항 계수"></a>동적 계획과 이항 계수</h3><ul>
+                    <h3 id="동적-계획과-이항-계수"><a href="#동적-계획과-이항-계수" class="headerlink" title="동적 계획과 이항 계수"></a>동적 계획과 이항 계수</h3><blockquote>
+<p>수식 깨진 것들은 자체 검색으로 보완할 것</p>
+</blockquote>
+<ul>
 <li><p><strong>동적계획법</strong>(Dynamic Programming): 문제를 더 작은 문제로 분할하되 상향식으로 문제를 해결</p>
 </li>
 <li><p><strong>메모이제이션</strong>(Memoization): 가장 작은 입력 사례의 해답을 테이블에 저장하고 필요할 때 꺼내 쓴다</p>
