@@ -11,7 +11,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"연쇄 행렬 곱셈연쇄 행렬 곱셈은 주어진 n개의 연쇄 행렬을 곱하는 최적의 순서를 구하는 문제\n\n행렬 곱셈은 결합 법칙이 성립하지만 곱셈 순서에 따라 각 원소의 곱셈 횟수가 달라짐 → 이 곱셈 횟수가 가장 작아지는 최적의 순서를 구하기\n2 x 3 행렬과 3 x 4 행렬을 곱하면 2 x 4 행렬이 됨→ i x k 행렬과 k x j 행렬을 곱하면 i x j 행렬이 되며→ 원소 곱셈의 횟수는 i * k * j가 된다\n\n\nBrute-force 방식으로 접근하기\n모든 경우의 수(카탈랑 수)를 계산하여 최적의 순서를 선택\n카탈랑 수는 결국 지수함수이므로 너무 오래걸림\n\n\nDynamic Programming 방식으로 접근하기\n재귀 관계식을 찾는다\n\n\nM: 연쇄 행렬을 곱하는데 필요한 최소 횟수 행렬\nM[i][j]: Ai에서 Aj까지 행렬을 곱하는데 필요한 최소 횟수\nAi … Aj 행렬을 (Ai … Ak)(Ak+1 … Aj)로 분할하는 재귀 관계식 찾기\n\n\n상향식 방법으로 해답을 구하기\n\n\nM[i][i] = 0 (대각선에 위치하는 원소를 0으로 초기화)\nM[1][n]을 상향식으로 계산 (대각선 1번, 대각선 2번 … 대각선 n-1번)\nn개의 행렬을 두 개의 최적 부분행렬의 곱으로 분할\nM[i][j] = minimum(M[i][k] + M[k+1][j] + di-1dkdj) // 단, i ≤ k ≤ j-1\n\n\n\n파이썬으로 연쇄 행렬 곱셈\n1234567891011121314151617181920212223242526272829303132def minmult (d):    n = len(d) - 1    M = [[-1] * (n + 1) for _ in range(n+1)]    P = [[-1] * (n + 1) for _ in range(n+1)]    for i in range(1, n + 1):        M[i][i] = 0    for diagonal in range(1, n):        for i in range(1, n - diagonal + 1):            j = i + diagonal            M[i][j], P[i][j] = minimum(M, d, i, j)    return M, P def minimum (M, d, i, j):    minVal = INF    minK = 0    for k in range(i, j):        value = M[i][k] + M[k + 1][j]        value += d[i -1] * d[k] * d[j]        if (minVal &gt; value):            minVal = value            minK = k    return minVal, minKdef order(P, i, j):    if (i == j):        print(&#x27;A%d&#x27;%(i), end = &#x27;&#x27;)    else:        k = P[i][j]        print(&#x27;(&#x27;, end = &#x27;&#x27;)        order(P, j, k)        order(P, k + 1, j)        print(&#x27;)&#x27;, end = &#x27;&#x27;)\n자바스크립트로 연쇄 행렬 곱셈\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748const minmult = d =&gt; &#123;    let n = d.length -1    let arr = Array.from(Array(n+1), () =&gt; Array(n+1).fill(-1))    let arr2 = [...arr];    for (let i = 1; i &lt; n+1; i++)&#123;        arr[i][i] = 0;    &#125;    for (let diagonal = 1; diagonal &lt; n; diagonal++)&#123;        for (let i = 1; i &lt; n - diagonal + 1; i++)&#123;            j = i + diagonal;            arr[i][j] = minimum(arr, d, i, j).minVal;             arr2[i][j] = minimum(arr, d, i, j).minK;         &#125;    &#125;    return &#123; result : arr, optimal: arr2 &#125;;&#125;const minimum = (arr, d, i, j) =&gt; &#123;    let minVal = Infinity;    for (let k = i; k &lt; j; k++) &#123;        let value = arr[i][k] + arr[k+1][j] + d[i - 1] * d[k] * d[j]        if (minVal &gt; value)&#123;            minVal = value;            minK = k        &#125;    &#125;    return &#123;minVal : minVal, minK : minK&#125;&#125;const order = (arr2, i, j) =&gt; &#123;    if (i === j) str += `A$&#123;i&#125;`    else &#123;        let k = arr2[i][j]        str += &#x27;(&#x27;        order(arr2, i, k)        order(arr2, k+1, j)        str += &#x27;)&#x27;    &#125;&#125;/*예시) let d = [5, 2, 3, 4, 6, 7, 8];let &#123; result, optimal &#125; = minmult(d)order(optimal, 1, d.length - 1)console.log(result)console.log(str) -&gt; `(A1(A2(A3(A4(A5A6)))))`*/","dateCreated":"2021-02-23T10:23:43+09:00","dateModified":"2021-02-23T14:14:58+09:00","datePublished":"2021-02-23T10:23:43+09:00","description":"","headline":"21-02-23 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"연쇄 행렬 곱셈연쇄 행렬 곱셈은 주어진 n개의 연쇄 행렬을 곱하는 최적의 순서를 구하는 문제\n\n행렬 곱셈은 결합 법칙이 성립하지만 곱셈 순서에 따라 각 원소의 곱셈 횟수가 달라짐 → 이 곱셈 횟수가 가장 작아지는 최적의 순서를 구하기\n2 x 3 행렬과 3 x 4 행렬을 곱하면 2 x 4 행렬이 됨→ i x k 행렬과 k x j 행렬을 곱하면 i x j 행렬이 되며→ 원소 곱셈의 횟수는 i * k * j가 된다\n\n\nBrute-force 방식으로 접근하기\n모든 경우의 수(카탈랑 수)를 계산하여 최적의 순서를 선택\n카탈랑 수는 결국 지수함수이므로 너무 오래걸림\n\n\nDynamic Programming 방식으로 접근하기\n재귀 관계식을 찾는다\n\n\nM: 연쇄 행렬을 곱하는데 필요한 최소 횟수 행렬\nM[i][j]: Ai에서 Aj까지 행렬을 곱하는데 필요한 최소 횟수\nAi … Aj 행렬을 (Ai … Ak)(Ak+1 … Aj)로 분할하는 재귀 관계식 찾기\n\n\n상향식 방법으로 해답을 구하기\n\n\nM[i][i] = 0 (대각선에 위치하는 원소를 0으로 초기화)\nM[1][n]을 상향식으로 계산 (대각선 1번, 대각선 2번 … 대각선 n-1번)\nn개의 행렬을 두 개의 최적 부분행렬의 곱으로 분할\nM[i][j] = minimum(M[i][k] + M[k+1][j] + di-1dkdj) // 단, i ≤ k ≤ j-1\n\n\n\n파이썬으로 연쇄 행렬 곱셈\n1234567891011121314151617181920212223242526272829303132def minmult (d):    n = len(d) - 1    M = [[-1] * (n + 1) for _ in range(n+1)]    P = [[-1] * (n + 1) for _ in range(n+1)]    for i in range(1, n + 1):        M[i][i] = 0    for diagonal in range(1, n):        for i in range(1, n - diagonal + 1):            j = i + diagonal            M[i][j], P[i][j] = minimum(M, d, i, j)    return M, P def minimum (M, d, i, j):    minVal = INF    minK = 0    for k in range(i, j):        value = M[i][k] + M[k + 1][j]        value += d[i -1] * d[k] * d[j]        if (minVal &gt; value):            minVal = value            minK = k    return minVal, minKdef order(P, i, j):    if (i == j):        print(&#x27;A%d&#x27;%(i), end = &#x27;&#x27;)    else:        k = P[i][j]        print(&#x27;(&#x27;, end = &#x27;&#x27;)        order(P, j, k)        order(P, k + 1, j)        print(&#x27;)&#x27;, end = &#x27;&#x27;)\n자바스크립트로 연쇄 행렬 곱셈\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748const minmult = d =&gt; &#123;    let n = d.length -1    let arr = Array.from(Array(n+1), () =&gt; Array(n+1).fill(-1))    let arr2 = [...arr];    for (let i = 1; i &lt; n+1; i++)&#123;        arr[i][i] = 0;    &#125;    for (let diagonal = 1; diagonal &lt; n; diagonal++)&#123;        for (let i = 1; i &lt; n - diagonal + 1; i++)&#123;            j = i + diagonal;            arr[i][j] = minimum(arr, d, i, j).minVal;             arr2[i][j] = minimum(arr, d, i, j).minK;         &#125;    &#125;    return &#123; result : arr, optimal: arr2 &#125;;&#125;const minimum = (arr, d, i, j) =&gt; &#123;    let minVal = Infinity;    for (let k = i; k &lt; j; k++) &#123;        let value = arr[i][k] + arr[k+1][j] + d[i - 1] * d[k] * d[j]        if (minVal &gt; value)&#123;            minVal = value;            minK = k        &#125;    &#125;    return &#123;minVal : minVal, minK : minK&#125;&#125;const order = (arr2, i, j) =&gt; &#123;    if (i === j) str += `A$&#123;i&#125;`    else &#123;        let k = arr2[i][j]        str += &#x27;(&#x27;        order(arr2, i, k)        order(arr2, k+1, j)        str += &#x27;)&#x27;    &#125;&#125;/*예시) let d = [5, 2, 3, 4, 6, 7, 8];let &#123; result, optimal &#125; = minmult(d)order(optimal, 1, d.length - 1)console.log(result)console.log(str) -&gt; `(A1(A2(A3(A4(A5A6)))))`*/","dateCreated":"2021-02-23T10:23:43+09:00","dateModified":"2021-02-23T14:20:48+09:00","datePublished":"2021-02-23T10:23:43+09:00","description":"","headline":"21-02-23 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
     <meta name="description" content="연쇄 행렬 곱셈연쇄 행렬 곱셈은 주어진 n개의 연쇄 행렬을 곱하는 최적의 순서를 구하는 문제  행렬 곱셈은 결합 법칙이 성립하지만 곱셈 순서에 따라 각 원소의 곱셈 횟수가 달라짐 → 이 곱셈 횟수가 가장 작아지는 최적의 순서를 구하기 2 x 3 행렬과 3 x 4 행렬을 곱하면 2 x 4 행렬이 됨→ i x k 행렬과 k x j 행렬을 곱하면 i x j 행렬">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="21-02-23 알고리즘 기초강의">
@@ -20,7 +20,7 @@
 <meta property="og:description" content="연쇄 행렬 곱셈연쇄 행렬 곱셈은 주어진 n개의 연쇄 행렬을 곱하는 최적의 순서를 구하는 문제  행렬 곱셈은 결합 법칙이 성립하지만 곱셈 순서에 따라 각 원소의 곱셈 횟수가 달라짐 → 이 곱셈 횟수가 가장 작아지는 최적의 순서를 구하기 2 x 3 행렬과 3 x 4 행렬을 곱하면 2 x 4 행렬이 됨→ i x k 행렬과 k x j 행렬을 곱하면 i x j 행렬">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-02-23T01:23:43.000Z">
-<meta property="article:modified_time" content="2021-02-23T05:14:58.228Z">
+<meta property="article:modified_time" content="2021-02-23T05:20:48.987Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
     
@@ -259,11 +259,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/24/21-02-24-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    data-tooltip="21-02-24 알고리즘 기초강의"
+                    aria-label="PREVIOUS: 21-02-24 알고리즘 기초강의"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -371,11 +374,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/02/24/21-02-24-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    data-tooltip="21-02-24 알고리즘 기초강의"
+                    aria-label="PREVIOUS: 21-02-24 알고리즘 기초강의"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
