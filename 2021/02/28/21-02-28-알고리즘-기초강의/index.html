@@ -6,21 +6,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
-    <title>21-02-27 알고리즘 기초강의 - 스터디용 블로그 w/ Harry Kim</title>
+    <title>21-02-28 알고리즘 기초강의 - 스터디용 블로그 w/ Harry Kim</title>
     <meta name="author" content="Harry Kim">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"서로소 집합과 크루스칼 알고리즘\n크루스칼 알고리즘\n\n\n해답의 집합을 공집합으로 두고, V의 서로소 집합을 생성한다. E를 비내림차순으로 정렬한다.\n정렬된 E 집합에서 간선 e = (i, j)를 선택하고 두 정점 i, j가 속한 집합 p, q를 찾아서 p, q가 같으면 e를 버리고 다르면 F에 e를 포함시킨 후에 p, q를 합친다.\n|F| = n - 1이면 종료, 아니면 2단계를 반복한다.\n\n\n사이클 탐지는 어떻게 할까?  → 교집합이 공집합인 두 집합 A, B, 즉 서로소 집합을 만든다  → 두 개의 원소가 같은 집합에 속하는지 판단하는 알고리즘: Union-Find 알고리즘\n\n파이썬으로 Union-Find\n1234567891011121314151617181920212223class DisjointSet:    def __init__ (self, n):        self.U = []        for i in range(n):            self.U.append(i)    def equal (self, p, q):        if (p == q):             return True        else:             return False     def find (self, i):        j = i        while (self.U[j] != j):            j = self.U[j]        return j        def union (self, p, q):        if (p &lt; q):            self.U[q] = p        else:            self.U[p] = q\n크루스칼 알고리즘\n123456789101112def kruskal (n, E):    F = []    dset = DisjointSet(n)    while (len(F) &lt; n - 1):        edge = E.pop(0)        i, j = edge[0], edge[1]        p = dset.find(i)        q = dset.find(j)        if (not dset.equal(p, q)):            dset.union(p, q)            F.append(edge)    return F","dateCreated":"2021-02-27T19:40:32+09:00","dateModified":"2021-02-27T22:45:11+09:00","datePublished":"2021-02-27T19:40:32+09:00","description":"","headline":"21-02-27 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
-    <meta name="description" content="서로소 집합과 크루스칼 알고리즘 크루스칼 알고리즘   해답의 집합을 공집합으로 두고, V의 서로소 집합을 생성한다. E를 비내림차순으로 정렬한다. 정렬된 E 집합에서 간선 e &#x3D; (i, j)를 선택하고 두 정점 i, j가 속한 집합 p, q를 찾아서 p, q가 같으면 e를 버리고 다르면 F에 e를 포함시킨 후에 p, q를 합친다. |F| &#x3D; n - 1이면">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"최단 경로와 다익스트라 알고리즘\n최단 경로 문제: Revisited\n모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘)\n단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (다익스트라 알고리즘)\n\n\n\n다익스트라 알고리즘 슈도 코드\n123456789Y &#x3D; &#123;v1&#125;;F &#x3D; ∅while (답을 구하지 못함):    Y에 속한 정점만 중간에 거쳐 가는 정점으로 하여        v1에서 최단경로를 가진 정점 v를 V - Y에서 선택한다    새로운 정점 v를 Y에 추가한다    최단경로 상에서 v로 가는 간선을 F에 추가한다    if(Y &#x3D;&#x3D; V):        답을 구했으니 return\n\nW[i][j]: 그래프 G의 인접행렬\ntouch[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 vi로 가는 현재 최단경로 상의 마지막 간선을 (v, vi)라고 할 때, Y에 속한 정점 v의 인덱스\nlength[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 vi로 가는 현재 최단 경로의 길이\n\n파이썬으로 다익스트라 알고리즘\n1234567891011121314151617181920212223242526272829def dijkstra (W):    n = len(W) - 1    F = []    touch = [-1] * (n + 1)    length = [-1] * (n + 1)     for i in range(2, n+1):        touch[i] = 1        length[i] = W[1][i]    for _ in range(n - 1):        minValue = INF        for i in range(2, n + 1):            if(0 &lt;= length[i] and length[i] &lt; minValue):                minValue = length[i]                vnear = i        edge = (touch[vnear], vnear, W[touch[vnear]][vnear])        F.append(edge)        for i in range(2, n + 1):            if (length[i] &gt; length[vnear] + W[vnear][i]):                length[i] = length[vnear] + W[vnear][i]                touch[i] = vnear        length[vnear] = -1    return Fdef length (F):    total = 0    for e in F:        total += e[2] # (1, 5, 1) 처럼 들어오기 때문에 가중치는 index 2번에 있음        return total","dateCreated":"2021-02-28T12:51:56+09:00","dateModified":"2021-02-28T17:54:23+09:00","datePublished":"2021-02-28T12:51:56+09:00","description":"","headline":"21-02-28 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
+    <meta name="description" content="최단 경로와 다익스트라 알고리즘 최단 경로 문제: Revisited 모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘) 단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (다익스트라 알고리즘)    다익스트라 알고리즘 슈도 코드 123456789Y &#x3D; &amp;#123;v1&amp;#125;;F &#x3D; ∅while (답을 구하지 못함):">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="21-02-27 알고리즘 기초강의">
-<meta property="og:url" content="http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/index.html">
+<meta property="og:title" content="21-02-28 알고리즘 기초강의">
+<meta property="og:url" content="http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/index.html">
 <meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
-<meta property="og:description" content="서로소 집합과 크루스칼 알고리즘 크루스칼 알고리즘   해답의 집합을 공집합으로 두고, V의 서로소 집합을 생성한다. E를 비내림차순으로 정렬한다. 정렬된 E 집합에서 간선 e &#x3D; (i, j)를 선택하고 두 정점 i, j가 속한 집합 p, q를 찾아서 p, q가 같으면 e를 버리고 다르면 F에 e를 포함시킨 후에 p, q를 합친다. |F| &#x3D; n - 1이면">
+<meta property="og:description" content="최단 경로와 다익스트라 알고리즘 최단 경로 문제: Revisited 모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘) 단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (다익스트라 알고리즘)    다익스트라 알고리즘 슈도 코드 123456789Y &#x3D; &amp;#123;v1&amp;#125;;F &#x3D; ∅while (답을 구하지 못함):">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-02-27T10:40:32.000Z">
-<meta property="article:modified_time" content="2021-02-27T13:45:11.854Z">
+<meta property="article:published_time" content="2021-02-28T03:51:56.000Z">
+<meta property="article:modified_time" content="2021-02-28T08:54:23.109Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
     
@@ -187,14 +187,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            21-02-27 알고리즘 기초강의
+            21-02-28 알고리즘 기초강의
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2021-02-27T19:40:32+09:00">
+    <time datetime="2021-02-28T12:51:56+09:00">
 	
-		    Feb 27, 2021
+		    Feb 28, 2021
     	
     </time>
     
@@ -212,21 +212,22 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="서로소-집합과-크루스칼-알고리즘"><a href="#서로소-집합과-크루스칼-알고리즘" class="headerlink" title="서로소 집합과 크루스칼 알고리즘"></a>서로소 집합과 크루스칼 알고리즘</h3><ul>
-<li><strong>크루스칼 알고리즘</strong></li>
+            <h3 id="최단-경로와-다익스트라-알고리즘"><a href="#최단-경로와-다익스트라-알고리즘" class="headerlink" title="최단 경로와 다익스트라 알고리즘"></a>최단 경로와 다익스트라 알고리즘</h3><ul>
+<li>최단 경로 문제: Revisited<ul>
+<li>모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘)</li>
+<li>단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (<strong>다익스트라 알고리즘</strong>)</li>
 </ul>
-<ol>
-<li>해답의 집합을 공집합으로 두고, V의 서로소 집합을 생성한다. E를 비내림차순으로 정렬한다.</li>
-<li>정렬된 E 집합에서 간선 e = (i, j)를 선택하고 두 정점 i, j가 속한 집합 p, q를 찾아서 p, q가 같으면 e를 버리고 다르면 F에 e를 포함시킨 후에 p, q를 합친다.</li>
-<li>|F| = n - 1이면 종료, 아니면 2단계를 반복한다.</li>
-</ol>
+</li>
+</ul>
+<p><strong>다익스트라 알고리즘 슈도 코드</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Y &#x3D; &#123;v1&#125;;</span><br><span class="line">F &#x3D; ∅</span><br><span class="line">while (답을 구하지 못함):</span><br><span class="line">    Y에 속한 정점만 중간에 거쳐 가는 정점으로 하여</span><br><span class="line">        v1에서 최단경로를 가진 정점 v를 V - Y에서 선택한다</span><br><span class="line">    새로운 정점 v를 Y에 추가한다</span><br><span class="line">    최단경로 상에서 v로 가는 간선을 F에 추가한다</span><br><span class="line">    if(Y &#x3D;&#x3D; V):</span><br><span class="line">        답을 구했으니 return</span><br></pre></td></tr></table></figure>
 <ul>
-<li>사이클 탐지는 어떻게 할까?<br>  → 교집합이 공집합인 두 집합 A, B, 즉 서로소 집합을 만든다<br>  → 두 개의 원소가 같은 집합에 속하는지 판단하는 알고리즘: <strong>Union-Find</strong> 알고리즘</li>
+<li>W[i][j]: 그래프 G의 인접행렬</li>
+<li>touch[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 v<del>i</del>로 가는 현재 최단경로 상의 마지막 간선을 (v, v<del>i</del>)라고 할 때, Y에 속한 정점 v의 인덱스</li>
+<li>length[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 v<del>i</del>로 가는 현재 최단 경로의 길이</li>
 </ul>
-<p><strong>파이썬으로 Union-Find</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DisjointSet</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span> (<span class="params">self, n</span>):</span></span><br><span class="line">        self.U = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            self.U.append(i)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">equal</span> (<span class="params">self, p, q</span>):</span></span><br><span class="line">        <span class="keyword">if</span> (p == q): </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>: </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span> </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">find</span> (<span class="params">self, i</span>):</span></span><br><span class="line">        j = i</span><br><span class="line">        <span class="keyword">while</span> (self.U[j] != j):</span><br><span class="line">            j = self.U[j]</span><br><span class="line">        <span class="keyword">return</span> j</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">union</span> (<span class="params">self, p, q</span>):</span></span><br><span class="line">        <span class="keyword">if</span> (p &lt; q):</span><br><span class="line">            self.U[q] = p</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.U[p] = q</span><br></pre></td></tr></table></figure>
-<p><strong>크루스칼 알고리즘</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kruskal</span> (<span class="params">n, E</span>):</span></span><br><span class="line">    F = []</span><br><span class="line">    dset = DisjointSet(n)</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">len</span>(F) &lt; n - <span class="number">1</span>):</span><br><span class="line">        edge = E.pop(<span class="number">0</span>)</span><br><span class="line">        i, j = edge[<span class="number">0</span>], edge[<span class="number">1</span>]</span><br><span class="line">        p = dset.find(i)</span><br><span class="line">        q = dset.find(j)</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">not</span> dset.equal(p, q)):</span><br><span class="line">            dset.union(p, q)</span><br><span class="line">            F.append(edge)</span><br><span class="line">    <span class="keyword">return</span> F</span><br></pre></td></tr></table></figure>
+<p><strong>파이썬으로 다익스트라 알고리즘</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dijkstra</span> (<span class="params">W</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    F = []</span><br><span class="line">    touch = [-<span class="number">1</span>] * (n + <span class="number">1</span>)</span><br><span class="line">    length = [-<span class="number">1</span>] * (n + <span class="number">1</span>) </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n+<span class="number">1</span>):</span><br><span class="line">        touch[i] = <span class="number">1</span></span><br><span class="line">        length[i] = W[<span class="number">1</span>][i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>):</span><br><span class="line">        minValue = INF</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span>(<span class="number">0</span> &lt;= length[i] <span class="keyword">and</span> length[i] &lt; minValue):</span><br><span class="line">                minValue = length[i]</span><br><span class="line">                vnear = i</span><br><span class="line">        edge = (touch[vnear], vnear, W[touch[vnear]][vnear])</span><br><span class="line">        F.append(edge)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> (length[i] &gt; length[vnear] + W[vnear][i]):</span><br><span class="line">                length[i] = length[vnear] + W[vnear][i]</span><br><span class="line">                touch[i] = vnear</span><br><span class="line">        length[vnear] = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> F</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">length</span> (<span class="params">F</span>):</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> F:</span><br><span class="line">        total += e[<span class="number">2</span>] <span class="comment"># (1, 5, 1) 처럼 들어오기 때문에 가중치는 index 2번에 있음</span></span><br><span class="line">        <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
             
 
 
@@ -240,14 +241,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                    data-tooltip="21-02-28 알고리즘 기초강의"
-                    aria-label="PREVIOUS: 21-02-28 알고리즘 기초강의"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -257,9 +255,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/26/21-02-26-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                    data-tooltip="21-02-26 알고리즘 기초강의"
-                    aria-label="NEXT: 21-02-26 알고리즘 기초강의"
+                    href="/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    data-tooltip="21-02-27 알고리즘 기초강의"
+                    aria-label="NEXT: 21-02-27 알고리즘 기초강의"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -284,7 +282,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -297,7 +295,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -310,7 +308,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -355,14 +353,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                    data-tooltip="21-02-28 알고리즘 기초강의"
-                    aria-label="PREVIOUS: 21-02-28 알고리즘 기초강의"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -372,9 +367,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/26/21-02-26-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                    data-tooltip="21-02-26 알고리즘 기초강의"
-                    aria-label="NEXT: 21-02-26 알고리즘 기초강의"
+                    href="/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    data-tooltip="21-02-27 알고리즘 기초강의"
+                    aria-label="NEXT: 21-02-27 알고리즘 기초강의"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -399,7 +394,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -412,7 +407,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -425,7 +420,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -459,7 +454,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -472,7 +467,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -485,7 +480,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://example.com/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
