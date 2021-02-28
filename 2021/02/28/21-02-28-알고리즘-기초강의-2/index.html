@@ -6,21 +6,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
-    <title>21-02-28 알고리즘 기초강의 - 스터디용 블로그 w/ Harry Kim</title>
+    <title>21-02-28 알고리즘 기초강의(2) - 스터디용 블로그 w/ Harry Kim</title>
     <meta name="author" content="Harry Kim">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"최단 경로와 다익스트라 알고리즘\n최단 경로 문제: Revisited\n모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘)\n단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (다익스트라 알고리즘)\n\n\n\n다익스트라 알고리즘 슈도 코드\n123456789Y &#x3D; &#123;v1&#125;;F &#x3D; ∅while (답을 구하지 못함):    Y에 속한 정점만 중간에 거쳐 가는 정점으로 하여        v1에서 최단경로를 가진 정점 v를 V - Y에서 선택한다    새로운 정점 v를 Y에 추가한다    최단경로 상에서 v로 가는 간선을 F에 추가한다    if(Y &#x3D;&#x3D; V):        답을 구했으니 return\n\nW[i][j]: 그래프 G의 인접행렬\ntouch[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 vi로 가는 현재 최단경로 상의 마지막 간선을 (v, vi)라고 할 때, Y에 속한 정점 v의 인덱스\nlength[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 vi로 가는 현재 최단 경로의 길이\n\n파이썬으로 다익스트라 알고리즘\n1234567891011121314151617181920212223242526272829def dijkstra (W):    n = len(W) - 1    F = []    touch = [-1] * (n + 1)    length = [-1] * (n + 1)     for i in range(2, n+1):        touch[i] = 1        length[i] = W[1][i]    for _ in range(n - 1):        minValue = INF        for i in range(2, n + 1):            if(0 &lt;= length[i] and length[i] &lt; minValue):                minValue = length[i]                vnear = i        edge = (touch[vnear], vnear, W[touch[vnear]][vnear])        F.append(edge)        for i in range(2, n + 1):            if (length[i] &gt; length[vnear] + W[vnear][i]):                length[i] = length[vnear] + W[vnear][i]                touch[i] = vnear        length[vnear] = -1    return Fdef length (F):    total = 0    for e in F:        total += e[2] # (1, 5, 1) 처럼 들어오기 때문에 가중치는 index 2번에 있음        return total","dateCreated":"2021-02-28T12:51:56+09:00","dateModified":"2021-02-28T17:54:23+09:00","datePublished":"2021-02-28T12:51:56+09:00","description":"","headline":"21-02-28 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
-    <meta name="description" content="최단 경로와 다익스트라 알고리즘 최단 경로 문제: Revisited 모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘) 단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (다익스트라 알고리즘)    다익스트라 알고리즘 슈도 코드 123456789Y &#x3D; &amp;#123;v1&amp;#125;;F &#x3D; ∅while (답을 구하지 못함):">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"마감시간이 있는 스케쥴 짜기\n마감시간과 함께 여러개의 작업이 주어지고 마감시간 내에 마치면 보상이 주어짐\n이 보상이 최대가 되는 스케쥴을 작성하는 문제\n\nGreedy Approach로 해결하기\n\n보상에 따라서 비오름차순으로 작업을 정렬하고 각 작업을 순서대로 하나씩 가능한 스케쥴에 포함시킴\n\n슈도 코드로 작성해보기\n1234567S &#x3D; ∅while (답을 구하지 못함):    다음 작업을 선택    if (이 작업을 추가했을 때 S가 적절함)        이 작업을 S에 추가    if (더 이상 남은 작업이 없다면)        답을 구하였으니 return\n\n적절함 의 정의\n어떤 순서는 그 순서 내의 모든 작업이 데드라인 이전에 시작될 때 적절한 순서라 한다예) [4,1]은 정렬된 데드라인이라 적절하나 [1,4]는 부적절함\n어떤 집합은 그 집합의 원소들로 하나 이상의 적절한 순서를 만들 수 있을 때 적절한 집합이라 한다예) 집합 {1,4}는 [4,1]을 구성할 수 있으므로 적절한 집합임\n\n\n\n파이썬으로 구현하기\n123456789101112131415161718192021222324def schedule (deadline):    n = len(deadline) - 1    J = [1]    for i in range(2, n + 1):        K = insert(J, i, deadline)        if(feasible(K, deadline)):            J = K[:] # 파이썬에서 배열의 깊은 복사    return Jdef feasible(K, deadline):    for i in rage(1, len(K) + 1):        if (i &gt; deadline[K[i - 1]]):            return False    return Truedef insert(J, i, deadline):    K = J[:]    for j in range(len(J), 0, -1):        if (deadline[i] &gt;= deadline[K[j-1]]):            j += 1            break    K.insert(j - 1, i)    return K","dateCreated":"2021-02-28T20:23:05+09:00","dateModified":"2021-02-28T23:40:50+09:00","datePublished":"2021-02-28T20:23:05+09:00","description":"","headline":"21-02-28 알고리즘 기초강의(2)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"}</script>
+    <meta name="description" content="마감시간이 있는 스케쥴 짜기 마감시간과 함께 여러개의 작업이 주어지고 마감시간 내에 마치면 보상이 주어짐 이 보상이 최대가 되는 스케쥴을 작성하는 문제  Greedy Approach로 해결하기  보상에 따라서 비오름차순으로 작업을 정렬하고 각 작업을 순서대로 하나씩 가능한 스케쥴에 포함시킴  슈도 코드로 작성해보기 1234567S &#x3D; ∅while">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="21-02-28 알고리즘 기초강의">
-<meta property="og:url" content="http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/index.html">
+<meta property="og:title" content="21-02-28 알고리즘 기초강의(2)">
+<meta property="og:url" content="http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/index.html">
 <meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
-<meta property="og:description" content="최단 경로와 다익스트라 알고리즘 최단 경로 문제: Revisited 모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘) 단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (다익스트라 알고리즘)    다익스트라 알고리즘 슈도 코드 123456789Y &#x3D; &amp;#123;v1&amp;#125;;F &#x3D; ∅while (답을 구하지 못함):">
+<meta property="og:description" content="마감시간이 있는 스케쥴 짜기 마감시간과 함께 여러개의 작업이 주어지고 마감시간 내에 마치면 보상이 주어짐 이 보상이 최대가 되는 스케쥴을 작성하는 문제  Greedy Approach로 해결하기  보상에 따라서 비오름차순으로 작업을 정렬하고 각 작업을 순서대로 하나씩 가능한 스케쥴에 포함시킴  슈도 코드로 작성해보기 1234567S &#x3D; ∅while">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-02-28T03:51:56.000Z">
-<meta property="article:modified_time" content="2021-02-28T08:54:23.109Z">
+<meta property="article:published_time" content="2021-02-28T11:23:05.000Z">
+<meta property="article:modified_time" content="2021-02-28T14:40:50.673Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
     
@@ -187,12 +187,12 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            21-02-28 알고리즘 기초강의
+            21-02-28 알고리즘 기초강의(2)
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2021-02-28T12:51:56+09:00">
+    <time datetime="2021-02-28T20:23:05+09:00">
 	
 		    Feb 28, 2021
     	
@@ -212,22 +212,25 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="최단-경로와-다익스트라-알고리즘"><a href="#최단-경로와-다익스트라-알고리즘" class="headerlink" title="최단 경로와 다익스트라 알고리즘"></a>최단 경로와 다익스트라 알고리즘</h3><ul>
-<li>최단 경로 문제: Revisited<ul>
-<li>모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘)</li>
-<li>단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (<strong>다익스트라 알고리즘</strong>)</li>
+            <h3 id="마감시간이-있는-스케쥴-짜기"><a href="#마감시간이-있는-스케쥴-짜기" class="headerlink" title="마감시간이 있는 스케쥴 짜기"></a>마감시간이 있는 스케쥴 짜기</h3><ul>
+<li>마감시간과 함께 여러개의 작업이 주어지고 마감시간 내에 마치면 보상이 주어짐</li>
+<li>이 보상이 최대가 되는 스케쥴을 작성하는 문제</li>
+</ul>
+<p><strong>Greedy Approach로 해결하기</strong></p>
+<ul>
+<li>보상에 따라서 비오름차순으로 작업을 정렬하고 각 작업을 순서대로 하나씩 가능한 스케쥴에 포함시킴</li>
+</ul>
+<p><strong>슈도 코드로 작성해보기</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">S &#x3D; ∅</span><br><span class="line">while (답을 구하지 못함):</span><br><span class="line">    다음 작업을 선택</span><br><span class="line">    if (이 작업을 추가했을 때 S가 적절함)</span><br><span class="line">        이 작업을 S에 추가</span><br><span class="line">    if (더 이상 남은 작업이 없다면)</span><br><span class="line">        답을 구하였으니 return</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>적절함</strong> 의 정의<ul>
+<li>어떤 순서는 그 순서 내의 모든 작업이 데드라인 이전에 시작될 때 적절한 순서라 한다<br>예) [4,1]은 정렬된 데드라인이라 적절하나 [1,4]는 부적절함</li>
+<li>어떤 집합은 그 집합의 원소들로 하나 이상의 적절한 순서를 만들 수 있을 때 적절한 집합이라 한다<br>예) 집합 {1,4}는 [4,1]을 구성할 수 있으므로 적절한 집합임</li>
 </ul>
 </li>
 </ul>
-<p><strong>다익스트라 알고리즘 슈도 코드</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Y &#x3D; &#123;v1&#125;;</span><br><span class="line">F &#x3D; ∅</span><br><span class="line">while (답을 구하지 못함):</span><br><span class="line">    Y에 속한 정점만 중간에 거쳐 가는 정점으로 하여</span><br><span class="line">        v1에서 최단경로를 가진 정점 v를 V - Y에서 선택한다</span><br><span class="line">    새로운 정점 v를 Y에 추가한다</span><br><span class="line">    최단경로 상에서 v로 가는 간선을 F에 추가한다</span><br><span class="line">    if(Y &#x3D;&#x3D; V):</span><br><span class="line">        답을 구했으니 return</span><br></pre></td></tr></table></figure>
-<ul>
-<li>W[i][j]: 그래프 G의 인접행렬</li>
-<li>touch[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 v<del>i</del>로 가는 현재 최단경로 상의 마지막 간선을 (v, v<del>i</del>)라고 할 때, Y에 속한 정점 v의 인덱스</li>
-<li>length[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 v<del>i</del>로 가는 현재 최단 경로의 길이</li>
-</ul>
-<p><strong>파이썬으로 다익스트라 알고리즘</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dijkstra</span> (<span class="params">W</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    F = []</span><br><span class="line">    touch = [-<span class="number">1</span>] * (n + <span class="number">1</span>)</span><br><span class="line">    length = [-<span class="number">1</span>] * (n + <span class="number">1</span>) </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n+<span class="number">1</span>):</span><br><span class="line">        touch[i] = <span class="number">1</span></span><br><span class="line">        length[i] = W[<span class="number">1</span>][i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>):</span><br><span class="line">        minValue = INF</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span>(<span class="number">0</span> &lt;= length[i] <span class="keyword">and</span> length[i] &lt; minValue):</span><br><span class="line">                minValue = length[i]</span><br><span class="line">                vnear = i</span><br><span class="line">        edge = (touch[vnear], vnear, W[touch[vnear]][vnear])</span><br><span class="line">        F.append(edge)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> (length[i] &gt; length[vnear] + W[vnear][i]):</span><br><span class="line">                length[i] = length[vnear] + W[vnear][i]</span><br><span class="line">                touch[i] = vnear</span><br><span class="line">        length[vnear] = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> F</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">length</span> (<span class="params">F</span>):</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> F:</span><br><span class="line">        total += e[<span class="number">2</span>] <span class="comment"># (1, 5, 1) 처럼 들어오기 때문에 가중치는 index 2번에 있음</span></span><br><span class="line">        <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+<p><strong>파이썬으로 구현하기</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">schedule</span> (<span class="params">deadline</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(deadline) - <span class="number">1</span></span><br><span class="line">    J = [<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">        K = insert(J, i, deadline)</span><br><span class="line">        <span class="keyword">if</span>(feasible(K, deadline)):</span><br><span class="line">            J = K[:] <span class="comment"># 파이썬에서 배열의 깊은 복사</span></span><br><span class="line">    <span class="keyword">return</span> J</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feasible</span>(<span class="params">K, deadline</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> rage(<span class="number">1</span>, <span class="built_in">len</span>(K) + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> (i &gt; deadline[K[i - <span class="number">1</span>]]):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert</span>(<span class="params">J, i, deadline</span>):</span></span><br><span class="line">    K = J[:]</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(J), <span class="number">0</span>, -<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> (deadline[i] &gt;= deadline[K[j-<span class="number">1</span>]]):</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    K.insert(j - <span class="number">1</span>, i)</span><br><span class="line">    <span class="keyword">return</span> K</span><br></pre></td></tr></table></figure>
             
 
 
@@ -241,14 +244,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
-                    data-tooltip="21-02-28 알고리즘 기초강의(2)"
-                    aria-label="PREVIOUS: 21-02-28 알고리즘 기초강의(2)"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -258,9 +258,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                    data-tooltip="21-02-27 알고리즘 기초강의"
-                    aria-label="NEXT: 21-02-27 알고리즘 기초강의"
+                    href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    data-tooltip="21-02-28 알고리즘 기초강의"
+                    aria-label="NEXT: 21-02-28 알고리즘 기초강의"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -285,7 +285,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -298,7 +298,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -311,7 +311,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -356,14 +356,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
-                    data-tooltip="21-02-28 알고리즘 기초강의(2)"
-                    aria-label="PREVIOUS: 21-02-28 알고리즘 기초강의(2)"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -373,9 +370,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                    data-tooltip="21-02-27 알고리즘 기초강의"
-                    aria-label="NEXT: 21-02-27 알고리즘 기초강의"
+                    href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    data-tooltip="21-02-28 알고리즘 기초강의"
+                    aria-label="NEXT: 21-02-28 알고리즘 기초강의"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -400,7 +397,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -413,7 +410,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -426,7 +423,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -460,7 +457,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -473,7 +470,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -486,7 +483,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                        href="https://plus.google.com/share?url=http://example.com/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
