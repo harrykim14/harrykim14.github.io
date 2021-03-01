@@ -188,6 +188,135 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
+                            aria-label=": 21-03-01 알고리즘 기초강의(2)"
+                        >
+                            21-03-01 알고리즘 기초강의(2)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-01T13:28:15+09:00">
+	
+		    Mar 01, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="백트랙킹과-n-Queens-문제"><a href="#백트랙킹과-n-Queens-문제" class="headerlink" title="백트랙킹과 n-Queens 문제"></a>백트랙킹과 n-Queens 문제</h3><ul>
+<li><p>backtracking</p>
+<ul>
+<li><strong>임의의 집합</strong>에서 <strong>주어진 기준대로</strong> 원소의 <strong>순서를 선택</strong>하는 문제를 푸는 데 적합함</li>
+<li>트리 자료구조의 변형된 깊이우선탐색</li>
+<li>모든 문제 사례에 대해서 효율적이지 않지만 많은 문제 사례에 대해 효율적</li>
+</ul>
+</li>
+<li><p>미로찾기 문제를 트리 탐색 문제로 해석 (DFS를 통한 preorder 방식)</p>
+</li>
+<li><p>상태공간트리 (State Space Tree)</p>
+</li>
+<li><p>백트래킹 기법</p>
+<ul>
+<li>상태공간트리를 깊이우선탐색으로 탐색</li>
+<li>방문중인 노드에서 더 하위 노드로 가면 해답이 없을 경우엔 해당 노드의 하위 트리를 방문하지 않고 부모 노드로 <strong>되돌아감</strong></li>
+</ul>
+</li>
+<li><p>유망함 (promising)</p>
+<ul>
+<li>방문중인 노드에서 하위 노드가 해답을 발견할 가능성이 있으면 유망</li>
+<li>하위 노드에서 해답을 발견할 가능성이 없으면 유망하지 않음</li>
+</ul>
+</li>
+<li><p>백트래킹과 <strong>가지치기</strong></p>
+<ol>
+<li>상태공간트리를 DFS로 탐색</li>
+<li>방문 중인 노드가 유망한지 체크</li>
+<li>만약 유망하지 않으면 부모 노드로 돌아감</li>
+<li>그리고 유망하지 않는 하위 트리를 가지치기함</li>
+</ol>
+</li>
+</ul>
+<p><strong>슈도 코드</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def checknode (node v): </span><br><span class="line">    node u;</span><br><span class="line">    if (promising(v)):</span><br><span class="line">        if (v에 해답이 있다면)</span><br><span class="line">            해답을 출력</span><br><span class="line">        else</span><br><span class="line">            for (v의 모든 자식 노드)</span><br><span class="line">                checknode(u);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>백트래킹 알고리즘의 구현</p>
+<ul>
+<li>상태공간트리를 실제로 구현할 필요는 없음</li>
+<li>현재 조사중인 가지의 값에 대해만 추적</li>
+<li>상태공간트리는 암묵적으로 존재한다고 가정</li>
+</ul>
+</li>
+<li><p>n-Queens 문제</p>
+<ul>
+<li>8-Queens의 일반화 문제</li>
+<li>n x n 체스보드에 n개의 퀸을 배치하는 문제<br>  → 어떤 퀸도 다른 퀸에게 잡아먹지 않도록 배치할 것</li>
+</ul>
+</li>
+<li><p>n-Queens를 backtracking approach로 해결하기</p>
+<ul>
+<li><strong>임의의 집합</strong>에서 <strong>기준</strong>에 따라 <strong>원소의 순서</strong>를 선택</li>
+<li>임의의 집합: 체스보드에 있는 n^2^개의 가능한 위치</li>
+<li>기준: 새로 놓을 퀸이 다른 퀸을 위협할 수 없음</li>
+<li>원소의 순서: 퀸을 놓을 수 있는 n개의 위치</li>
+</ul>
+</li>
+<li><p>4-Queens 문제 (n = 4)</p>
+<ul>
+<li>일단 같은 행에는 놓을 수 없다고 가정하면 후보 해답은 4(가로 4칸) x 4(가로 4칸) x 4(가로 4칸) x 4(가로 4칸) = 256 가지의 탐색 공간이 있음</li>
+</ul>
+</li>
+<li><p>n-Queen 문제의 해결</p>
+<ul>
+<li>같은 행에는 퀸을 놓지 않는다(기본 가정)</li>
+<li>같은 열이나 같은 대각선에 놓이는지를 확인</li>
+<li>같은 열을 체크하기<br>→ col[i]: i번째 행에서 퀸이 놓여있는 열의 위치<br>→ col[k]: k번째 행에서 퀸이 놓여있는 열의 위치<br>→ 따라서, col[i] == col[k] 이라면 유망하지 않다</li>
+<li>대각선 체크하기<br>→ 왼쪽에서 위협하는 퀸과 오른쪽에서 위협하는 퀸은 |i - k|값으로 판단할 수 있다</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 n-Queens 문제를 위한 백트래킹 알고리즘</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">n_queens</span> (<span class="params">i, col</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(col) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (promising(i, col)):</span><br><span class="line">        <span class="keyword">if</span> (i == n): </span><br><span class="line">            print(col[<span class="number">1</span>: n+<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n+<span class="number">1</span>):</span><br><span class="line">                col[i+<span class="number">1</span>] = j</span><br><span class="line">                n_queens(i+<span class="number">1</span>, col)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span> (<span class="params">i, col</span>):</span></span><br><span class="line">    k = <span class="number">1</span></span><br><span class="line">    flag = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">while</span> (k &lt; i <span class="keyword">and</span> flag):</span><br><span class="line">        <span class="keyword">if</span> (col[i] == col[k] <span class="keyword">or</span> <span class="built_in">abs</span>(col[i] - col[k]) == (i - k)):</span><br><span class="line">            flag = <span class="literal">False</span></span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> flag</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                             aria-label=": 21-03-01 알고리즘 기초강의"
                         >
