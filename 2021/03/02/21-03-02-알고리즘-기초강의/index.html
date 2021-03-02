@@ -11,7 +11,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"부분집합의 합 구하기\nSum-of-Subset Problem\n\n원소가 n개인 양의 정수 집합 w와 양의 정수 W가 주어졌을 때 합이 W가 되는 w의 부분집합을 모두 찾기\n\n\nbacktracking approach로 해결하기\n\n상태공간트리를 만들어 풀기 (리프 노드가 모든 부분집합이 됨)\n가지치기 전략을 사용하기→ 검색하기 전에 정수 원소를 오름차순으로 정렬해 놓으면 노드의 유망여부를 탐색 가능하게 됨→ i번째 레벨에서 wi+1은 남아있는 정수 원소 중에서 가장 작은 값→ 남아있는 원소 합이 W보다 작다면 하위 노드는 더이상 방문 할 필요가 없다 (유망하지 않기 때문에)→ weight를 레벨 i까지의 정수 합이라 하고 weight가 W와 같지 않다면 weight + wi+1 &gt; W 이라면 그 노드는 유망하지 않음→ total이 정수 원소의 합일 때 weight를 더했을 때 W와 같아지지 않으므로 weight + total &lt; W 이라면 이 노드도 유망하지 않다\n\n\n\n1234567891011121314151617181920# i = level, subset의 weight, 남은 원소의 합 totaldef sum_of_subsets (i, weight, total):    n = len(w) - 1    if (promising(i, weight, total)):        if (weight == W):            print(include[1: n+1])        else:            # left subtree            include[i + 1] = True             sum_of_subsets (i+1, weight + w[i+1], total - w[i+1])            # right subtree            include[i + 1] = False            sum_of_subsets (i+1, weight, total - w[i+1])def promising(i,weight, total):    if((weight + total &gt;= W) and         (weight == W or weight + w[i+1] &lt;= W)):        return True    else:        return False","dateCreated":"2021-03-02T17:33:31+09:00","dateModified":"2021-03-02T19:12:12+09:00","datePublished":"2021-03-02T17:33:31+09:00","description":"","headline":"21-03-02 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/02/21-03-02-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/02/21-03-02-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"부분집합의 합 구하기\nSum-of-Subset Problem\n\n원소가 n개인 양의 정수 집합 w와 양의 정수 W가 주어졌을 때 합이 W가 되는 w의 부분집합을 모두 찾기\n\n\nbacktracking approach로 해결하기\n\n상태공간트리를 만들어 풀기 (리프 노드가 모든 부분집합이 됨)\n가지치기 전략을 사용하기→ 검색하기 전에 정수 원소를 오름차순으로 정렬해 놓으면 노드의 유망여부를 탐색 가능하게 됨→ i번째 레벨에서 wi+1은 남아있는 정수 원소 중에서 가장 작은 값→ 남아있는 원소 합이 W보다 작다면 하위 노드는 더이상 방문 할 필요가 없다 (유망하지 않기 때문에)→ weight를 레벨 i까지의 정수 합이라 하고 weight가 W와 같지 않다면 weight + wi+1 &gt; W 이라면 그 노드는 유망하지 않음→ total이 정수 원소의 합일 때 weight를 더했을 때 W와 같아지지 않으므로 weight + total &lt; W 이라면 이 노드도 유망하지 않다\n\n\n\n1234567891011121314151617181920# i = level, subset의 weight, 남은 원소의 합 totaldef sum_of_subsets (i, weight, total):    n = len(w) - 1    if (promising(i, weight, total)):        if (weight == W):            print(include[1: n+1])        else:            # left subtree            include[i + 1] = True             sum_of_subsets (i+1, weight + w[i+1], total - w[i+1])            # right subtree            include[i + 1] = False            sum_of_subsets (i+1, weight, total - w[i+1])def promising(i,weight, total):    if((weight + total &gt;= W) and         (weight == W or weight + w[i+1] &lt;= W)):        return True    else:        return False","dateCreated":"2021-03-02T17:33:31+09:00","dateModified":"2021-03-02T19:12:47+09:00","datePublished":"2021-03-02T17:33:31+09:00","description":"","headline":"21-03-02 알고리즘 기초강의","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/02/21-03-02-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/02/21-03-02-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"}</script>
     <meta name="description" content="부분집합의 합 구하기 Sum-of-Subset Problem  원소가 n개인 양의 정수 집합 w와 양의 정수 W가 주어졌을 때 합이 W가 되는 w의 부분집합을 모두 찾기   backtracking approach로 해결하기  상태공간트리를 만들어 풀기 (리프 노드가 모든 부분집합이 됨) 가지치기 전략을 사용하기→ 검색하기 전에 정수 원소를 오름차순으로 정렬">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="21-03-02 알고리즘 기초강의">
@@ -20,7 +20,7 @@
 <meta property="og:description" content="부분집합의 합 구하기 Sum-of-Subset Problem  원소가 n개인 양의 정수 집합 w와 양의 정수 W가 주어졌을 때 합이 W가 되는 w의 부분집합을 모두 찾기   backtracking approach로 해결하기  상태공간트리를 만들어 풀기 (리프 노드가 모든 부분집합이 됨) 가지치기 전략을 사용하기→ 검색하기 전에 정수 원소를 오름차순으로 정렬">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-02T08:33:31.000Z">
-<meta property="article:modified_time" content="2021-03-02T10:12:12.590Z">
+<meta property="article:modified_time" content="2021-03-02T10:12:47.722Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
     
@@ -239,11 +239,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
+                    data-tooltip="21-03-03 알고리즘 기초강의"
+                    aria-label="PREVIOUS: 21-03-03 알고리즘 기초강의"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -351,11 +354,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
+                    data-tooltip="21-03-03 알고리즘 기초강의"
+                    aria-label="PREVIOUS: 21-03-03 알고리즘 기초강의"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
