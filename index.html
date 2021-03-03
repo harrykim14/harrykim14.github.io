@@ -188,6 +188,83 @@
                         <a
                             class="link-unstyled"
                             href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
+                            aria-label=": 21-03-03 알고리즘 기초강의(2)"
+                        >
+                            21-03-03 알고리즘 기초강의(2)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-03T11:13:52+09:00">
+	
+		    Mar 03, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="분기한정법과-0-1-배낭-문제"><a href="#분기한정법과-0-1-배낭-문제" class="headerlink" title="분기한정법과 0-1 배낭 문제"></a>분기한정법과 0-1 배낭 문제</h3><ul>
+<li>깊이우선탐색(DFS)와 너비우선탐색(BFS)</li>
+<li>분기한정법(Branch-and-Bound) : <strong>BFS 기반</strong> 상태공간트리로 문제를 해결</li>
+<li>항상 한계값을 고려하므로 최적화 문제를 해결하기 좋음</li>
+<li>최적우선탐색(Best-First-Search w/ Branch-and-Bound)</li>
+</ul>
+<p><strong>BFS로 배낭문제를 해결하기</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 슈도 코드</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">breadth_first_search</span>(<span class="params">tree</span>):</span></span><br><span class="line">    queue_of_node Q</span><br><span class="line">    node u, v</span><br><span class="line">    initialize(Q)</span><br><span class="line">    v = root of tree</span><br><span class="line">    visit v</span><br><span class="line">    enqueue(Q, v)</span><br><span class="line">    <span class="keyword">while</span>(!empty(Q)):</span><br><span class="line">        dequeue(Q, v)</span><br><span class="line">        <span class="keyword">for</span> (each child u of v):</span><br><span class="line">            visit u</span><br><span class="line">            enqueue(Q, u)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>분기한정법으로 0-1 배낭 문제를 해결하려면?<ul>
+<li>일반적으로 BFS가 DFS보다 나쁨</li>
+<li>유망 함수 외에 추가적인 용도로 한계값(bound)를 사용</li>
+<li>주어진 어떤 노드의 모든 자식 노드를 방문하고<br>→ 유망하면서 확장하지 않은 노드들을 모두 살펴보고<br>→ 한계값이 가장 좋은 노드를 우선적으로 확장</li>
+<li>지금까지 찾은 최적해보다 한계값이 더 좋을 때 유망함</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬에서 우선순위 큐 쓰는 법 예시</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> PriorityQueue</span><br><span class="line"></span><br><span class="line">PQ = PriorityQueue()</span><br><span class="line">data = [<span class="number">4</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">    PQ.put(data[i])</span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">not</span> PQ.empty()):</span><br><span class="line">    print(PQ.get())</span><br></pre></td></tr></table></figure>
+<p><strong>파이썬으로 분기한정법 구현하기</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> PriorityQueue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SSTNode</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, level, profit, weight</span>):</span></span><br><span class="line">        self.level = level</span><br><span class="line">        self.profit = profit</span><br><span class="line">        self.weight = weight</span><br><span class="line">        self.bound = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(self.level, self.profit, self.weight, self.bound)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bound</span>(<span class="params">u, p, w</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(p) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> u.weight &gt;= W:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        result = u.profit</span><br><span class="line">        j = u.level + <span class="number">1</span></span><br><span class="line">        totweight = u.weight</span><br><span class="line">        <span class="keyword">while</span> j &lt;= n <span class="keyword">and</span> totweight + w[j] &lt;= W:</span><br><span class="line">            totweight += w[j]</span><br><span class="line">            result += p[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        k = j</span><br><span class="line">        <span class="keyword">if</span> k &lt;= n:</span><br><span class="line">            result += (W - totweight) * p[k] / w[k]</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knapsack4</span>(<span class="params">p, w, W</span>):</span></span><br><span class="line">    PQ = PriorityQueue()</span><br><span class="line">    v = SSTNode(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    maxprofit = <span class="number">0</span></span><br><span class="line">    v.bound = bound(v, p, w)</span><br><span class="line">    PQ.put((-v.bound, v))</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> PQ.empty():</span><br><span class="line">        v = PQ.get()[<span class="number">1</span>]</span><br><span class="line">        print(<span class="string">&quot;POP:&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        v.print()</span><br><span class="line">        <span class="keyword">if</span> v.bound &gt; maxprofit:</span><br><span class="line">            level = v.level + <span class="number">1</span></span><br><span class="line">            weight = v.weight + w[level]</span><br><span class="line">            profit = v.profit + p[level]</span><br><span class="line">            u = SSTNode(level, profit, weight)</span><br><span class="line">            <span class="keyword">if</span> u.weight &lt;= W <span class="keyword">and</span> u.profit &gt; maxprofit:</span><br><span class="line">                maxprofit = u.profit</span><br><span class="line">            u.bound = bound(u, p, w)</span><br><span class="line">            print(<span class="string">&quot;\tPUT:&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">            u.print()</span><br><span class="line">            <span class="keyword">if</span> u.bound &gt; maxprofit:</span><br><span class="line">                PQ.put((-u.bound, u))</span><br><span class="line">                print(<span class="string">&quot;\t\tYES&quot;</span>)</span><br><span class="line">            u = SSTNode(level, v.profit, v.weight)</span><br><span class="line">            u.bound = bound(u, p, w)</span><br><span class="line">            print(<span class="string">&quot;\tPUT:&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">            u.print()</span><br><span class="line">            <span class="keyword">if</span> u.bound &gt; maxprofit:</span><br><span class="line">                PQ.put((-u.bound, u))</span><br><span class="line">                print(<span class="string">&quot;\t\tYES&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> maxprofit</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                             aria-label=": 21-03-03 알고리즘 기초강의"
                         >
                             21-03-03 알고리즘 기초강의
@@ -267,7 +344,7 @@
 </li>
 </ul>
 <p><strong>파이썬으로 배낭 문제 구현하기(backtracking)</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knapsack3</span> (<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">global</span> maxprofit, numbest, bestset</span><br><span class="line">    <span class="keyword">if</span> (weight &lt;= W <span class="keyword">and</span> profit &gt; maxprofit):</span><br><span class="line">        maxprofit = profit</span><br><span class="line">        numbest = i</span><br><span class="line">        bestset = include[:]</span><br><span class="line">    <span class="keyword">if</span> (promising(i, profit, weight)):</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">True</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit + p[i+<span class="number">1</span>], weight + w[i+<span class="number">1</span>])</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">False</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit, weight)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span>(<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (weight &gt; W):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        bound = profit</span><br><span class="line">        totweight = weight</span><br><span class="line">        <span class="keyword">while</span> (j &lt;= n <span class="keyword">and</span> totweight + w[j] &lt;= W):</span><br><span class="line">            totweight += w[j]</span><br><span class="line">            bound += p[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        k = j</span><br><span class="line">        <span class="keyword">if</span> (k &lt;= n):</span><br><span class="line">            bound += (W - totweight) * p[k] / w[k]</span><br><span class="line">        <span class="keyword">return</span> bound &gt; maxprofit</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knapsack3</span> (<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">global</span> maxprofit, numbest, bestset</span><br><span class="line">    <span class="keyword">if</span> (weight &lt;= W <span class="keyword">and</span> profit &gt; maxprofit):</span><br><span class="line">        maxprofit = profit</span><br><span class="line">        numbest = i</span><br><span class="line">        bestset = include[:]</span><br><span class="line">    <span class="keyword">if</span> (promising(i, profit, weight)):</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">True</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit + p[i+<span class="number">1</span>], weight + w[i+<span class="number">1</span>])</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">False</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit, weight)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span>(<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (weight &gt; W):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        bound = profit</span><br><span class="line">        totweight = weight</span><br><span class="line">        <span class="keyword">while</span> (j &lt;= n <span class="keyword">and</span> totweight + w[j] &lt;= W):</span><br><span class="line">            totweight += w[j]</span><br><span class="line">            bound += p[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        k = j</span><br><span class="line">        <span class="keyword">if</span> (k <span class="function"><span class="keyword">def</span> <span class="title">knapsack3</span> (<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">global</span> maxprofit, numbest, bestset</span><br><span class="line">    <span class="keyword">if</span> weight &lt;= W <span class="keyword">and</span> profit &gt; maxprofit:</span><br><span class="line">        maxprofit = profit</span><br><span class="line">        numbest = i</span><br><span class="line">        bestset = include[:]</span><br><span class="line">    <span class="keyword">if</span> promising(i, profit, weight):</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">True</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit + p[i+<span class="number">1</span>], weight + w[i+<span class="number">1</span>])</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">False</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit, weight)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span>(<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">if</span> weight &gt; W:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        bound = profit</span><br><span class="line">        totweight = weight</span><br><span class="line">        <span class="keyword">while</span> j &lt;= n <span class="keyword">and</span> totweight + w[j] &lt;= W:</span><br><span class="line">            totweight += w[j]</span><br><span class="line">            bound += p[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        k = j</span><br><span class="line">        <span class="keyword">if</span> k &lt;= n:</span><br><span class="line">            bound += (W - totweight) * p[k] / w[k]</span><br><span class="line">        <span class="keyword">return</span> bound &gt; maxprofit</span><br></pre></td></tr></table></figure>
                     
                         
 
@@ -276,7 +353,7 @@
                     
                         <p>
                             <a
-                                href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/#post-footer"
+                                href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -963,96 +1040,6 @@
                         <p>
                             <a
                                 href="/2021/02/24/21-02-24-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                            aria-label=": 21-02-23 알고리즘 기초강의"
-                        >
-                            21-02-23 알고리즘 기초강의
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-02-23T10:23:43+09:00">
-	
-		    Feb 23, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="연쇄-행렬-곱셈"><a href="#연쇄-행렬-곱셈" class="headerlink" title="연쇄 행렬 곱셈"></a>연쇄 행렬 곱셈</h3><p><strong>연쇄 행렬 곱셈</strong>은 주어진 n개의 연쇄 행렬을 곱하는 최적의 순서를 구하는 문제</p>
-<ul>
-<li>행렬 곱셈은 결합 법칙이 성립하지만 곱셈 순서에 따라 각 원소의 곱셈 횟수가 달라짐 → 이 <strong>곱셈 횟수가 가장 작아지는 최적의 순서</strong>를 구하기</li>
-<li>2 x 3 행렬과 3 x 4 행렬을 곱하면 2 x 4 행렬이 됨<br>→ i x k 행렬과 k x j 행렬을 곱하면 i x j 행렬이 되며<br>→ 원소 곱셈의 횟수는 i * k * j가 된다</li>
-</ul>
-<ul>
-<li>Brute-force 방식으로 접근하기<ul>
-<li>모든 경우의 수(카탈랑 수)를 계산하여 최적의 순서를 선택</li>
-<li>카탈랑 수는 결국 지수함수이므로 너무 오래걸림</li>
-</ul>
-</li>
-<li>Dynamic Programming 방식으로 접근하기<ol>
-<li>재귀 관계식을 찾는다</li>
-</ol>
-<ul>
-<li><strong>M</strong>: 연쇄 행렬을 곱하는데 필요한 최소 횟수 행렬</li>
-<li><strong>M[i][j]</strong>: A<del>i</del>에서 A<del>j</del>까지 행렬을 곱하는데 필요한 최소 횟수</li>
-<li>A<del>i</del> … A<del>j</del> 행렬을 (A<del>i</del> … A<del>k</del>)(A<del>k+1</del> … A<del>j</del>)로 분할하는 재귀 관계식 찾기</li>
-</ul>
-<ol start="2">
-<li>상향식 방법으로 해답을 구하기</li>
-</ol>
-<ul>
-<li>M[i][i] = 0 (대각선에 위치하는 원소를 0으로 초기화)</li>
-<li>M[1][n]을 상향식으로 계산 (대각선 1번, 대각선 2번 … 대각선 n-1번)</li>
-<li>n개의 행렬을 두 개의 최적 부분행렬의 곱으로 분할</li>
-<li><strong>M[i][j] = minimum(M[i][k] + M[k+1][j] + d<del>i-1</del>d<del>k</del>d<del>j</del>)</strong> // 단, i ≤ k ≤ j-1</li>
-</ul>
-</li>
-</ul>
-<p><strong>파이썬으로 연쇄 행렬 곱셈</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minmult</span> (<span class="params">d</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(d) - <span class="number">1</span></span><br><span class="line">    M = [[-<span class="number">1</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n+<span class="number">1</span>)]</span><br><span class="line">    P = [[-<span class="number">1</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n+<span class="number">1</span>)]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        M[i][i] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> diagonal <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n - diagonal + <span class="number">1</span>):</span><br><span class="line">            j = i + diagonal</span><br><span class="line">            M[i][j], P[i][j] = minimum(M, d, i, j)</span><br><span class="line">    <span class="keyword">return</span> M, P </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minimum</span> (<span class="params">M, d, i, j</span>):</span></span><br><span class="line">    minVal = INF</span><br><span class="line">    minK = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(i, j):</span><br><span class="line">        value = M[i][k] + M[k + <span class="number">1</span>][j]</span><br><span class="line">        value += d[i -<span class="number">1</span>] * d[k] * d[j]</span><br><span class="line">        <span class="keyword">if</span> (minVal &gt; value):</span><br><span class="line">            minVal = value</span><br><span class="line">            minK = k</span><br><span class="line">    <span class="keyword">return</span> minVal, minK</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">order</span>(<span class="params">P, i, j</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (i == j):</span><br><span class="line">        print(<span class="string">&#x27;A%d&#x27;</span>%(i), end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        k = P[i][j]</span><br><span class="line">        print(<span class="string">&#x27;(&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        order(P, j, k)</span><br><span class="line">        order(P, k + <span class="number">1</span>, j)</span><br><span class="line">        print(<span class="string">&#x27;)&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p><strong>자바스크립트로 연쇄 행렬 곱셈</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> minmult = <span class="function"><span class="params">d</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> n = d.length -<span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> arr = <span class="built_in">Array</span>.from(<span class="built_in">Array</span>(n+<span class="number">1</span>), <span class="function">() =&gt;</span> <span class="built_in">Array</span>(n+<span class="number">1</span>).fill(-<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">let</span> arr2 = [...arr];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n+<span class="number">1</span>; i++)&#123;</span><br><span class="line">        arr[i][i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> diagonal = <span class="number">1</span>; diagonal &lt; n; diagonal++)&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n - diagonal + <span class="number">1</span>; i++)&#123;</span><br><span class="line">            j = i + diagonal;</span><br><span class="line">            arr[i][j] = minimum(arr, d, i, j).minVal; </span><br><span class="line">            arr2[i][j] = minimum(arr, d, i, j).minK; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">result</span> : arr, <span class="attr">optimal</span>: arr2 &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> minimum = <span class="function">(<span class="params">arr, d, i, j</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> minVal = <span class="literal">Infinity</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k = i; k &lt; j; k++) &#123;</span><br><span class="line">        <span class="keyword">let</span> value = arr[i][k] + arr[k+<span class="number">1</span>][j] + d[i - <span class="number">1</span>] * d[k] * d[j]</span><br><span class="line">        <span class="keyword">if</span> (minVal &gt; value)&#123;</span><br><span class="line">            minVal = value;</span><br><span class="line">            minK = k</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="attr">minVal</span> : minVal, <span class="attr">minK</span> : minK&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> order = <span class="function">(<span class="params">arr2, i, j</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (i === j) str += <span class="string">`A<span class="subst">$&#123;i&#125;</span>`</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> k = arr2[i][j]</span><br><span class="line">        str += <span class="string">&#x27;(&#x27;</span></span><br><span class="line">        order(arr2, i, k)</span><br><span class="line">        order(arr2, k+<span class="number">1</span>, j)</span><br><span class="line">        str += <span class="string">&#x27;)&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">예시) </span></span><br><span class="line"><span class="comment">let d = [5, 2, 3, 4, 6, 7, 8];</span></span><br><span class="line"><span class="comment">let &#123; result, optimal &#125; = minmult(d)</span></span><br><span class="line"><span class="comment">order(optimal, 1, d.length - 1)</span></span><br><span class="line"><span class="comment">console.log(result)</span></span><br><span class="line"><span class="comment">console.log(str) -&gt; `(A1(A2(A3(A4(A5A6)))))`</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
