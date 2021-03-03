@@ -1,0 +1,577 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-03 알고리즘 기초강의(3) - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"해밀턴 경로 문제\nG = (V, E)가 연결된 무방향 그래프일 때 한 정점에서 출발하여 그래프의 모든 정점을 한 번씩만 방문하고 출발점으로 되돌아오는 경로\n모든 간선을 한 번씩 방문하는 오일러 경로와 비슷\n\n해밀턴 경로를 백트랙킹 방식으로 해결하기\n상태공간트리의 구축→ 트리의 레벨 0에서 출발 정점을 선정(경로의 0번째 정점)→ 트리의 레벨 1에서 출발 정점을 제외한 각 정점을 출발 정점 다음에 올 첫째 정점으로 고려함→ 트리의 레벨 2에서는 앞에서와 같은 정점들을 두번째 정점으로 고려함→ 이후 레벨도 같은 방식으로 고려함→ 마지막으로 수준 n - 1에서 정점들을 n - 1째 정점으로 고려함→ 마지막 정점에서 출발 정점으로 돌아오는 경로가 있는지 고려함\n\n123456789def hamiltonian (i , W, vindex):    n = len(W) - 1    if (promising(i, W, vindex)):        if (i == (n - 1)):            print(vindex[0:n])        else:            for j in range(2, n + 1):                vindex[i + 1] = j                hamiltonian(i + 1, W, vindex)\n\n인접 행렬 W[i][j]: i번째 정점과 j번째 정점간에 간선이 있으면 True, 없으면 False\npromising을 위한 유망 함수의 조건\nn-1번째 정점은 출발 정점과 반드시 인접해있어야 한다 (마지막엔 돌아와야 하므로)\n경로상의 i번째 정점은 그 경로에서 i-1번째 정점과 반드시 인접해야 한다 (다음 노드로 고려하기 위해)\ni번째 정점은 그 앞에 오는 i-1개의 정점들 중 하나가 될 수 없다 (한번 방문한 노드는 한 번만 방문해야 하므로 되돌아 갈 수 없다)\n\n\n\n12345678910111213141516def promising (i, W, vindex):    flag = True    # n-1번째 정점은 출발 정점과 반드시 인접해있어야 한다     if ((i == (n - 1)) and not W[vindex[n-1]][vindex[0]]):        flag = False    # 경로상의 i번째 정점은 그 경로에서 i-1번째 정점과 반드시 인접해야 한다    elif ((i &gt; 0) and not W[vindex[i-1]][vindex[i]]):        flag = False    # i번째 정점은 그 앞에 오는 i-1개의 정점들 중 하나가 될 수 없다    else:        j = 1        while (j &lt; i and flag):            if (vindex[i] == vindex[j]):                flag = False            j += 1    return flag    \n외판원 문제 (The Traveling Salesperson Problem, TSP)\n외판원은 출발 도시에서 모든 도시를 방문하고 다시 되돌아와야 한다\n출장 시간을 최소로 줄이기 위한 방문 계획을 구하는 문제\n가중치가 있는 방향 그래프라고 가정했을 때, 완전 그래프라면 (n-1)! 시간 복잡도를 가지므로 log(n)보다 나쁘다\n\nDynamic programming으로 외판원 문제를 해결하기\nW: 주어진 그래프 G = (V, E)의 인접 행렬\nV: 모든 도시의 집합\nA: V의 부분집합\nD[vi][A]: A에 속한 도시를 각각 한 번씩만 거쳐서 vi에서 v1로 가는 최단 경로의 길이 // 모든 경로의 집합 중에 최적해\n재귀적 관계식을 찾기\nD[vi][A] = min(W[i][j] + D[vj][A - {vj}]), A ≠ ∅\nD[vi][∅] = W[i][1], A = ∅\n\n\n비트를 이용한 부분 집합의 표현과 연산\nV - {v1} = {v2, v3, v4}\nA = { v4, v2 } = { 1, 0, 1 } = 5 와 같이 통과하는 정점을 1로, 통과하지 않는 정점을 0으로 표현1234567891011121314151617# vi가 A에 속해있을 때def isIn(i, A):    if((A &amp; (1 &lt;&lt; (i - 2)) != 0):        return True    else:        return False# A - &#123;vj&#125; : 차집합을 구하는 비트 연산def diff (A, j):    t = 1 &lt;&lt; (j - 2)    return (A &amp; (~t))# A의 원소가 k개인가?def count (A, n):    count = 0    for i in range(n):        if((A &amp; (1 &lt;&lt; i)) != 0):            count += 1    return count\n\n\n*파이썬으로 TSP 문제를 DP식으로 해결하기**12345678910111213141516171819202122232425262728def travel (W):    n = len(W) - 1    size = 2 ** (n -1)    D = [[0] * size for _ in range(n + 1)]    P = [[0] * size for _ in range(n + 1)]    for i in range(1, n + 1):        D[i][0] = W[i][1]    for k in range(1, n - 1):        for A in range(1, size):            if (count(A, n) == k):                for i in range(2, n + 1):                    if(not isIn(i, A)):                        D[i][A], P[i][A] = minimum(W, D, i, A)    A = size - 1    D[1][A], P[1][A] = minimum(W, D, 1, A)    return D, Pdef minimum(W, D, i, A):    minValue = INF    minJ = 1    n = len(W) - 1    for j in range(2, n + 1):        if (isIn(j, A)):            m = W[i][j] + D[j][diff(A, j)]            if (minValue &gt; m):                minValue = m                minJ = j    return minValue, minJ\n외판원 문제를 분기 한정법으로 해결하기\n상태공간트리의 최적우선탐색→ 각 노드에서 한계값을 구하고 특정 노드에서 얻을 수 있는 경로 길이의 하한을 구해야 함→ 경로 길이의 하한이 현재의 최소 경로 길이보다 작은 경우 유망함\n하한값의 정의→ 각 여행 경로는 정점을 정확히 한 번씩만 거쳐야 한다→ 정점을 떠나는 간선 가중치 최소값들의 합\n분기한정 가지치기 최고우선탐색→ 한계값은 리프 노드가 아닌 노드에서만 계산하고 여행 경로의 길이는 리프 노드에서 계산한다\n\n파이썬으로 TSP를 Branch-and-Bound 방식의 BFS로 해결하기\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384class SSTNode:    def __init__ (self, level):        self.level = level        self.path = []        self.bound = 0        def contains(self, x):        for i in range(len(self.path)):            if (self.path[i] == x):                return True        return Falsedef travel2 (W):    global minlength, opttour    n = len(W) - 1    PQ = PriorityQueue()    v = SSTNode(0)    v.path = [1]    v.bound = bound(v, W)    minlength = INF    PQ.put((v.bound, v))    while (not PQ.empty()):        v = PQ.get()[1]        if (v.bound &lt; minlength):            for i in range(2, n + 1):                if (v.contains(i)):                     continue                u = SSTNode(v.level + 1)                u.path = v.path[:]                u.path.append(i)                if (u.level == n - 2):                    for k in range(2, n + 1):                        if (not u.contains(k)):                            u.path.append(k)                    u.path.append(1)                    if (length(u.path, W) &lt; minlength):                        minlength = length(u.path, W)                        opttour = u.path[:]                else:                    u.bound = bound(u, W)                    if (u.bound &lt; minlength):                        PQ.put((u.bound, u))def bound(v, W):    n = len(W) - 1    total = length(v.path, W)    for i in range(1, n + 1):        if hasOutgoing(i, v.path):            continue        min = INF        for j in range(1, n + 1):            if i == j: # 셀프 노드                continue            if hasIncoming(j, v.path):                 continue            if j == 1 and i == v.path[len(v.path) - 1]:                continue            if min &gt; W[i][j]:                min = W[i][j]        total += min    return total   def length(path, W):    total = 0    prev = 1    for i in range(len(path)):        if i != 0:            prev = path[i - 1]        total += W[prev][path[i]]        prev = path[i]    return totaldef hasOutgoing(v, path):    for i in range(0, len(path) - 1):        if path[i] == v:            return True    return Falsedef hasIncoming(v, path):    for i in range(1, len(path)):        if path[i] == v:            return True    return False ","dateCreated":"2021-03-03T13:22:12+09:00","dateModified":"2021-03-03T17:34:54+09:00","datePublished":"2021-03-03T13:22:12+09:00","description":"","headline":"21-03-03 알고리즘 기초강의(3)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"}</script>
+    <meta name="description" content="해밀턴 경로 문제 G &#x3D; (V, E)가 연결된 무방향 그래프일 때 한 정점에서 출발하여 그래프의 모든 정점을 한 번씩만 방문하고 출발점으로 되돌아오는 경로 모든 간선을 한 번씩 방문하는 오일러 경로와 비슷  해밀턴 경로를 백트랙킹 방식으로 해결하기 상태공간트리의 구축→ 트리의 레벨 0에서 출발 정점을 선정(경로의 0번째 정점)→ 트리의 레벨 1에서 출발 정">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-03 알고리즘 기초강의(3)">
+<meta property="og:url" content="http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="해밀턴 경로 문제 G &#x3D; (V, E)가 연결된 무방향 그래프일 때 한 정점에서 출발하여 그래프의 모든 정점을 한 번씩만 방문하고 출발점으로 되돌아오는 경로 모든 간선을 한 번씩 방문하는 오일러 경로와 비슷  해밀턴 경로를 백트랙킹 방식으로 해결하기 상태공간트리의 구축→ 트리의 레벨 0에서 출발 정점을 선정(경로의 0번째 정점)→ 트리의 레벨 1에서 출발 정">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-03T04:22:12.000Z">
+<meta property="article:modified_time" content="2021-03-03T08:34:54.701Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-03 알고리즘 기초강의(3)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-03T13:22:12+09:00">
+	
+		    Mar 03, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="해밀턴-경로-문제"><a href="#해밀턴-경로-문제" class="headerlink" title="해밀턴 경로 문제"></a>해밀턴 경로 문제</h3><ul>
+<li>G = (V, E)가 연결된 무방향 그래프일 때 한 정점에서 출발하여 그래프의 모든 <strong>정점</strong>을 한 번씩만 방문하고 출발점으로 되돌아오는 경로</li>
+<li>모든 <strong>간선</strong>을 한 번씩 방문하는 오일러 경로와 비슷</li>
+</ul>
+<h4 id="해밀턴-경로를-백트랙킹-방식으로-해결하기"><a href="#해밀턴-경로를-백트랙킹-방식으로-해결하기" class="headerlink" title="해밀턴 경로를 백트랙킹 방식으로 해결하기"></a>해밀턴 경로를 백트랙킹 방식으로 해결하기</h4><ul>
+<li>상태공간트리의 구축<br>→ 트리의 레벨 0에서 출발 정점을 선정(경로의 0번째 정점)<br>→ 트리의 레벨 1에서 출발 정점을 제외한 각 정점을 출발 정점 다음에 올 첫째 정점으로 고려함<br>→ 트리의 레벨 2에서는 앞에서와 같은 정점들을 두번째 정점으로 고려함<br>→ 이후 레벨도 같은 방식으로 고려함<br>→ 마지막으로 수준 n - 1에서 정점들을 n - 1째 정점으로 고려함<br>→ 마지막 정점에서 출발 정점으로 돌아오는 경로가 있는지 고려함</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hamiltonian</span> (<span class="params">i , W, vindex</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (promising(i, W, vindex)):</span><br><span class="line">        <span class="keyword">if</span> (i == (n - <span class="number">1</span>)):</span><br><span class="line">            print(vindex[<span class="number">0</span>:n])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">                vindex[i + <span class="number">1</span>] = j</span><br><span class="line">                hamiltonian(i + <span class="number">1</span>, W, vindex)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>인접 행렬 W[i][j]: i번째 정점과 j번째 정점간에 간선이 있으면 True, 없으면 False</li>
+<li>promising을 위한 유망 함수의 조건<ol>
+<li>n-1번째 정점은 출발 정점과 반드시 인접해있어야 한다 (<U>마지막엔 돌아와야 하므로</U>)</li>
+<li>경로상의 i번째 정점은 그 경로에서 i-1번째 정점과 반드시 인접해야 한다 (<U>다음 노드로 고려하기 위해</U>)</li>
+<li>i번째 정점은 그 앞에 오는 i-1개의 정점들 중 하나가 될 수 없다 (<U>한번 방문한 노드는 한 번만 방문해야 하므로 되돌아 갈 수 없다</U>)</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span> (<span class="params">i, W, vindex</span>):</span></span><br><span class="line">    flag = <span class="literal">True</span></span><br><span class="line">    <span class="comment"># n-1번째 정점은 출발 정점과 반드시 인접해있어야 한다 </span></span><br><span class="line">    <span class="keyword">if</span> ((i == (n - <span class="number">1</span>)) <span class="keyword">and</span> <span class="keyword">not</span> W[vindex[n-<span class="number">1</span>]][vindex[<span class="number">0</span>]]):</span><br><span class="line">        flag = <span class="literal">False</span></span><br><span class="line">    <span class="comment"># 경로상의 i번째 정점은 그 경로에서 i-1번째 정점과 반드시 인접해야 한다</span></span><br><span class="line">    <span class="keyword">elif</span> ((i &gt; <span class="number">0</span>) <span class="keyword">and</span> <span class="keyword">not</span> W[vindex[i-<span class="number">1</span>]][vindex[i]]):</span><br><span class="line">        flag = <span class="literal">False</span></span><br><span class="line">    <span class="comment"># i번째 정점은 그 앞에 오는 i-1개의 정점들 중 하나가 될 수 없다</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        j = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> (j &lt; i <span class="keyword">and</span> flag):</span><br><span class="line">            <span class="keyword">if</span> (vindex[i] == vindex[j]):</span><br><span class="line">                flag = <span class="literal">False</span></span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> flag    </span><br></pre></td></tr></table></figure>
+<h4 id="외판원-문제-The-Traveling-Salesperson-Problem-TSP"><a href="#외판원-문제-The-Traveling-Salesperson-Problem-TSP" class="headerlink" title="외판원 문제 (The Traveling Salesperson Problem, TSP)"></a>외판원 문제 (The Traveling Salesperson Problem, TSP)</h4><ul>
+<li>외판원은 출발 도시에서 모든 도시를 방문하고 다시 되돌아와야 한다</li>
+<li>출장 시간을 최소로 줄이기 위한 방문 계획을 구하는 문제</li>
+<li>가중치가 있는 방향 그래프라고 가정했을 때, 완전 그래프라면 (n-1)! 시간 복잡도를 가지므로 log(n)보다 나쁘다</li>
+</ul>
+<h4 id="Dynamic-programming으로-외판원-문제를-해결하기"><a href="#Dynamic-programming으로-외판원-문제를-해결하기" class="headerlink" title="Dynamic programming으로 외판원 문제를 해결하기"></a>Dynamic programming으로 외판원 문제를 해결하기</h4><ul>
+<li>W: 주어진 그래프 G = (V, E)의 인접 행렬</li>
+<li>V: 모든 도시의 집합</li>
+<li>A: V의 부분집합</li>
+<li>D[v<del>i</del>][A]: A에 속한 도시를 각각 한 번씩만 거쳐서 v<del>i</del>에서 v<del>1</del>로 가는 최단 경로의 길이 // 모든 경로의 집합 중에 최적해</li>
+<li>재귀적 관계식을 찾기<ul>
+<li>D[v<del>i</del>][A] = min(W[i][j] + D[v<del>j</del>][A - {v<del>j</del>}]), A ≠ ∅</li>
+<li>D[v<del>i</del>][∅] = W[i][1], A = ∅</li>
+</ul>
+</li>
+<li>비트를 이용한 부분 집합의 표현과 연산<ul>
+<li>V - {v<del>1</del>} = {v<del>2</del>, v<del>3</del>, v<del>4</del>}</li>
+<li>A = { v<del>4</del>, v<del>2</del> } = { 1, 0, 1 } = 5 와 같이 통과하는 정점을 1로, 통과하지 않는 정점을 0으로 표현<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi가 A에 속해있을 때</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">isIn</span>(<span class="params">i, A</span>):</span></span><br><span class="line">    <span class="keyword">if</span>((A &amp; (<span class="number">1</span> &lt;&lt; (i - <span class="number">2</span>)) != <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="comment"># A - &#123;vj&#125; : 차집합을 구하는 비트 연산</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">diff</span> (<span class="params">A, j</span>):</span></span><br><span class="line">    t = <span class="number">1</span> &lt;&lt; (j - <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> (A &amp; (~t))</span><br><span class="line"><span class="comment"># A의 원소가 k개인가?</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span> (<span class="params">A, n</span>):</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span>((A &amp; (<span class="number">1</span> &lt;&lt; i)) != <span class="number">0</span>):</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> count</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>*파이썬으로 TSP 문제를 DP식으로 해결하기**<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">travel</span> (<span class="params">W</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    size = <span class="number">2</span> ** (n -<span class="number">1</span>)</span><br><span class="line">    D = [[<span class="number">0</span>] * size <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)]</span><br><span class="line">    P = [[<span class="number">0</span>] * size <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        D[i][<span class="number">0</span>] = W[i][<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> A <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, size):</span><br><span class="line">            <span class="keyword">if</span> (count(A, n) == k):</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">                    <span class="keyword">if</span>(<span class="keyword">not</span> isIn(i, A)):</span><br><span class="line">                        D[i][A], P[i][A] = minimum(W, D, i, A)</span><br><span class="line">    A = size - <span class="number">1</span></span><br><span class="line">    D[<span class="number">1</span>][A], P[<span class="number">1</span>][A] = minimum(W, D, <span class="number">1</span>, A)</span><br><span class="line">    <span class="keyword">return</span> D, P</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minimum</span>(<span class="params">W, D, i, A</span>):</span></span><br><span class="line">    minValue = INF</span><br><span class="line">    minJ = <span class="number">1</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> (isIn(j, A)):</span><br><span class="line">            m = W[i][j] + D[j][diff(A, j)]</span><br><span class="line">            <span class="keyword">if</span> (minValue &gt; m):</span><br><span class="line">                minValue = m</span><br><span class="line">                minJ = j</span><br><span class="line">    <span class="keyword">return</span> minValue, minJ</span><br></pre></td></tr></table></figure>
+<h4 id="외판원-문제를-분기-한정법으로-해결하기"><a href="#외판원-문제를-분기-한정법으로-해결하기" class="headerlink" title="외판원 문제를 분기 한정법으로 해결하기"></a>외판원 문제를 분기 한정법으로 해결하기</h4></li>
+<li>상태공간트리의 최적우선탐색<br>→ 각 노드에서 <strong>한계값</strong>을 구하고 특정 노드에서 얻을 수 있는 경로 길이의 <strong>하한</strong>을 구해야 함<br>→ 경로 길이의 <strong>하한</strong>이 현재의 <strong>최소 경로 길이</strong>보다 <strong>작은</strong> 경우 유망함</li>
+<li>하한값의 정의<br>→ 각 여행 경로는 정점을 정확히 한 번씩만 거쳐야 한다<br>→ 정점을 떠나는 간선 가중치 최소값들의 합</li>
+<li>분기한정 가지치기 최고우선탐색<br>→ <strong>한계값</strong>은 <strong>리프 노드가 아닌 노드에서만 계산</strong>하고 <strong>여행 경로의 길이</strong>는 <strong>리프 노드에서 계산</strong>한다</li>
+</ul>
+<p><strong>파이썬으로 TSP를 Branch-and-Bound 방식의 BFS로 해결하기</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SSTNode</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span> (<span class="params">self, level</span>):</span></span><br><span class="line">        self.level = level</span><br><span class="line">        self.path = []</span><br><span class="line">        self.bound = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">contains</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(self.path)):</span><br><span class="line">            <span class="keyword">if</span> (self.path[i] == x):</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">travel2</span> (<span class="params">W</span>):</span></span><br><span class="line">    <span class="keyword">global</span> minlength, opttour</span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    PQ = PriorityQueue()</span><br><span class="line">    v = SSTNode(<span class="number">0</span>)</span><br><span class="line">    v.path = [<span class="number">1</span>]</span><br><span class="line">    v.bound = bound(v, W)</span><br><span class="line">    minlength = INF</span><br><span class="line">    PQ.put((v.bound, v))</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">not</span> PQ.empty()):</span><br><span class="line">        v = PQ.get()[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> (v.bound &lt; minlength):</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> (v.contains(i)): </span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                u = SSTNode(v.level + <span class="number">1</span>)</span><br><span class="line">                u.path = v.path[:]</span><br><span class="line">                u.path.append(i)</span><br><span class="line">                <span class="keyword">if</span> (u.level == n - <span class="number">2</span>):</span><br><span class="line">                    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">                        <span class="keyword">if</span> (<span class="keyword">not</span> u.contains(k)):</span><br><span class="line">                            u.path.append(k)</span><br><span class="line">                    u.path.append(<span class="number">1</span>)</span><br><span class="line">                    <span class="keyword">if</span> (length(u.path, W) &lt; minlength):</span><br><span class="line">                        minlength = length(u.path, W)</span><br><span class="line">                        opttour = u.path[:]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    u.bound = bound(u, W)</span><br><span class="line">                    <span class="keyword">if</span> (u.bound &lt; minlength):</span><br><span class="line">                        PQ.put((u.bound, u))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bound</span>(<span class="params">v, W</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    total = length(v.path, W)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> hasOutgoing(i, v.path):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="built_in">min</span> = INF</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> i == j: <span class="comment"># 셀프 노드</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> hasIncoming(j, v.path): </span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> j == <span class="number">1</span> <span class="keyword">and</span> i == v.path[<span class="built_in">len</span>(v.path) - <span class="number">1</span>]:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">min</span> &gt; W[i][j]:</span><br><span class="line">                <span class="built_in">min</span> = W[i][j]</span><br><span class="line">        total += <span class="built_in">min</span></span><br><span class="line">    <span class="keyword">return</span> total   </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">length</span>(<span class="params">path, W</span>):</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    prev = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(path)):</span><br><span class="line">        <span class="keyword">if</span> i != <span class="number">0</span>:</span><br><span class="line">            prev = path[i - <span class="number">1</span>]</span><br><span class="line">        total += W[prev][path[i]]</span><br><span class="line">        prev = path[i]</span><br><span class="line">    <span class="keyword">return</span> total</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hasOutgoing</span>(<span class="params">v, path</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(path) - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> path[i] == v:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hasIncoming</span>(<span class="params">v, path</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(path)):</span><br><span class="line">        <span class="keyword">if</span> path[i] == v:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span> </span><br></pre></td></tr></table></figure>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
+                    data-tooltip="21-03-03 알고리즘 기초강의(2)"
+                    aria-label="NEXT: 21-03-03 알고리즘 기초강의(2)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
+                    data-tooltip="21-03-03 알고리즘 기초강의(2)"
+                    aria-label="NEXT: 21-03-03 알고리즘 기초강의(2)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-3/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
