@@ -188,6 +188,78 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                            aria-label=": 21-02-28 알고리즘 기초강의"
+                        >
+                            21-02-28 알고리즘 기초강의
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-02-28T12:51:56+09:00">
+	
+		    Feb 28, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="최단-경로와-다익스트라-알고리즘"><a href="#최단-경로와-다익스트라-알고리즘" class="headerlink" title="최단 경로와 다익스트라 알고리즘"></a>최단 경로와 다익스트라 알고리즘</h3><ul>
+<li>최단 경로 문제: Revisited<ul>
+<li>모든 정점의 쌍에 대한 최단 경로 구하기 (플로이드 알고리즘)</li>
+<li>단일 정점에서 모든 다른 정점으로의 최단경로 구하기 (<strong>다익스트라 알고리즘</strong>)</li>
+</ul>
+</li>
+</ul>
+<p><strong>다익스트라 알고리즘 슈도 코드</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Y &#x3D; &#123;v1&#125;;</span><br><span class="line">F &#x3D; ∅</span><br><span class="line">while (답을 구하지 못함):</span><br><span class="line">    Y에 속한 정점만 중간에 거쳐 가는 정점으로 하여</span><br><span class="line">        v1에서 최단경로를 가진 정점 v를 V - Y에서 선택한다</span><br><span class="line">    새로운 정점 v를 Y에 추가한다</span><br><span class="line">    최단경로 상에서 v로 가는 간선을 F에 추가한다</span><br><span class="line">    if(Y &#x3D;&#x3D; V):</span><br><span class="line">        답을 구했으니 return</span><br></pre></td></tr></table></figure>
+<ul>
+<li>W[i][j]: 그래프 G의 인접행렬</li>
+<li>touch[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 v<del>i</del>로 가는 현재 최단경로 상의 마지막 간선을 (v, v<del>i</del>)라고 할 때, Y에 속한 정점 v의 인덱스</li>
+<li>length[i]: Y에 속한 정점들만 중간에 거치도록 하여 v1에서 v<del>i</del>로 가는 현재 최단 경로의 길이</li>
+</ul>
+<p><strong>파이썬으로 다익스트라 알고리즘</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dijkstra</span> (<span class="params">W</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    F = []</span><br><span class="line">    touch = [-<span class="number">1</span>] * (n + <span class="number">1</span>)</span><br><span class="line">    length = [-<span class="number">1</span>] * (n + <span class="number">1</span>) </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n+<span class="number">1</span>):</span><br><span class="line">        touch[i] = <span class="number">1</span></span><br><span class="line">        length[i] = W[<span class="number">1</span>][i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>):</span><br><span class="line">        minValue = INF</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span>(<span class="number">0</span> &lt;= length[i] <span class="keyword">and</span> length[i] &lt; minValue):</span><br><span class="line">                minValue = length[i]</span><br><span class="line">                vnear = i</span><br><span class="line">        edge = (touch[vnear], vnear, W[touch[vnear]][vnear])</span><br><span class="line">        F.append(edge)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> (length[i] &gt; length[vnear] + W[vnear][i]):</span><br><span class="line">                length[i] = length[vnear] + W[vnear][i]</span><br><span class="line">                touch[i] = vnear</span><br><span class="line">        length[vnear] = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> F</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">length</span> (<span class="params">F</span>):</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> F:</span><br><span class="line">        total += e[<span class="number">2</span>] <span class="comment"># (1, 5, 1) 처럼 들어오기 때문에 가중치는 index 2번에 있음</span></span><br><span class="line">        <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/02/27/21-02-27-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                             aria-label=": 21-02-27 알고리즘 기초강의"
                         >
@@ -994,103 +1066,6 @@
                         <p>
                             <a
                                 href="/2021/02/19/21-02-19-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                            aria-label=": 21-02-18 알고리즘 기초강의"
-                        >
-                            21-02-18 알고리즘 기초강의
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-02-18T10:18:16+09:00">
-	
-		    Feb 18, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="이분검색-Binary-search"><a href="#이분검색-Binary-search" class="headerlink" title="이분검색(Binary search)"></a>이분검색(Binary search)</h3><ul>
-<li>정렬되지 않은 리스트에서 주어진 키가 존재하는가? - 순차 탐색</li>
-<li>정렬된 리스트에서 주어진 키가 존재하는가? - 이분 검색</li>
-</ul>
-<ul>
-<li>이분검색의 알고리즘 설계방식: <strong>분할정복(Divide-and-Conquer)</strong><pre><code>  :point_right: 정렬된 리스트 S에 어떤 키 x가 존재하는가?
-  :point_right: 존재하면 S에서 x의 위치, 아니면 -1을 리턴
-</code></pre>
-<blockquote>
-<p>S의 정가운데 원소와 x를 비교하여 같으면 해당 위치를 리턴 아니라면,<br><strong>Divide</strong>: 정 가운데 원소를 기준으로 S를 두개의 리스트로 분할<br><strong>Conquer</strong>: x가 정가운데 원소보다 크면 오른쪽, 작으면 왼쪽을 재귀 호출<br><strong>Obtain</strong>: 선택한 리스트에서 얻은 답을 리턴</p>
-</blockquote>
-</li>
-</ul>
-<p><strong>파이썬으로 이분검색</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">location</span> (<span class="params">S, low, high</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (low &gt; high):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mid = (low + high) // <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> (x == S[mid]):</span><br><span class="line">            <span class="keyword">return</span> mid</span><br><span class="line">        <span class="keyword">elif</span> (x &lt; S[mid]):</span><br><span class="line">            <span class="keyword">return</span> location(S, low, mid -<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> location(S, mid+<span class="number">1</span>, high)</span><br></pre></td></tr></table></figure>
-<p><strong>자바스크립트로 이분검색</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">location</span>(<span class="params">arr, low = <span class="number">0</span>, high = arr.length</span>) </span>&#123;     </span><br><span class="line">    <span class="keyword">if</span>(low &gt; high) </span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor((low + high) / <span class="number">2</span>);</span><br><span class="line">        <span class="keyword">if</span>(x === arr[mid]) <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (x &lt; arr[mid]) <span class="keyword">return</span> location(arr, low, mid-<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> location(arr, mid+<span class="number">1</span>, high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>강의 내에서 x값은 전역변수를 사용하였음</p>
-</blockquote>
-<h3 id="합병정렬"><a href="#합병정렬" class="headerlink" title="합병정렬"></a>합병정렬</h3><ul>
-<li>합병정렬의 알고리즘 설계방식: <strong>분할정복(Divide-and-Conquer)</strong><blockquote>
-<p><strong>Divide</strong>: 원소가 n개인 S를 n/2개의 원소를 가진 두 개의 리스트로 분할<br><strong>Conquer</strong>: 왼쪽의 리스트와 오른쪽의 리스트를 각각 재귀적으로 합병정렬<br><strong>Obtain</strong>: 각각 정렬된 두 개의 리스트를 정렬된 하나의 리스트로 합병하여 리턴</p>
-</blockquote>
-</li>
-</ul>
-<p><img src="/images/mergesort.png"><br>합병정렬 예시</p>
-<p><strong>파이썬으로 합병정렬</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mergesort</span> (<span class="params">S</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(S)</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> S</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mid = n // <span class="number">2</span></span><br><span class="line">        U = mergesort(S[<span class="number">0</span> : mid])</span><br><span class="line">        V = mergesort(S[mid: n])</span><br><span class="line">        <span class="keyword">return</span> merge(U, V)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span>(<span class="params">U, V</span>):</span></span><br><span class="line">    S = []</span><br><span class="line">    i = j = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; <span class="built_in">len</span>(U) <span class="keyword">and</span> j &lt; <span class="built_in">len</span>(V)):</span><br><span class="line">        <span class="keyword">if</span>(U[i] &lt; V[j]):</span><br><span class="line">            S.append(U[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            S.append(V[j])</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt; <span class="built_in">len</span>(U)):</span><br><span class="line">        S += U[i : <span class="built_in">len</span>(U)]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        S += V[j : <span class="built_in">len</span>(V)]</span><br><span class="line">    <span class="keyword">return</span> S</span><br></pre></td></tr></table></figure>
-<p><strong>자바스크립트로 합병정렬</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergesort</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(arr.length === <span class="number">1</span>) <span class="keyword">return</span> arr;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor(arr.length/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">let</span> leftSide = arr.slice(<span class="number">0</span>, mid)</span><br><span class="line">    <span class="keyword">let</span> rightSide = arr.slice(mid)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> merge(mergesort(leftSide), mergesort(rightSide));</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">merge</span>(<span class="params">left, right</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    <span class="keyword">while</span> (left.length !== <span class="number">0</span> &amp;&amp; right.length !== <span class="number">0</span>) &#123;</span><br><span class="line">		left[<span class="number">0</span>] &lt;= right[<span class="number">0</span>] </span><br><span class="line">        ? result.push(left.shift()) </span><br><span class="line">        : result.push(right.shift());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [...result, ...left, ...right];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>합병정렬의 문제점<ul>
-<li>배열을 추가적으로 사용하게 됨 → <strong>메모리 사용의 비효율성</strong></li>
-</ul>
-</li>
-</ul>
-<p><strong>합병정렬의 효율화</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mergesort2</span> (<span class="params">S, low, high</span>):</span></span><br><span class="line">    <span class="keyword">if</span>(low &lt; high):</span><br><span class="line">        mid = (low + high) // <span class="number">2</span></span><br><span class="line">        mergesort2(S, low, mid)</span><br><span class="line">        mergesort2(S, mid + <span class="number">1</span>, high)</span><br><span class="line">        merge2(S, low, mid, high)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge2</span>(<span class="params">S, low, mid, high</span>):</span></span><br><span class="line">    U = []</span><br><span class="line">    i = low</span><br><span class="line">    j = mid +<span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt;= mid <span class="keyword">and</span> j &lt;= high):</span><br><span class="line">        <span class="keyword">if</span> (S[i] &lt; S[j]):</span><br><span class="line">            U.append(S[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            U.append(S[j])</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt;= mid):</span><br><span class="line">        U += S[i : mid + <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        U += S[j : high + <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(low, high +<span class="number">1</span>):</span><br><span class="line">        S[k] = U[k -low]</span><br></pre></td></tr></table></figure>
-<p><strong>자바스크립트로 합병정렬 조금 더 생각해보기</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 파이썬처럼 배열을 덜 정의하면서 효율적으로 구현하는 법은 더 검색해볼 것</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergesort</span> (<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(arr.length === <span class="number">1</span>) <span class="keyword">return</span> arr;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor(arr.length/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">let</span> leftSide = arr.splice(<span class="number">0</span>, mid)</span><br><span class="line">    <span class="comment">// splice함수를 사용하면 arr를 조작하므로 </span></span><br><span class="line">    <span class="comment">// arr에는 자동적으로 rightSide만 남게 됨</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge(mergesort(leftSide), mergesort(arr));    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// merge 함수는 상동하므로 생략</span></span><br></pre></td></tr></table></figure>
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/02/18/21-02-18-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
