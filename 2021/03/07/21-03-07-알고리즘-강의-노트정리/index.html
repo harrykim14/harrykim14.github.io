@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-07 알고리즘 강의 노트정리 - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"진법을 변환하기\nA진법 수 N을 입력 받아 B진법 수로 변환하는 문제\nHorner’s Method→ 해시 문제나 긴자리수 진법 변환 문제에 사용됨\n2진수를 10진수로 변환하기\n예1) 2진법 11010을 8진법으로 바꾸어보자→ char str[] = “11010”(의미는 없지만 JS에서는 let str = Number(10110).toString()로 표현가능함)\n\n\nd = d * 2 + ‘1’ - ‘0’; // d(3) = 1 * 2 + 1d = 02 + 1 = 1d = 12 + 1 = 3d = 32 + 0 = 13d = 62 + 1 = 13d = 13*2 + 1 = 26\n\n\n10진법을 먼저 구하고 10진법 26을 8진법으로 바꾸기\n\n38 + 2  ``26/88 + 26%8(0*8 +**3**) * 8 + **2**(3/88 + 3%8)*8 + 26%8``*32** (Octet)\n\n\n예2) 10진법 2543을 16진법으로 바꾸기\n\n158 * 16 + ‘F’ 2543/16 * 16 + 2543%16 // 158*16 + 15(916 + ‘E’) * 16 + ‘F’ ``(158/16)*16 + 158%16 + ‘F’ // 916 + 14 + ‘F’``((016 + 9) * 16 + *‘E’*) * 16 + *‘F’** = 9EF (Hexadecimal)\n\n\n\n자바스크립트의 진법 변환은 매우 간단하기 때문에 별도의 코드는 첨부하지 않음\n1234let value = 10;value.toString(2) // 2진법으로 변경let binary = 1010;Number.parseInt(binary, 2) // 10진법으로 변경\n앞뒤 같은 제곱\nN(1≤N≤300)중에서 N의 제곱값을 B(2≤B≤20)진수로 바꿨을 때 앞뒤가 같은 수가 되는 N값과 N의 제곱값을 B진수로 바꾸는 문제 (단, 10보다 큰 숫자는 A~J로 표현)\n\n12345678910111213141516171819202122232425262728293031const changeNumBase = powNum =&gt; &#123;    let arr = [];    for (let i = 1; i &lt;= 300; i++) &#123;        arr.push(Math.pow(i, powNum))    &#125;    arr = arr.filter(num =&gt; &#123;        return num.toString() === num.toString().split(&#x27;&#x27;).reverse().join(&#x27;&#x27;);    &#125;)   return arr;&#125;const solution = () =&gt; &#123;    let arr = [];    for (let i = 2; i &lt;= 20; i++) &#123;        arr.push(changeNumBase(i));    &#125;    return arr.filter(el =&gt; el.length &gt; 1)&#125;/* 출력 예시[  [     1,     4,     9,      121,   484,   676,    10201, 12321, 14641,    40804, 44944, 69696  ],  [ 1, 8, 343, 1331, 1030301, 1367631 ],  [ 1, 14641, 104060401 ]]*/","dateCreated":"2021-03-07T13:48:26+09:00","dateModified":"2021-03-07T18:21:20+09:00","datePublished":"2021-03-07T13:48:26+09:00","description":"","headline":"21-03-07 알고리즘 강의 노트정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"}</script>
+    <meta name="description" content="진법을 변환하기 A진법 수 N을 입력 받아 B진법 수로 변환하는 문제 Horner’s Method→ 해시 문제나 긴자리수 진법 변환 문제에 사용됨 2진수를 10진수로 변환하기 예1) 2진법 11010을 8진법으로 바꾸어보자→ char str[] &#x3D; “11010”(의미는 없지만 JS에서는 let str &#x3D; Number(10110).toString()로 표현가">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-07 알고리즘 강의 노트정리">
+<meta property="og:url" content="http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="진법을 변환하기 A진법 수 N을 입력 받아 B진법 수로 변환하는 문제 Horner’s Method→ 해시 문제나 긴자리수 진법 변환 문제에 사용됨 2진수를 10진수로 변환하기 예1) 2진법 11010을 8진법으로 바꾸어보자→ char str[] &#x3D; “11010”(의미는 없지만 JS에서는 let str &#x3D; Number(10110).toString()로 표현가">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/horners_method.png">
+<meta property="og:image" content="http://example.com/images/binaryToDesimal.png">
+<meta property="article:published_time" content="2021-03-07T04:48:26.000Z">
+<meta property="article:modified_time" content="2021-03-07T09:21:20.002Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/horners_method.png">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-07 알고리즘 강의 노트정리
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-07T13:48:26+09:00">
+	
+		    Mar 07, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="진법을-변환하기"><a href="#진법을-변환하기" class="headerlink" title="진법을 변환하기"></a>진법을 변환하기</h3><ul>
+<li>A진법 수 N을 입력 받아 B진법 수로 변환하는 문제</li>
+<li>Horner’s Method<br><img src="/images/horners_method.png"><br>→ 해시 문제나 긴자리수 진법 변환 문제에 사용됨</li>
+<li>2진수를 10진수로 변환하기<br><img src="/images/binaryToDesimal.png"></li>
+<li>예1) 2진법 11010을 8진법으로 바꾸어보자<br>→ char str[] = “11010”<br>(의미는 없지만 JS에서는 let str = Number(10110).toString()로 표현가능함)</li>
+</ul>
+<blockquote>
+<p>d = d * 2 + ‘1’ - ‘0’; // d(3) = 1 * 2 + 1<br>d = 0<em>2 + 1 = 1<br>d = 1</em>2 + 1 = 3<br>d = 3<em>2 + 0 = 13<br>d = 6</em>2 + 1 = 13<br>d = 13*2 + 1 = <strong>26</strong></p>
+</blockquote>
+<ul>
+<li><p>10진법을 먼저 구하고 10진법 26을 8진법으로 바꾸기</p>
+<blockquote>
+<p>3<em>8 + 2  ``26/8</em>8 + 26%8<code>(0*8 +**3**) * 8 + **2**</code>(3/8<em>8 + 3%8)*8 + 26%8``<br>*</em>32** (Octet)</p>
+</blockquote>
+</li>
+<li><p>예2) 10진법 2543을 16진법으로 바꾸기</p>
+<blockquote>
+<p>158 * 16 + ‘F’ <code>2543/16 * 16 + 2543%16 // 158*16 + 15</code><br>(9<em>16 + ‘E’) * 16 + ‘F’ ``(158/16)*16 + 158%16 + ‘F’ // 9</em>16 + 14 + ‘F’``<br>((0<em>16 + <strong>9</strong>) * 16 + *</em>‘E’*<em>) * 16 + *</em>‘F’** = <strong>9EF</strong> (Hexadecimal)</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>자바스크립트의 진법 변환은 매우 간단하기 때문에 별도의 코드는 첨부하지 않음</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> value = <span class="number">10</span>;</span><br><span class="line">value.toString(<span class="number">2</span>) <span class="comment">// 2진법으로 변경</span></span><br><span class="line"><span class="keyword">let</span> binary = <span class="number">1010</span>;</span><br><span class="line"><span class="built_in">Number</span>.parseInt(binary, <span class="number">2</span>) <span class="comment">// 10진법으로 변경</span></span><br></pre></td></tr></table></figure>
+<h3 id="앞뒤-같은-제곱"><a href="#앞뒤-같은-제곱" class="headerlink" title="앞뒤 같은 제곱"></a>앞뒤 같은 제곱</h3><ul>
+<li>N(1≤N≤300)중에서 N의 제곱값을 B(2≤B≤20)진수로 바꿨을 때 앞뒤가 같은 수가 되는 N값과 N의 제곱값을 B진수로 바꾸는 문제 (단, 10보다 큰 숫자는 A~J로 표현)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> changeNumBase = <span class="function"><span class="params">powNum</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= <span class="number">300</span>; i++) &#123;</span><br><span class="line">        arr.push(<span class="built_in">Math</span>.pow(i, powNum))</span><br><span class="line">    &#125;</span><br><span class="line">    arr = arr.filter(<span class="function"><span class="params">num</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num.toString() === num.toString().split(<span class="string">&#x27;&#x27;</span>).reverse().join(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> solution = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i &lt;= <span class="number">20</span>; i++) &#123;</span><br><span class="line">        arr.push(changeNumBase(i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr.filter(<span class="function"><span class="params">el</span> =&gt;</span> el.length &gt; <span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 출력 예시</span></span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment">  [     1,     4,     9,</span></span><br><span class="line"><span class="comment">      121,   484,   676,</span></span><br><span class="line"><span class="comment">    10201, 12321, 14641,</span></span><br><span class="line"><span class="comment">    40804, 44944, 69696</span></span><br><span class="line"><span class="comment">  ],</span></span><br><span class="line"><span class="comment">  [ 1, 8, 343, 1331, 1030301, 1367631 ],</span></span><br><span class="line"><span class="comment">  [ 1, 14641, 104060401 ]</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/06/21-03-06-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    data-tooltip="21-03-06 알고리즘 강의 노트정리"
+                    aria-label="NEXT: 21-03-06 알고리즘 강의 노트정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/06/21-03-06-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    data-tooltip="21-03-06 알고리즘 강의 노트정리"
+                    aria-label="NEXT: 21-03-06 알고리즘 강의 노트정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
