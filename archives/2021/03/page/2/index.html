@@ -188,6 +188,118 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                            aria-label=": 21-03-03 알고리즘 기초강의"
+                        >
+                            21-03-03 알고리즘 기초강의
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-03T03:39:13+09:00">
+	
+		    Mar 03, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="배낭-문제와-탐욕-알고리즘"><a href="#배낭-문제와-탐욕-알고리즘" class="headerlink" title="배낭 문제와 탐욕 알고리즘"></a>배낭 문제와 탐욕 알고리즘</h3><ul>
+<li><p>배낭 문제 (Knapsack Problem)</p>
+<ul>
+<li>도둑이 30kg까지 담을 수 있는 배낭을 메고 곡식 창고에 침투함</li>
+<li>창고 입구에는 보관 중인 <strong>곡식 전체 수량</strong>과 <strong>1kg당 가격</strong>이 적혀 있음</li>
+<li><strong>이익이 최대가 되도록 배낭을 채우는</strong> 문제</li>
+</ul>
+</li>
+<li><p>Greedy approach로 배낭 문제를 해결해보기</p>
+<ul>
+<li>가장 값어치가 높은 아이템을 먼저 채우는 것</li>
+<li>1kg당 기준 가격을 내림차순으로 정렬</li>
+<li>배낭의 무게를 초과하지 않을 때 까지 비싼 순으로 채우기</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 배낭 문제 구현하기(Greedy)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># W: 배낭 무게, w: 각 아이템의 무게 p:각 아이템의 값어치</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knapsack1</span> (<span class="params">W, w, p</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(w) - <span class="number">1</span></span><br><span class="line">    K = [<span class="number">0</span>] * (n + <span class="number">1</span>)</span><br><span class="line">    weight = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        weight += w[i]</span><br><span class="line">        K[i] = w[i]</span><br><span class="line">        <span class="keyword">if</span> (weight &gt; W):</span><br><span class="line">            K[i] -= (weight - W)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> K</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Greedy approach는 최적해를 보장하는가?</p>
+<ul>
+<li>아이템이 분할 가능하여 30kg를 딱 맞춰서 채울 수 있다면 가능</li>
+<li>분할이 불가능한 0-1 배낭 문제는 최적해를 보장하지 않음</li>
+<li>배낭의 용량을 넘지 않으면서 가치가 최대가 되는 S의 부분집합 A를 찾기</li>
+<li>동적계획법 or 백트랙킹 or 분기한정법으로 해결</li>
+</ul>
+</li>
+<li><p>Dynamic programming으로 0-1 배낭문제를 해결해보기</p>
+<ul>
+<li>P[i][w]: 총 무게가 w를 초과할 수 없다는 제약조건 하에서 처음 i개 아이템에서만 선택할 때 얻는 최적의 이익</li>
+<li>P[n][w]: n개의 아이템으로 얻을 수 있는 최대 이익</li>
+<li>P[i][w] = max(P[i-1][w], p<del>i</del> + P[i-1][w-w<del>i</del>]) (단, w<del>i</del> ≤ w)<br>or P[i-1][w] (단, w<del>i</del> &gt; w)</li>
+<li>max(P[i-1][w], p<del>i</del> + P[i-1][w-w<del>i</del>])</li>
+<li>P[i-1][w]: i번째의 아이템까지 무게 합(w<del>i</del>)이 총 무게보다 크다면 해당 i번째의 아이템을 제외한 무게 합이 된다</li>
+<li>P[n][W]를 계산할 때엔 P[n-1][W], P[n-1][W-W<del>n</del>]만 필요하고 P[i][w]를 계산할 때엔 P[i-1][w], P[i-1][w-w<del>i</del>]만 필요함</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 배낭 문제 구현하기(DP)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knapsack2</span>(<span class="params">i, W, w, p</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt;= <span class="number">0</span> <span class="keyword">or</span> W &lt;= <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> (w[i] &gt; W):</span><br><span class="line">        <span class="keyword">return</span> knapsack2(i - <span class="number">1</span>, W, w, p)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        left = knapsack2(i - <span class="number">1</span>, W, w, p)</span><br><span class="line">        right = knapsack2(i - <span class="number">1</span>, W - w[i], w, p)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(left, p[i] + right)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>backtracking로 0-1 배낭문제를 해결해보기<ul>
+<li>  부분집합의 합 문제와 동일하게 상태공간트리를 구성하여 최적해를 찾아 최적해의 전체 이익을 계산</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def checknode (node):</span><br><span class="line">    node u</span><br><span class="line">    if (v값이 최적값보다 낫다면):</span><br><span class="line">        best &#x3D; v</span><br><span class="line">    if (promising(v)):</span><br><span class="line">        for (v의 자식을 돌며):</span><br><span class="line">            노드를 체크()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>promising과 가지치기<ul>
+<li>배낭에 더이상 담을 공간이 없다면 유망하지 않음(weight &gt;= W)</li>
+<li>현재까지 찾은 최적해의 이익이 현재 노드에서 앞으로 얻을 수 있는 최대 이익보다 크다면 유망하지 않음<br>→ 앞으로 얻을 수 있는 최대 이익 &lt;= 현재까지 찾은 이익값</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 배낭 문제 구현하기(backtracking)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knapsack3</span> (<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">global</span> maxprofit, numbest, bestset</span><br><span class="line">    <span class="keyword">if</span> (weight &lt;= W <span class="keyword">and</span> profit &gt; maxprofit):</span><br><span class="line">        maxprofit = profit</span><br><span class="line">        numbest = i</span><br><span class="line">        bestset = include[:]</span><br><span class="line">    <span class="keyword">if</span> (promising(i, profit, weight)):</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">True</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit + p[i+<span class="number">1</span>], weight + w[i+<span class="number">1</span>])</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">False</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit, weight)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span>(<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (weight &gt; W):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        bound = profit</span><br><span class="line">        totweight = weight</span><br><span class="line">        <span class="keyword">while</span> (j &lt;= n <span class="keyword">and</span> totweight + w[j] &lt;= W):</span><br><span class="line">            totweight += w[j]</span><br><span class="line">            bound += p[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        k = j</span><br><span class="line">        <span class="keyword">if</span> (k <span class="function"><span class="keyword">def</span> <span class="title">knapsack3</span> (<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">global</span> maxprofit, numbest, bestset</span><br><span class="line">    <span class="keyword">if</span> weight &lt;= W <span class="keyword">and</span> profit &gt; maxprofit:</span><br><span class="line">        maxprofit = profit</span><br><span class="line">        numbest = i</span><br><span class="line">        bestset = include[:]</span><br><span class="line">    <span class="keyword">if</span> promising(i, profit, weight):</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">True</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit + p[i+<span class="number">1</span>], weight + w[i+<span class="number">1</span>])</span><br><span class="line">        include[i + <span class="number">1</span>] = <span class="literal">False</span></span><br><span class="line">        knapsack3(i + <span class="number">1</span>, profit, weight)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span>(<span class="params">i, profit, weight</span>):</span></span><br><span class="line">    <span class="keyword">if</span> weight &gt; W:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        j = i + <span class="number">1</span></span><br><span class="line">        bound = profit</span><br><span class="line">        totweight = weight</span><br><span class="line">        <span class="keyword">while</span> j &lt;= n <span class="keyword">and</span> totweight + w[j] &lt;= W:</span><br><span class="line">            totweight += w[j]</span><br><span class="line">            bound += p[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        k = j</span><br><span class="line">        <span class="keyword">if</span> k &lt;= n:</span><br><span class="line">            bound += (W - totweight) * p[k] / w[k]</span><br><span class="line">        <span class="keyword">return</span> bound &gt; maxprofit</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/02/21-03-02-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                             aria-label=": 21-03-02 알고리즘 기초강의"
                         >
