@@ -188,6 +188,98 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/02/24/21-02-24-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                            aria-label=": 21-02-24 알고리즘 기초강의"
+                        >
+                            21-02-24 알고리즘 기초강의
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-02-24T01:34:52+09:00">
+	
+		    Feb 24, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="최적-이진검색트리"><a href="#최적-이진검색트리" class="headerlink" title="최적 이진검색트리"></a>최적 이진검색트리</h3><ul>
+<li><p>주어진 n개의 키로 <strong>최적 이진검색트리</strong>를 구하는 문제<br>  → 주어진 n개의 키: K<del>1</del>, K<del>2</del>…, K<del>n</del><br>  → 각 키의 검색 확률 p<del>i</del>: 전체 검색횟수 중에서 K<del>i</del>를 검색하는 확률<br>  → 각 키의 비교 횟수 c<del>i</del>: K<del>i</del>를 검색하는데 필요한 키의 비교 횟수<br>  → 각 키의 평균 검색 시간: 검색 확률 * 비교 횟수 (p<del>i</del> * c<del>i</del>)<br>  → 전체 키의 평균 검색 시간: p<del>i</del> * c<del>i</del>의 총 합(n ~ i=1)</p>
+</li>
+<li><p>Dynamic Programming 방식으로 접근하기</p>
+<ol>
+<li>재귀 관계식을 찾는다</li>
+</ol>
+<ul>
+<li><strong>A</strong>: 이진검색트리를 만드는데 최적 검색비용의 행렬</li>
+<li><strong>A[i][j]</strong>: K<del>i</del>에서 K<del>j</del>까지 이진검색트리를 만드는데 최적 검색 비용</li>
+<li>K<del>i</del> … K<del>j</del>를 (K<del>i</del> … K<del>k-1</del>)K<del>k</del>(K<del>k+1</del> … K<del>j</del>)로 분할하는 재귀 관계식 찾기</li>
+</ul>
+<ol start="2">
+<li>상향식 방법으로 해답을 구하기</li>
+</ol>
+<ul>
+<li>A[i][i] = p<del>i</del></li>
+<li>대각선의 상향식 계산으로 A[1][n]을 구함</li>
+</ul>
+<ol start="3">
+<li>최적 이진검색트리의 재귀관계식</li>
+</ol>
+<ul>
+<li>트리 k: 키 K<del>k</del>가 루트 노드에 있는 최적 이진검색트리</li>
+<li>키 비교 횟수: 서브 트리의 비교 횟수에 루트에서 비교 한 번 추가</li>
+<li>m ≠ k 인 K<del>m</del>에 대해서 트리 k에 K<del>m</del>을 놓기 위한 비교 한 번 추가<br>  → A[1][n] = minimum(A[1][k-1]+A[k+1][n] + ∑(n ∼ m=1)P<del>m</del>) (단, i ≤ k ≤ j)</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 최적 이진검색트리</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">optsearchtree</span> (<span class="params">p</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(p) - <span class="number">1</span></span><br><span class="line">    A = [[-<span class="number">1</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">2</span>)] <span class="comment"># 최소비용</span></span><br><span class="line">    R = [[-<span class="number">1</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">2</span>)] <span class="comment"># 루트노드</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        A[i][i - <span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">        A[i][i] = p[i]</span><br><span class="line">        R[i][i - <span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">        R[i][i] = i</span><br><span class="line">    A[n + <span class="number">1</span>][n] = <span class="number">0</span> <span class="comment"># 주대각선은 초기화</span></span><br><span class="line">    R[n + <span class="number">1</span>][n] = <span class="number">0</span> </span><br><span class="line">    <span class="keyword">for</span> diagonal <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n): <span class="comment"># 대각선을 거치며 최소값 구하기</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n - diagonal + <span class="number">1</span>):</span><br><span class="line">            j = i + diagonal </span><br><span class="line">            <span class="comment"># j값은 주 대각선 값(diagonal)만큼 우측에 있어야 하므로 더해준다</span></span><br><span class="line">            A[i][j], R[i][j] = minimum(A, p, i, j)</span><br><span class="line">    <span class="keyword">return</span> A, R</span><br><span class="line"></span><br><span class="line"><span class="comment"># minimum 함수는 연쇄 행렬 곱셈에서 썼던것과 거의 동일</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minimum</span> (<span class="params">A, p, i, j</span>):</span></span><br><span class="line">    minVal = INF</span><br><span class="line">    minK = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(i, j + <span class="number">1</span>):</span><br><span class="line">        value = A[i][k - <span class="number">1</span>] + A[k + <span class="number">1</span>][j]</span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> <span class="built_in">range</span>(i, j + <span class="number">1</span>):</span><br><span class="line">            value += p[m]</span><br><span class="line">        <span class="keyword">if</span> (minVal &gt; value):</span><br><span class="line">            minVal = value</span><br><span class="line">            minK = k</span><br><span class="line">    <span class="keyword">return</span> minVal, minK</span><br></pre></td></tr></table></figure>
+<p>참고: <a target="_blank" rel="noopener" href="https://harrykim14.github.io/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/">연쇄 행렬 곱셈 알고리즘</a></p>
+<p><strong>최적 이진검색트리의 노드 순서 구하기</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree</span> (<span class="params">R, i, j</span>):</span></span><br><span class="line">    k = R[i][j]</span><br><span class="line">    <span class="keyword">if</span> (k == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        node = BSTNode(keys[k])</span><br><span class="line">        node.left = tree(R, i, k - <span class="number">1</span>)</span><br><span class="line">        node.right = tree(R, k + <span class="number">1</span>, j)</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BSTNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span> (<span class="params">self, key</span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">preorder</span> (<span class="params">node</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (node <span class="keyword">is</span> <span class="literal">None</span>): <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        print(node.key, end = <span class="string">&#x27; &#x27;</span>)</span><br><span class="line">        preorder(node.left)</span><br><span class="line">        preorder(node.right)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span> (<span class="params">node</span>) :</span></span><br><span class="line">    <span class="keyword">if</span> (node <span class="keyword">is</span> <span class="literal">None</span>): <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        inorder(node.left)</span><br><span class="line">        print(node.key, end = <span class="string">&#x27; &#x27;</span>)</span><br><span class="line">        inorder(node.right)</span><br></pre></td></tr></table></figure>
+<p><strong>자바스크립트로 최적 이진검색트리의 노드 순서 구하기(수정 중)</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> optsearchtree = <span class="function"><span class="params">p</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> n = p.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">let</span> arr = <span class="built_in">Array</span>.from(<span class="built_in">Array</span>(n+<span class="number">2</span>), <span class="function">() =&gt;</span> <span class="built_in">Array</span>(n+<span class="number">1</span>).fill(-<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">let</span> arr2 = [...arr]</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n+<span class="number">1</span>; i++)&#123;</span><br><span class="line">        arr[i][i-<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">        arr[i][i] = p[i]</span><br><span class="line">        arr2[i][i-<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">        arr2[i][i] = i</span><br><span class="line">    &#125;</span><br><span class="line">    arr[n+<span class="number">1</span>][n] = <span class="number">0</span></span><br><span class="line">    arr2[n+<span class="number">1</span>][n] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> diagonal = <span class="number">1</span>; diagonal &lt; n; diagonal++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n - diagonal + <span class="number">1</span>; i++)&#123;</span><br><span class="line">            <span class="keyword">let</span> j = i + diagonal;</span><br><span class="line">            arr[i][j] = minimum(arr, p, i, j).minVal;</span><br><span class="line">            arr2[i][j] = minimum(arr2, p, i, j).minK;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(arr)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">arr</span>: arr, <span class="attr">arr2</span>: arr2 &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> minimum = <span class="function">(<span class="params">arr, p, i, j</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> minVal = <span class="literal">Infinity</span>;</span><br><span class="line">    <span class="keyword">let</span> minK = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k = i; k &lt; j+<span class="number">1</span>; k++)&#123;</span><br><span class="line">        <span class="keyword">let</span> value = arr[i][k-<span class="number">1</span>] + arr[k+<span class="number">1</span>][j]</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> m = i; m &lt; j+<span class="number">1</span>; m++)&#123;</span><br><span class="line">            value += p[m]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (minVal &gt; value) &#123;</span><br><span class="line">            minVal = value</span><br><span class="line">            minK = k</span><br><span class="line">        &#125;        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">minVal</span>: minVal, <span class="attr">minK</span>: minK &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/02/24/21-02-24-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                             aria-label=": 21-02-23 알고리즘 기초강의"
                         >
