@@ -1,0 +1,568 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-11 자바스크립트로 하는 자료구조와 알고리즘(5) - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"9장 집합\n집합이란 유한하고 구분되는 객체들의 그룹 \n자바스크립트에서는 Set이 기본으로 지원된다 let exampleSet = new Set();\nSet의 주요 특징은 유일함을 확인 한다는 것이다(중복되는 항목은 허용되지 않음)\nSet.delete는 boolean값을 리턴하며 항목을 삭제할 수 있게 하는 메서드이다\nSet.has는 집합 내에 존재하는지 확인하며 .delete / .has는 모두 O(1)의 시간 복잡도를 갖는다\nSet을 사용하여 교집합 구하기123456789const intersectSets = (setA, setB) =&gt; &#123;  let intersection = new Set();  for (let element of setB) &#123;    if (setA.has(element)) &#123;      intersection.add(element)    &#125;    return intersection  &#125;&#125; // O(n)\n어떤 집합이 다른 집합의 모든 항목을 포함하는 경우에는 상위 집합이 된다1234567const isSuperSet = (setA, subSet) =&gt; &#123;  for (let element of subSet) &#123;    if(!setA.has(element))      return false;  &#125;  return true;&#125;\nSet을 사용한다면 합집합도 쉽게 구현할 수 있다1234567const unionSet = (setA, setB) =&gt; &#123;  let union = new Set(setA);  for (let element of setB) &#123;    union.add(element);  &#125;  return union&#125;\nSpread Operator를 사용한 방법123const unionSetWithSpreadOperator = (setA, setB) =&gt; &#123;  return new Set([...setA,...setB]);&#125;\n차집합은 .delete로 구현할 수 있다1234567const differenceSet = (setA, setB) =&gt; &#123;  let differ = new Set(setA);  for (let element of setB) &#123;    differ.delete(element);  &#125;  return differ;&#125;\n집합을 사용해 배열의 중복 항목을 확인하기1234const checkDupl = arr =&gt; &#123;  let mySet = newSet(arr);  return mySet.size &lt; arr.length;&#125;\n개별적인 배열들에서 유일한 값만을 반환하기12345const uniqueList = (arr1, arr2) =&gt; &#123;  // arr1 뒤에 arr2 배열을 붙이고 Set을 사용해 유니크한 값만 남기기  let mySet = new Set(arr1.concat(arr2));  return Array.from(mySet);&#125;\n10장 검색과 정렬\n검색은 자료 구조의 항목들을 반복적으로 접근하는 것 , 정렬은 자료구조의 항목들을 순서대로 위치시키는 것\n한 인덱스씩 순차적으로 접근하는 선형 검색123456const linearSearch = (arr, n) =&gt; &#123;  for (let i = 0, len = arr.length; i &lt; len; i++) &#123;    if (arr[i] === n) return true;  &#125;  return false;&#125;\n정렬된 자료라면 이진검색을 사용할 수 있다12345678910const binarySearch = (arr, n) =&gt; &#123;  let lowIndex = 0, highIndex = arr.length;  while (lowIndex &lt;= highIndex) &#123;    let midIndex = Math.floor((lowIndex + highIndex)/2);    if (arr[midIndex] === n) return midIndex;    else if (n &gt; arr[midIndex]) lowIndex = midIndex+1;    else highIndex = midIndex-1;    return -1;  &#125;&#125;\n이진검색을 사용하려면 자료를 정렬해야함\n버블 정렬은 전체 배열을 순회하며 두 항목을 비교하고 교체하는 작업을 반복한다12345678910111213141516const swap = (arr, idx1, idx2) =&gt; &#123;  let temp = arr[idx1];  arr[idx1] = arr[idx2];  arr[idx2] = temp;&#125;const bubbleSort = arr =&gt; &#123;  for (let i = 0, len = arr.length; i &lt; len; i++) &#123;    for (let j = 0; j &lt;= i; j++)&#123;      if (arr[j] &gt; arr[j+1]) &#123;        swap(arr, i, j)      &#125;     &#125;  &#125;  return arr;&#125; // for문을 두 번 사용하므로 O(n의 제곱)값이 된다\n선택 정렬은 가장 작은 항목을 찾고 해당 항목의 배열의 현 위치에 삽입하는 식으로 동작한다1234567891011const selectionSort = items =&gt; &#123;  let len = items.length, min;  for (let i = 0; i &lt; len; i++) &#123;    min = i;    for (j = i+1; j &lt; len; j++)&#123;      if(items[j] &lt; items[min]) min = j;      if (i != min) swap(items, i, min);    &#125;  &#125;  return items;&#125;\n삽입 정렬을 배열을 순차적으로 검색하면서 정렬되지 않은 항목들을 왼쪽으로 이동시킨다123456789101112131415const insertionSort = items =&gt; &#123;  let len = items.length,       value, // 지금 비교중인 값      i, // 정렬 안된 부분      j; // 정렬 된 부분  for (let i = 0; i &lt; len; i++)&#123;    //     value = items[i];    for (j = i-1; j &gt; -1 &amp;&amp; items[j] &gt; value; j--) &#123;      items[j+1] = items[j]    &#125;    items[j+1] = value;  &#125;  return items&#125;\n퀵 정렬은 기준점을 기준으로 배열을 나눠 모든 항목이 정렬될 때까지 과정을 반복하는 정렬법이다\n이 방법은 분할 정복을 이용한 재귀법으로 처리되어 평균 O(nlog2(n))으로 처리되지만 최악의 경우(이미 정렬된 배열을 받을 경우) O(n의 제곱)값을 갖는다12345678910111213141516171819202122232425262728293031const quickSort = arr =&gt; &#123;  return quickSortHelper(arr, 0, arr.length-1);&#125;const quickSortHelper = (arr, left, right) =&gt; &#123;  let idx;  if (arr.length &gt; 1) &#123;    idx = partition(arr, left, right);    if (left &lt; idx - 1) quickSortHelper(arr, left, idx -1);    if (idx &lt; right) quickSortHelper(arr, idx, right)  &#125;  return arr;&#125;const partition = (arr, left, right) =&gt; &#123;  let pivot = arr[Math.floor((left+right)/2)] // 배열의 중간값을 탐색  // 정렬하다보면 left는 계속 증가하고 right는 계속 감소하므로   // left값이 right값을 넘어가게 됨 (base condition)  while (left &lt;= right) &#123;    while(pivot &gt; arr[left]) left++    while(pivot &lt; arr[right]) right++    if (left &lt;= right) &#123;      let temp = arr[left];      arr[left] = arr[right];      arr[right] = temp;      left++;      right--;    &#125;   &#125;  return left;&#125;\n퀵정렬의 단점은 기준점을 항상 잘못 선택하는 경우 시간 복잡도가 O(n의 제곱)이 될 수 있다는 것\n퀵선택(quick select)은 정렬되지 않은 목록에서 k번째로 작은 항목을 찾는 선택 알고리즘으로 퀵정렬과는 달리 한쪽만 재귀적으로 수행함12345678910// 정렬되지 않은 목록에서 k번째로 작은 항목을 찾기const quickSelect = (arr, low, high, k) =&gt; &#123;  let p = partition(arr, low, high);  if (p == (k-1)) return A[p];  else if (p &gt; (k-1)) return quickSelect(arr, low, p-1, k);&#125;const medianQuickSelection = arr =&gt; &#123;  return quickSelect(arr, 0, arr.length-1, Math.floor(array.length/2))&#125; // O(n)의 시간복잡도\n병합 정렬는 각 배열에 하나의 항목이 존재할때까지 나누고 순서대로 연결함123456789101112131415161718192021222324const merge = (leftArr, rightArr) =&gt; &#123;  let results = [], leftIdx = 0, rightIdx = 0;  while (leftIdx &lt; leftArr.length &amp;&amp; rightIdx &lt; rightArr.length)&#123;    if (leftArr[leftIdx] &lt; rightArr[rightIdx]) &#123;      results.push(leftArr[leftIdx++]);    &#125; else &#123;      results.push(rightArr[rightIdx++]);    &#125;  &#125;  let leftReamins = leftArr.slice(leftIdx),       rightRemains = rightArr.slice(rightIdx);  return results.concat(leftReamains).concat(rightRemains);&#125;// 재귀함수로 배열을 전부 길이 1인 배열로 쪼개고 merge로 합하고를 반복한다const mergeSort = arr =&gt; &#123;  if (arr.length &lt;2) return arr;  let mid = Math.floor(arr.length/2),      leftArr = arr.slice(0, mid),      rightArr = arr.slice(mid);    return merge(mergeSort(leftArr), mergeSort(rightArr))&#125;\n계수 정렬은 값들을 비교하지 않기 때문에 O(k+n)시간 안에 수행된다 \n계수 정렬은 숫자에 대해서만 동작하고 특정 범위가 주어져야 한다123456789101112131415const countSort = arr =&gt; &#123;  let hash = &#123;&#125;, countArr =[];  // 해시 테이블을 생성하고 해시 테이블에 해당 값의 갯수를 셈  for (let i = 0, len = arr.length; i &lt; len; i++) &#123;    if (!hash[arr[i]]) hash[array[i]] = 1;    else hash[array[i]]++;  &#125;  // 값의 숫자를 센 해시테이블에서 값을 꺼내고 그 수 만큼 push를 반복  for (let key in hash) &#123;    for (let i = 0; i &lt; hash[key]; i++) &#123;      countArr.push(parseInt(key));    &#125;  &#125;  return countArr;&#125; // O(k+n) 시간 복잡도를 가짐\n자바스크립트의 내장 정렬 함수인 sort는 기본 오름차순으로 정렬하고 arr.sort((a,b) =&gt; a-b)와 같이 사용한다\n수학 라이브러리를 사용하지 않고 정수의 제곱근 함수 구하기123456789101112const sqrtIntNaive = num =&gt; &#123;  if (num === 0 || num === 1) return num;  let idx = 1, square = 1;  while (square &lt; number) &#123;    if (square === number) return square;    idx++;    square = idx*idx;  &#125;  return idx;&#125;\n이진 검색 알고리즘을 이용한 정수의 제곱근 함수 구하기1234567891011121314151617const sqrtInt = num =&gt; &#123;  if (num === 0 || num === 1) return num;  let start = 1, end = num, ans;    while (start &lt;= end) &#123;    let mid = parseInt((start+end)/2)    if (mid * mid === num) return mid;    if (mid * mid &lt; num) &#123;      start = mid+1;      ans = mid    &#125; else &#123;      end = mid -1    &#125;  &#125;  return  ans;&#125; // O(log2(n))\n배열의 두 항목을 더해서 주어진 수가 될 수 있는지 확인하기12345678const findTwoSum = (arr, sum) =&gt; &#123;  for (let i = 0, len = arr.length; i &lt; len; i++) &#123;    for (let j = i+1; j &lt; len; j++) &#123;      if (arr[i]+arr[j] === sum) return true    &#125;  &#125;  return false&#125;\n배열에서 단 한번만 등장하는 항목 찾기12345678910111213141516171819202122const findOnlyOnce = (arr, low, high) =&gt; &#123;  if (low &gt; high) return null; // 배열의 길이가 0일때는 널값을 리턴  if (low === high) return arr[low]; // 길이가 1일때    let mid = Math.floor((high+low)/2); // 절반값을 구하고    if (mid % 2 === 0) &#123;    if (arr[mid] === arr[mid+1]) // 오른쪽과 비교      return findOnlyOnce(arr, mid+2, high);    else       return findOnlyOnce(arr, low, mid)  &#125; else &#123;    if (arr[mid] === arr[mid-1]) // 왼쪽과 비교       return findOnlyOnce(arr, mid+1, high);    else       return findOnlyOnce(arr, low, mid-1);  &#125;&#125;const findOnlyOnceHelper = arr =&gt; &#123;  return findOnlyOnce(arr, 0, arr.length);&#125;\n문자열을 길이순으로 정렬하는 자바스크립트 정렬 비교 함수123const sortByStringLength = arr =&gt; &#123;  return arr.sort((a, b) =&gt; a.length - b.length)&#125;\n단어 세기 목록 구현하기1234567891011121314151617181920212223const wordCnt = sentence =&gt; &#123;  let wordsArr = sentence.replace(/[.]/g, &quot;&quot;).split(&#x27;&#x27;),      occurenceList = &#123;&#125;, answerList = &#123;&#125;;  for (let i = 0, wordsLen = wordsArr.length; i &lt; wordsLen; i++) &#123;    let currWord = wordsArr[i];    if (!occurenceList[currWord]) occurenceList[currWord] = 1;    else occurenceList[currWord]++;  &#125;    let arrTemp = [];  for (let prop in occurenceList) &#123;    arrTemp.push([occurenceList[props], prop])  &#125;  arrTemp.sort((a,b) =&gt; b[0] - a[0]);  for (let i = 0, len = arrTemp.length; i &lt; len; i++) &#123;    let curr = arrTemp[i];    answerList[curr[1]] = curr[0];  &#125;  return answerList;&#125;\n\n","dateCreated":"2021-03-11T15:30:19+09:00","dateModified":"2021-03-11T20:27:39+09:00","datePublished":"2021-03-11T15:30:19+09:00","description":"","headline":"21-03-11 자바스크립트로 하는 자료구조와 알고리즘(5)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"}</script>
+    <meta name="description" content="9장 집합 집합이란 유한하고 구분되는 객체들의 그룹  자바스크립트에서는 Set이 기본으로 지원된다 let exampleSet &#x3D; new Set(); Set의 주요 특징은 유일함을 확인 한다는 것이다(중복되는 항목은 허용되지 않음) Set.delete는 boolean값을 리턴하며 항목을 삭제할 수 있게 하는 메서드이다 Set.has는 집합 내에 존재하는지 확">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-11 자바스크립트로 하는 자료구조와 알고리즘(5)">
+<meta property="og:url" content="http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="9장 집합 집합이란 유한하고 구분되는 객체들의 그룹  자바스크립트에서는 Set이 기본으로 지원된다 let exampleSet &#x3D; new Set(); Set의 주요 특징은 유일함을 확인 한다는 것이다(중복되는 항목은 허용되지 않음) Set.delete는 boolean값을 리턴하며 항목을 삭제할 수 있게 하는 메서드이다 Set.has는 집합 내에 존재하는지 확">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-11T06:30:19.000Z">
+<meta property="article:modified_time" content="2021-03-11T11:27:39.768Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-11 자바스크립트로 하는 자료구조와 알고리즘(5)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-11T15:30:19+09:00">
+	
+		    Mar 11, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>, <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%84%9C%EC%A0%81/">서적</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="9장-집합"><a href="#9장-집합" class="headerlink" title="9장 집합"></a>9장 집합</h3><ul>
+<li>집합이란 <strong>유한하고 구분되는 객체들의 그룹</strong> </li>
+<li>자바스크립트에서는 Set이 기본으로 지원된다<br><code> let exampleSet = new Set();</code></li>
+<li>Set의 주요 특징은 <strong>유일함을 확인</strong> 한다는 것이다(중복되는 항목은 허용되지 않음)</li>
+<li>Set.delete는 boolean값을 리턴하며 항목을 삭제할 수 있게 하는 메서드이다</li>
+<li>Set.has는 집합 내에 존재하는지 확인하며 .delete / .has는 모두 O(1)의 시간 복잡도를 갖는다</li>
+<li>Set을 사용하여 교집합 구하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> intersectSets = <span class="function">(<span class="params">setA, setB</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> intersection = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> element <span class="keyword">of</span> setB) &#123;</span><br><span class="line">    <span class="keyword">if</span> (setA.has(element)) &#123;</span><br><span class="line">      intersection.add(element)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> intersection</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">// O(n)</span></span><br></pre></td></tr></table></figure></li>
+<li>어떤 집합이 다른 집합의 모든 항목을 포함하는 경우에는 상위 집합이 된다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isSuperSet = <span class="function">(<span class="params">setA, subSet</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> element <span class="keyword">of</span> subSet) &#123;</span><br><span class="line">    <span class="keyword">if</span>(!setA.has(element))</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>Set을 사용한다면 합집합도 쉽게 구현할 수 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> unionSet = <span class="function">(<span class="params">setA, setB</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> union = <span class="keyword">new</span> <span class="built_in">Set</span>(setA);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> element <span class="keyword">of</span> setB) &#123;</span><br><span class="line">    union.add(element);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> union</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>Spread Operator를 사용한 방법<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> unionSetWithSpreadOperator = <span class="function">(<span class="params">setA, setB</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Set</span>([...setA,...setB]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>차집합은 .delete로 구현할 수 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> differenceSet = <span class="function">(<span class="params">setA, setB</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> differ = <span class="keyword">new</span> <span class="built_in">Set</span>(setA);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> element <span class="keyword">of</span> setB) &#123;</span><br><span class="line">    differ.delete(element);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> differ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>집합을 사용해 배열의 중복 항목을 확인하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> checkDupl = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> mySet = newSet(arr);</span><br><span class="line">  <span class="keyword">return</span> mySet.size &lt; arr.length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>개별적인 배열들에서 유일한 값만을 반환하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> uniqueList = <span class="function">(<span class="params">arr1, arr2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// arr1 뒤에 arr2 배열을 붙이고 Set을 사용해 유니크한 값만 남기기</span></span><br><span class="line">  <span class="keyword">let</span> mySet = <span class="keyword">new</span> <span class="built_in">Set</span>(arr1.concat(arr2));</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.from(mySet);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="10장-검색과-정렬"><a href="#10장-검색과-정렬" class="headerlink" title="10장 검색과 정렬"></a>10장 검색과 정렬</h3></li>
+<li>검색은 <strong>자료 구조의 항목들을 반복적으로 접근하는 것</strong> , 정렬은 <strong>자료구조의 항목들을 순서대로 위치시키는 것</strong></li>
+<li>한 인덱스씩 순차적으로 접근하는 선형 검색<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> linearSearch = <span class="function">(<span class="params">arr, n</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (arr[i] === n) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>정렬된 자료라면 이진검색을 사용할 수 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> binarySearch = <span class="function">(<span class="params">arr, n</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> lowIndex = <span class="number">0</span>, highIndex = arr.length;</span><br><span class="line">  <span class="keyword">while</span> (lowIndex &lt;= highIndex) &#123;</span><br><span class="line">    <span class="keyword">let</span> midIndex = <span class="built_in">Math</span>.floor((lowIndex + highIndex)/<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span> (arr[midIndex] === n) <span class="keyword">return</span> midIndex;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (n &gt; arr[midIndex]) lowIndex = midIndex+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> highIndex = midIndex-<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>이진검색을 사용하려면 자료를 정렬해야함</li>
+<li>버블 정렬은 전체 배열을 순회하며 두 항목을 비교하고 교체하는 작업을 반복한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> swap = <span class="function">(<span class="params">arr, idx1, idx2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> temp = arr[idx1];</span><br><span class="line">  arr[idx1] = arr[idx2];</span><br><span class="line">  arr[idx2] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bubbleSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt;= i; j++)&#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &gt; arr[j+<span class="number">1</span>]) &#123;</span><br><span class="line">        swap(arr, i, j)</span><br><span class="line">      &#125; </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125; <span class="comment">// for문을 두 번 사용하므로 O(n의 제곱)값이 된다</span></span><br></pre></td></tr></table></figure></li>
+<li>선택 정렬은 가장 작은 항목을 찾고 해당 항목의 배열의 현 위치에 삽입하는 식으로 동작한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> selectionSort = <span class="function"><span class="params">items</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> len = items.length, min;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    min = i;</span><br><span class="line">    <span class="keyword">for</span> (j = i+<span class="number">1</span>; j &lt; len; j++)&#123;</span><br><span class="line">      <span class="keyword">if</span>(items[j] &lt; items[min]) min = j;</span><br><span class="line">      <span class="keyword">if</span> (i != min) swap(items, i, min);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> items;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>삽입 정렬을 배열을 순차적으로 검색하면서 정렬되지 않은 항목들을 왼쪽으로 이동시킨다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> insertionSort = <span class="function"><span class="params">items</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> len = items.length, </span><br><span class="line">      value, <span class="comment">// 지금 비교중인 값</span></span><br><span class="line">      i, <span class="comment">// 정렬 안된 부분</span></span><br><span class="line">      j; <span class="comment">// 정렬 된 부분</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">    <span class="comment">// </span></span><br><span class="line">    value = items[i];</span><br><span class="line">    <span class="keyword">for</span> (j = i-<span class="number">1</span>; j &gt; -<span class="number">1</span> &amp;&amp; items[j] &gt; value; j--) &#123;</span><br><span class="line">      items[j+<span class="number">1</span>] = items[j]</span><br><span class="line">    &#125;</span><br><span class="line">    items[j+<span class="number">1</span>] = value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> items</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>퀵 정렬은 기준점을 기준으로 배열을 나눠 모든 항목이 정렬될 때까지 과정을 반복하는 정렬법이다</li>
+<li>이 방법은 분할 정복을 이용한 재귀법으로 처리되어 평균 O(nlog2(n))으로 처리되지만 최악의 경우(이미 정렬된 배열을 받을 경우) O(n의 제곱)값을 갖는다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> quickSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> quickSortHelper(arr, <span class="number">0</span>, arr.length-<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> quickSortHelper = <span class="function">(<span class="params">arr, left, right</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> idx;</span><br><span class="line">  <span class="keyword">if</span> (arr.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    idx = partition(arr, left, right);</span><br><span class="line">    <span class="keyword">if</span> (left &lt; idx - <span class="number">1</span>) quickSortHelper(arr, left, idx -<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (idx &lt; right) quickSortHelper(arr, idx, right)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> partition = <span class="function">(<span class="params">arr, left, right</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> pivot = arr[<span class="built_in">Math</span>.floor((left+right)/<span class="number">2</span>)] <span class="comment">// 배열의 중간값을 탐색</span></span><br><span class="line">  <span class="comment">// 정렬하다보면 left는 계속 증가하고 right는 계속 감소하므로 </span></span><br><span class="line">  <span class="comment">// left값이 right값을 넘어가게 됨 (base condition)</span></span><br><span class="line">  <span class="keyword">while</span> (left &lt;= right) &#123;</span><br><span class="line">    <span class="keyword">while</span>(pivot &gt; arr[left]) left++</span><br><span class="line">    <span class="keyword">while</span>(pivot &lt; arr[right]) right++</span><br><span class="line">    <span class="keyword">if</span> (left &lt;= right) &#123;</span><br><span class="line">      <span class="keyword">let</span> temp = arr[left];</span><br><span class="line">      arr[left] = arr[right];</span><br><span class="line">      arr[right] = temp;</span><br><span class="line">      left++;</span><br><span class="line">      right--;</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>퀵정렬의 단점은 기준점을 항상 잘못 선택하는 경우 시간 복잡도가 O(n의 제곱)이 될 수 있다는 것</li>
+<li>퀵선택(quick select)은 정렬되지 않은 목록에서 k번째로 작은 항목을 찾는 선택 알고리즘으로 퀵정렬과는 달리 한쪽만 재귀적으로 수행함<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 정렬되지 않은 목록에서 k번째로 작은 항목을 찾기</span></span><br><span class="line"><span class="keyword">const</span> quickSelect = <span class="function">(<span class="params">arr, low, high, k</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> p = partition(arr, low, high);</span><br><span class="line">  <span class="keyword">if</span> (p == (k-<span class="number">1</span>)) <span class="keyword">return</span> A[p];</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (p &gt; (k-<span class="number">1</span>)) <span class="keyword">return</span> quickSelect(arr, low, p-<span class="number">1</span>, k);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> medianQuickSelection = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> quickSelect(arr, <span class="number">0</span>, arr.length-<span class="number">1</span>, <span class="built_in">Math</span>.floor(array.length/<span class="number">2</span>))</span><br><span class="line">&#125; <span class="comment">// O(n)의 시간복잡도</span></span><br></pre></td></tr></table></figure></li>
+<li>병합 정렬는 각 배열에 하나의 항목이 존재할때까지 나누고 순서대로 연결함<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> merge = <span class="function">(<span class="params">leftArr, rightArr</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> results = [], leftIdx = <span class="number">0</span>, rightIdx = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (leftIdx &lt; leftArr.length &amp;&amp; rightIdx &lt; rightArr.length)&#123;</span><br><span class="line">    <span class="keyword">if</span> (leftArr[leftIdx] &lt; rightArr[rightIdx]) &#123;</span><br><span class="line">      results.push(leftArr[leftIdx++]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      results.push(rightArr[rightIdx++]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> leftReamins = leftArr.slice(leftIdx), </span><br><span class="line">      rightRemains = rightArr.slice(rightIdx);</span><br><span class="line">  <span class="keyword">return</span> results.concat(leftReamains).concat(rightRemains);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 재귀함수로 배열을 전부 길이 1인 배열로 쪼개고 merge로 합하고를 반복한다</span></span><br><span class="line"><span class="keyword">const</span> mergeSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (arr.length &lt;<span class="number">2</span>) <span class="keyword">return</span> arr;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor(arr.length/<span class="number">2</span>),</span><br><span class="line">      leftArr = arr.slice(<span class="number">0</span>, mid),</span><br><span class="line">      rightArr = arr.slice(mid);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> merge(mergeSort(leftArr), mergeSort(rightArr))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>계수 정렬은 값들을 비교하지 않기 때문에 O(k+n)시간 안에 수행된다 </li>
+<li>계수 정렬은 숫자에 대해서만 동작하고 특정 범위가 주어져야 한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> countSort = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> hash = &#123;&#125;, countArr =[];</span><br><span class="line">  <span class="comment">// 해시 테이블을 생성하고 해시 테이블에 해당 값의 갯수를 셈</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!hash[arr[i]]) hash[array[i]] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> hash[array[i]]++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 값의 숫자를 센 해시테이블에서 값을 꺼내고 그 수 만큼 push를 반복</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> hash) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; hash[key]; i++) &#123;</span><br><span class="line">      countArr.push(<span class="built_in">parseInt</span>(key));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> countArr;</span><br><span class="line">&#125; <span class="comment">// O(k+n) 시간 복잡도를 가짐</span></span><br></pre></td></tr></table></figure></li>
+<li>자바스크립트의 내장 정렬 함수인 sort는 기본 오름차순으로 정렬하고 <code>arr.sort((a,b) =&gt; a-b)</code>와 같이 사용한다</li>
+<li>수학 라이브러리를 사용하지 않고 정수의 제곱근 함수 구하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sqrtIntNaive = <span class="function"><span class="params">num</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (num === <span class="number">0</span> || num === <span class="number">1</span>) <span class="keyword">return</span> num;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> idx = <span class="number">1</span>, square = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (square &lt; number) &#123;</span><br><span class="line">    <span class="keyword">if</span> (square === number) <span class="keyword">return</span> square;</span><br><span class="line"></span><br><span class="line">    idx++;</span><br><span class="line">    square = idx*idx;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> idx;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>이진 검색 알고리즘을 이용한 정수의 제곱근 함수 구하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sqrtInt = <span class="function"><span class="params">num</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (num === <span class="number">0</span> || num === <span class="number">1</span>) <span class="keyword">return</span> num;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> start = <span class="number">1</span>, end = num, ans;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (start &lt;= end) &#123;</span><br><span class="line">    <span class="keyword">let</span> mid = <span class="built_in">parseInt</span>((start+end)/<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> (mid * mid === num) <span class="keyword">return</span> mid;</span><br><span class="line">    <span class="keyword">if</span> (mid * mid &lt; num) &#123;</span><br><span class="line">      start = mid+<span class="number">1</span>;</span><br><span class="line">      ans = mid</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      end = mid -<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span>  ans;</span><br><span class="line">&#125; <span class="comment">// O(log2(n))</span></span><br></pre></td></tr></table></figure></li>
+<li>배열의 두 항목을 더해서 주어진 수가 될 수 있는지 확인하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> findTwoSum = <span class="function">(<span class="params">arr, sum</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i+<span class="number">1</span>; j &lt; len; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[i]+arr[j] === sum) <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>배열에서 단 한번만 등장하는 항목 찾기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> findOnlyOnce = <span class="function">(<span class="params">arr, low, high</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (low &gt; high) <span class="keyword">return</span> <span class="literal">null</span>; <span class="comment">// 배열의 길이가 0일때는 널값을 리턴</span></span><br><span class="line">  <span class="keyword">if</span> (low === high) <span class="keyword">return</span> arr[low]; <span class="comment">// 길이가 1일때</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor((high+low)/<span class="number">2</span>); <span class="comment">// 절반값을 구하고</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (mid % <span class="number">2</span> === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (arr[mid] === arr[mid+<span class="number">1</span>]) <span class="comment">// 오른쪽과 비교</span></span><br><span class="line">      <span class="keyword">return</span> findOnlyOnce(arr, mid+<span class="number">2</span>, high);</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">      <span class="keyword">return</span> findOnlyOnce(arr, low, mid)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (arr[mid] === arr[mid-<span class="number">1</span>]) <span class="comment">// 왼쪽과 비교 </span></span><br><span class="line">      <span class="keyword">return</span> findOnlyOnce(arr, mid+<span class="number">1</span>, high);</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">      <span class="keyword">return</span> findOnlyOnce(arr, low, mid-<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> findOnlyOnceHelper = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> findOnlyOnce(arr, <span class="number">0</span>, arr.length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>문자열을 길이순으로 정렬하는 자바스크립트 정렬 비교 함수<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sortByStringLength = <span class="function"><span class="params">arr</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> arr.sort(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a.length - b.length)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>단어 세기 목록 구현하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> wordCnt = <span class="function"><span class="params">sentence</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> wordsArr = sentence.replace(<span class="regexp">/[.]/g</span>, <span class="string">&quot;&quot;</span>).split(<span class="string">&#x27;&#x27;</span>),</span><br><span class="line">      occurenceList = &#123;&#125;, answerList = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, wordsLen = wordsArr.length; i &lt; wordsLen; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> currWord = wordsArr[i];</span><br><span class="line">    <span class="keyword">if</span> (!occurenceList[currWord]) occurenceList[currWord] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span> occurenceList[currWord]++;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> arrTemp = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> prop <span class="keyword">in</span> occurenceList) &#123;</span><br><span class="line">    arrTemp.push([occurenceList[props], prop])</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  arrTemp.sort(<span class="function">(<span class="params">a,b</span>) =&gt;</span> b[<span class="number">0</span>] - a[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arrTemp.length; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> curr = arrTemp[i];</span><br><span class="line">    answerList[curr[<span class="number">1</span>]] = curr[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> answerList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/11/21-03-11-%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98-%EA%B3%B5%EB%B6%80-%EC%B2%AB%EB%B2%88%EC%A7%B8/"
+                    data-tooltip="21-03-11 선형대수 공부, 첫번째"
+                    aria-label="NEXT: 21-03-11 선형대수 공부, 첫번째"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/11/21-03-11-%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98-%EA%B3%B5%EB%B6%80-%EC%B2%AB%EB%B2%88%EC%A7%B8/"
+                    data-tooltip="21-03-11 선형대수 공부, 첫번째"
+                    aria-label="NEXT: 21-03-11 선형대수 공부, 첫번째"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/11/21-03-11-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-5/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
