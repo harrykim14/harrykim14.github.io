@@ -1,0 +1,562 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-12 자바스크립트로 하는 자료구조와 알고리즘(7) - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"13장 연결 리스트\n연결 리스트란 각 노드가 달느 노드를 가리키는 자료구조이다\n고정된 크기를 갖는 배열과는 달리 실행 시간에 메모리를 할당하거나 해제할 수 있는 동적 자료구조\n연결 리스트 자료구조는 각 노드가 다음 노드에 대한 참조를 갖는 자료구조로 data와 next속성이 있다1234567891011121314151617class SinglyLinkedListNode &#123;  constructor (data) &#123;    this.data = data;    this.next = null; // 노드 마지막 연결지점은 null값임  &#125;&#125;class SinglyLinkedList &#123;  constructor () &#123;    this.head = null;    this.size = 0;  &#125;  isEmpty() &#123;    return this.size === 0;  &#125;&#125;\n연결 리스트의 시작을 헤드라고 부르고 이 값은 아무 항목도 삽입되지 않으면 null이다\n연결 리스트의 헤드가 비어있는 경우엔 신규 노드로 설정되고 비어있지 않다면 예전 헤드가 temp에 저장된 후에 새로운 헤드가 신규로 추가된 노드가 된다12345678910// 위에서 이어짐  insert(value) &#123;    if (this.head === null) this.head = new SinglyLinkedListNode(value);    else &#123;      let temp = this.head;      this.head = new SinglyLinkedListNode(value);      this.head.next = temp;    &#125;    this. size++;  &#125;\n단일 연결 리스트에서 노드를 삭제하는 것은 해당 노드의 참조를 제거함으로써 구현할 수 있다\nnext가 가리키는 노드를 찾고 해당 노드의 next 주소값을 이전 노드의 next값으로 할당하면 노드를 삭제할 수 있다12345678910111213141516171819202122232425262728293031remove(value) &#123;  let currHead = this.head;  if (currHead.data === value) &#123;    // 삭제하고자 하는 노드가 지금 데이터와 같다면 헤드를 다음 노드로 변경하고 사이즈를 줄임    this.head = currHead.next;    this.size--;  &#125; else &#123;    // 헤드를 prv로 저장하고    let prev = currHead;    while (currHead.next) &#123;      // next 주소값이 null이 아닐때까지 순회한다      if (currHead.data === value) &#123;        // 해당 값을 찾았다면 이전 값의 next를 현재 값의 next로 변경 (중간 잘라냄)        prev.next = currHead.next;        // prev값을 지금 head로 변경        prev = currHead;        currHead = currHead.next;        break;      &#125;      prev = currHead;      currHead = currHead.next;    &#125;    if (currHead.data === value) &#123;      // 삭제하는 노드의 next 주소값은 null로 변경하여 잘라내기      prev.next = null;    &#125;    this.size--;  &#125;&#125;\n연결 리스트의 헤드에 있는 항목을 삭제하는 것은 O(1)만에 가능한데 맨 처음에 있는 값이기 때문12345678910deleteHead() &#123;  let toReturn = null;  if (this.head !== null) &#123;    toReturn = this.head.data;    this.head = this.head.next;    this.size--;  &#125;  return toReturn;&#125;\n연결 리스트 내의 값을 검색하려면 모든 next 포인터를 반복순회해야한다12345678910find (value) &#123;  let currHead = this.head;  while(currHead.next) &#123;    if (currHead.data === value) &#123;      return true;    &#125;    currHead = currHead.next;  &#125;  return false;&#125;\n이중 연결 리스트는 양방향 단일 연결 리스트 같은 것이다12345678910111213141516171819class DoubleLinkedListNode &#123;  constructor (data) &#123;    this.data = data;    this.next = null;    this.prev = null;  &#125;&#125;class DoubleLinkedList &#123;  constructor () &#123;    this.head = null;    this.tail = null;    this.size = 0;  &#125;  isEmpty () &#123;    return this.size === 0;  &#125;&#125;\n양방향으로 연결되어 있으므로 노드들은 next와 prev 둘 다 갖는다\n헤드에 항목을 삽입하는 것은 prev 포인터를 갱신해야 한다는 점 빼고는 단일 연결 리스트와 같다123456789101112131415161718insertHead (value) &#123;  if (this.head === null) &#123;    // 헤드가 비어있다면 이 헤드에 새로운 값을 갖는 노드를 추가    this.head = new DoublyLinkedListNode(value);    this.tail = this.head;    // 단 하나만 있을 경우에 이 노드가 헤드이자 테일이기 때문  &#125; else &#123;    // 이미 헤드가 있다면 임시로 노드를 만들고    let temp = new DoublyLinkedListNode(value);    // 만든 노드의 next값을 현재 헤드값으로 변경하고    temp.next = this.head;    // 현재 헤드값의 prev값을 새로 만든 노드로 설정한다 (양방향이므로)    this.head.prev = temp;    // 새로 만든 노드가 새 헤드가 된다 (있었던 헤드가 밀려남)    this.head = temp;  &#125;  this.size++;&#125;\n헤드를 삭제할 때 연결 리스트가 하나의 노드라면 prev와 next 모두 null로 설정해야 하며 여러개 존재하는 경우 삭제하는 헤드의 next값을 헤드로 설정한다\n신규 헤드의 prev값을 null로 설정하여 참조를 제거한다12345678910111213141516deleteHead () &#123;  let toReturn = null;  if (this.head !== null) &#123;    toReturn = this.head.data;    if (this.tail === this.head) &#123;      this.head = null;      this.tail = null;    &#125; else &#123;      this.head = this.head.next;      this.head.prev = null;    &#125;  &#125;  this.size--;  return toReturn; // dequeue와 같은 방식임 &#125;\n테일 항목 삭제도 헤드 삭제와 같은 방식으로 제거한다1234567891011121314151617deleteTail() &#123;  let toReturn = null;  if(this.tail !== null) &#123;    toReturn = this.tail.data;    if (this.tail === this.head) &#123;      this.head = null;      this.tail = null;    &#125; else &#123;      this.tail = this.tail.prev;      this.tail.next = null;    &#125;  &#125; this.size--;return toReturn;&#125;\n양항향 연결 리스트에서는 헤드에서 헤드의 next 포인터를 사용할 수 있다 (반대로도 가능)12345678findFromHead (value) &#123;  let currHead = this.head;  while (currHead.next) &#123;    if (currHead.data === value) return true;    currHead = currHead.next;  &#125;  return false;&#125;\n단일 연결 리스트 뒤집기12345678910111213const reverseSinglyLinkedList = sll =&gt; &#123;  let node = sll.head;  let prev = null;  // 방향성을 반대로 바꾸는 과정  while (node) &#123;    let temp = node.next;    node.next = prev;    prev = node;    if (!temp) break;    node = temp;  &#125;  return node;&#125;\n연결 리스트에서 중복된 항목 제거하기1234567891011121314151617const deleteDuplicateDataInSLL = sll =&gt; &#123;  let track = [];  let temp = sll.head;  let prev = null;  while (temp) &#123;    if (track.indexOf(temp.data) &gt;= 0) &#123;      prev.next = temp.next;      sll.size--;    &#125; else &#123;      track.push(temp.data);      prev = temp;    &#125;    temp = temp.next;  &#125;  console.log(temp);&#125;\n개선하기12345678910111213141516const deleteDuplicateDataInSLL = sll =&gt; &#123;  let track = &#123;&#125;;  let temp = sll.head;  let prev = null;  while (temp) &#123;    if(track[temp.data]) &#123;      prev.next = temp.next;      sll.size--;    &#125; else &#123;      track[temp.data] = true;      prev = temp;    &#125;    temp = temp.next;  &#125;  console.log(temp);&#125;\n14장 캐싱\n캐싱은 자료를 임시 메모리에 저장하는 과정으로 대표적인 캐싱 방법에는 LFU(Least Frequently Used) 캐싱과 LRU(Least Recently Used) 캐싱이 있다\n최근에 접근한 메모리 위치를 다시 접근할 가능성이 높고(시간적 지역성), 최근에 접근한 메모리 위치 주변의 위치를 다시 접근할 가능성이 높다(공간적 지역성)\nLFU 캐싱은 운영체제가 메모리를 관리하기 위해 사용하는 캐싱 알고리즘으로 가장 참조 빈도가 낮은 항목을 삭제한다\nLFU 캐시는 이중 연결 리스트를 사용해 O(1)시간에 항목을 제거한다\nLFU의 노드에는 freqCount 속성이 있다123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123class LFUNode &#123;  constructor (key, value) &#123;    this.prev = null;    this.next = null;    this.key = key;    this.data = data;    this.freqCount = 1;  &#125;&#125;class LFUDoublyLinkedList &#123;  constructor () &#123;    this.head = new LFUNODE(&#x27;buffer head&#x27;, null);    this.tail = new LFUNODE(&#x27;buffer tail&#x27;, null);    this.head.next = this.tail;    this.tail.prev = this.head;    this.size = 0;  &#125;  insertHead (node) &#123;    node.next = this.head.next;    this.head.next.prev = node;    this.head.next = node;    node.prev = this.head;    this.size++;  &#125;  removeTail () &#123;    let oldTail = this.tail.prev;    let prev = this.tail.prev;    prev.prev.next = this.tail; // 전 전 노드의 next를 테일로 지정    this.tail.prev = prev.prev; // 테일을 제거하면 테일 앞 값을 테일로 지정해주어야 함    this.size--;    return oldTail;  &#125;  removeNode(node) &#123;    node.prev.next = node.next;    node.next.prev = node.prev;    this.size--;  &#125;  /*    LFU의 set을 구현하기 위해서는 신규 항목의 삽입과 예전 항목의 교체가 필요함    신규 항목을 삽입할 때 신규 노드가 생성되고 캐시 capacity가 꽉차지 않았다면 freq의 빈도 이중 연결 리스트에 삽입할 수 있다    캐시가 꽉 찬 경우 빈도 이중 연결 리스트의 테일 항목이 삭제된 다음 삽입된다  */  set(key, value) &#123;    let node = this.keys[key];    if (node === undefined) &#123;      node = new LFUNode(key, value);      this.keys[key] = node;            if (this.size !== this.capacity) &#123;        if (this.freq[1] === undefined) &#123;          this.freq[1] = new LFUDoublyLinkedList();        &#125;        this.freq[1].insertHead(node);        this.size++      &#125; else &#123;        let oldTail = this.freq[this.minFreq].removeTail();        delete this.keys[oldTail.key];        if (this.freq[1] === undefined) &#123;          this.req[1] = new LFUDoublyLinkedList();        &#125;        this.freq[1].insertHead(node);        this.minFreq = 1;      &#125; else &#123;        let oldFreqCount = node.freqCount;        node.data = value;        node.freqCount++;        this.freq[oldFreqCount].removeNode(node);        if (this.freq[node.freqCount] === undefined) &#123;          this.freq[node.freqCount] = new LFUDoublyLinkedList();        &#125;         this.freq[node.freqCount].insertHead(node);        if (oldFreqCount === this.minFreq             &amp;&amp; Object.keys(this.freq[oldFreqCount]).size === 0) &#123;              this.minFreq++;        &#125;      &#125;    &#125;  &#125;  get (key) &#123;    let node = this.keys[key];    if (node === undefined) return null;    else &#123;      let oldFreqCount = node.freqCount;      node.freqCount++;      this.freq[oldFreqCount].removeNode(node);      if (this.freq[node.freqCount] === undefined) &#123;        this.freq[node.freqCount] = new LFUDoublyLinkedList();      &#125;      this.freq[node.freqCount].insertHead(node);      if (oldFreqCount === this.minFreq           &amp;&amp; Object.keys(this.freq[oldFreqCount]).length === 0) &#123;            this.minFreq++;      &#125;      return node.data;    &#125;  &#125;&#125;class LFUCache &#123;  constructor (capacity) &#123;    this.key = &#123;&#125;; // LFUNode를 저장하는 공간    this.freq = &#123;&#125;;// LFUDoublyLinkedList를 저장하는 공간    this.capacity = capacity;    this.minFreq = 0;    this.size = 0;  &#125;&#125;\nLRU 캐싱은 가장 오래된 항목을 먼저 제거하는 캐싱 알고리즘이다\n캐시의 항목에 접근하면 해당 항목은 리스트의 뒤(가장 최신)로 이동하고 가장 앞에 있는 항목이 제거되며 새 항목은 가장 뒤에 추가된다12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061class DLLNode &#123;  constructor (key, data) &#123;    this.key = key;    this.data = data;    this.next = null;    this.prev = null;  &#125;&#125;class LRUCache &#123;  constructor (capacity) &#123;    this.keys = &#123;&#125;;    this.capacity = capacity;    this.head = new DLLNode(&#x27;&#x27;, null);    this.tail = new DLLNode(&#x27;&#x27;, null);    this.head.next = this.tail    this.tail.prev = this.head;  &#125;  removeNode (node) &#123;    let prev = node.prev,        next = node.next;    prev.next = next;    next.prev = prev;  &#125;  addNode (node) &#123;    let realTail = this.tail.prev;    realTail.next = node;    this.tail.prev = node;    node.prev = realTail;    node.next = this.tail;  &#125;  get (key) &#123;    let node = this.keys[key];    if (node === undefined) return null;    else &#123;      this.removeNode(node);      this.addNode(node);      return node.data;    &#125;  &#125;  set (key, value) &#123;    let node = this.keys[key];    if (node) this.removeNode(node);    let newNode = new DLLNode(key, value);    this.addNode(newNode);    this.keys[key] = newNode;    if (Object.keys(this.keys).length &gt; this.capacity) &#123;      let realHead = this.head.next;      this.removeNode(realHead);      delete this.keys[realHead.key];    &#125;  &#125;&#125;\n대부분의 경우 LFU는 LRU보다 성능이 떨어진다 LFU는 특정 시점에 한해 자주 사용된 경우를 배제할 수 없기 때문\n\n","dateCreated":"2021-03-12T16:14:08+09:00","dateModified":"2021-03-12T19:15:02+09:00","datePublished":"2021-03-12T16:14:08+09:00","description":"","headline":"21-03-12 자바스크립트로 하는 자료구조와 알고리즘(7)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"}</script>
+    <meta name="description" content="13장 연결 리스트 연결 리스트란 각 노드가 달느 노드를 가리키는 자료구조이다 고정된 크기를 갖는 배열과는 달리 실행 시간에 메모리를 할당하거나 해제할 수 있는 동적 자료구조 연결 리스트 자료구조는 각 노드가 다음 노드에 대한 참조를 갖는 자료구조로 data와 next속성이 있다1234567891011121314151617class SinglyLinkedL">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-12 자바스크립트로 하는 자료구조와 알고리즘(7)">
+<meta property="og:url" content="http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="13장 연결 리스트 연결 리스트란 각 노드가 달느 노드를 가리키는 자료구조이다 고정된 크기를 갖는 배열과는 달리 실행 시간에 메모리를 할당하거나 해제할 수 있는 동적 자료구조 연결 리스트 자료구조는 각 노드가 다음 노드에 대한 참조를 갖는 자료구조로 data와 next속성이 있다1234567891011121314151617class SinglyLinkedL">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-12T07:14:08.000Z">
+<meta property="article:modified_time" content="2021-03-12T10:15:02.669Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-12 자바스크립트로 하는 자료구조와 알고리즘(7)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-12T16:14:08+09:00">
+	
+		    Mar 12, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>, <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%84%9C%EC%A0%81/">서적</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="13장-연결-리스트"><a href="#13장-연결-리스트" class="headerlink" title="13장 연결 리스트"></a>13장 연결 리스트</h3><ul>
+<li>연결 리스트란 각 노드가 달느 노드를 가리키는 자료구조이다</li>
+<li>고정된 크기를 갖는 배열과는 달리 실행 시간에 메모리를 할당하거나 해제할 수 있는 동적 자료구조</li>
+<li>연결 리스트 자료구조는 각 노드가 다음 노드에 대한 참조를 갖는 자료구조로 data와 next속성이 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SinglyLinkedListNode</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params">data</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.data = data;</span><br><span class="line">    <span class="built_in">this</span>.next = <span class="literal">null</span>; <span class="comment">// 노드 마지막 연결지점은 null값임</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SinglyLinkedList</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.head = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.size = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">isEmpty</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.size === <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>연결 리스트의 시작을 헤드라고 부르고 이 값은 아무 항목도 삽입되지 않으면 null이다</li>
+<li>연결 리스트의 헤드가 비어있는 경우엔 신규 노드로 설정되고 비어있지 않다면 예전 헤드가 temp에 저장된 후에 새로운 헤드가 신규로 추가된 노드가 된다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위에서 이어짐</span></span><br><span class="line">  <span class="function"><span class="title">insert</span>(<span class="params">value</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.head === <span class="literal">null</span>) <span class="built_in">this</span>.head = <span class="keyword">new</span> SinglyLinkedListNode(value);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> temp = <span class="built_in">this</span>.head;</span><br><span class="line">      <span class="built_in">this</span>.head = <span class="keyword">new</span> SinglyLinkedListNode(value);</span><br><span class="line">      <span class="built_in">this</span>.head.next = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">this</span>. size++;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+<li>단일 연결 리스트에서 노드를 삭제하는 것은 해당 노드의 참조를 제거함으로써 구현할 수 있다</li>
+<li>next가 가리키는 노드를 찾고 해당 노드의 next 주소값을 이전 노드의 next값으로 할당하면 노드를 삭제할 수 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">remove</span>(<span class="params">value</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> currHead = <span class="built_in">this</span>.head;</span><br><span class="line">  <span class="keyword">if</span> (currHead.data === value) &#123;</span><br><span class="line">    <span class="comment">// 삭제하고자 하는 노드가 지금 데이터와 같다면 헤드를 다음 노드로 변경하고 사이즈를 줄임</span></span><br><span class="line">    <span class="built_in">this</span>.head = currHead.next;</span><br><span class="line">    <span class="built_in">this</span>.size--;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 헤드를 prv로 저장하고</span></span><br><span class="line">    <span class="keyword">let</span> prev = currHead;</span><br><span class="line">    <span class="keyword">while</span> (currHead.next) &#123;</span><br><span class="line">      <span class="comment">// next 주소값이 null이 아닐때까지 순회한다</span></span><br><span class="line">      <span class="keyword">if</span> (currHead.data === value) &#123;</span><br><span class="line">        <span class="comment">// 해당 값을 찾았다면 이전 값의 next를 현재 값의 next로 변경 (중간 잘라냄)</span></span><br><span class="line">        prev.next = currHead.next;</span><br><span class="line">        <span class="comment">// prev값을 지금 head로 변경</span></span><br><span class="line">        prev = currHead;</span><br><span class="line">        currHead = currHead.next;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      prev = currHead;</span><br><span class="line">      currHead = currHead.next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (currHead.data === value) &#123;</span><br><span class="line">      <span class="comment">// 삭제하는 노드의 next 주소값은 null로 변경하여 잘라내기</span></span><br><span class="line">      prev.next = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.size--;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>연결 리스트의 헤드에 있는 항목을 삭제하는 것은 O(1)만에 가능한데 맨 처음에 있는 값이기 때문<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">deleteHead</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> toReturn = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.head !== <span class="literal">null</span>) &#123;</span><br><span class="line">    toReturn = <span class="built_in">this</span>.head.data;</span><br><span class="line">    <span class="built_in">this</span>.head = <span class="built_in">this</span>.head.next;</span><br><span class="line">    <span class="built_in">this</span>.size--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> toReturn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>연결 리스트 내의 값을 검색하려면 모든 next 포인터를 반복순회해야한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">find (value) &#123;</span><br><span class="line">  <span class="keyword">let</span> currHead = <span class="built_in">this</span>.head;</span><br><span class="line">  <span class="keyword">while</span>(currHead.next) &#123;</span><br><span class="line">    <span class="keyword">if</span> (currHead.data === value) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    currHead = currHead.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>이중 연결 리스트는 <strong>양방향 단일 연결 리스트</strong> 같은 것이다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubleLinkedListNode</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params">data</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.data = data;</span><br><span class="line">    <span class="built_in">this</span>.next = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.prev = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubleLinkedList</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.head = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.tail = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.size = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  isEmpty () &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.size === <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>양방향으로 연결되어 있으므로 노드들은 next와 prev 둘 다 갖는다</li>
+<li>헤드에 항목을 삽입하는 것은 prev 포인터를 갱신해야 한다는 점 빼고는 단일 연결 리스트와 같다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">insertHead (value) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.head === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="comment">// 헤드가 비어있다면 이 헤드에 새로운 값을 갖는 노드를 추가</span></span><br><span class="line">    <span class="built_in">this</span>.head = <span class="keyword">new</span> DoublyLinkedListNode(value);</span><br><span class="line">    <span class="built_in">this</span>.tail = <span class="built_in">this</span>.head;</span><br><span class="line">    <span class="comment">// 단 하나만 있을 경우에 이 노드가 헤드이자 테일이기 때문</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 이미 헤드가 있다면 임시로 노드를 만들고</span></span><br><span class="line">    <span class="keyword">let</span> temp = <span class="keyword">new</span> DoublyLinkedListNode(value);</span><br><span class="line">    <span class="comment">// 만든 노드의 next값을 현재 헤드값으로 변경하고</span></span><br><span class="line">    temp.next = <span class="built_in">this</span>.head;</span><br><span class="line">    <span class="comment">// 현재 헤드값의 prev값을 새로 만든 노드로 설정한다 (양방향이므로)</span></span><br><span class="line">    <span class="built_in">this</span>.head.prev = temp;</span><br><span class="line">    <span class="comment">// 새로 만든 노드가 새 헤드가 된다 (있었던 헤드가 밀려남)</span></span><br><span class="line">    <span class="built_in">this</span>.head = temp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">this</span>.size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>헤드를 삭제할 때 연결 리스트가 하나의 노드라면 prev와 next 모두 null로 설정해야 하며 여러개 존재하는 경우 삭제하는 헤드의 next값을 헤드로 설정한다</li>
+<li>신규 헤드의 prev값을 null로 설정하여 참조를 제거한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">deleteHead () &#123;</span><br><span class="line">  <span class="keyword">let</span> toReturn = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.head !== <span class="literal">null</span>) &#123;</span><br><span class="line">    toReturn = <span class="built_in">this</span>.head.data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.tail === <span class="built_in">this</span>.head) &#123;</span><br><span class="line">      <span class="built_in">this</span>.head = <span class="literal">null</span>;</span><br><span class="line">      <span class="built_in">this</span>.tail = <span class="literal">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.head = <span class="built_in">this</span>.head.next;</span><br><span class="line">      <span class="built_in">this</span>.head.prev = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">this</span>.size--;</span><br><span class="line">  <span class="keyword">return</span> toReturn; <span class="comment">// dequeue와 같은 방식임 </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>테일 항목 삭제도 헤드 삭제와 같은 방식으로 제거한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">deleteTail</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> toReturn = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">this</span>.tail !== <span class="literal">null</span>) &#123;</span><br><span class="line">    toReturn = <span class="built_in">this</span>.tail.data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.tail === <span class="built_in">this</span>.head) &#123;</span><br><span class="line">      <span class="built_in">this</span>.head = <span class="literal">null</span>;</span><br><span class="line">      <span class="built_in">this</span>.tail = <span class="literal">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.tail = <span class="built_in">this</span>.tail.prev;</span><br><span class="line">      <span class="built_in">this</span>.tail.next = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; </span><br><span class="line"><span class="built_in">this</span>.size--;</span><br><span class="line"><span class="keyword">return</span> toReturn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>양항향 연결 리스트에서는 헤드에서 헤드의 next 포인터를 사용할 수 있다 (반대로도 가능)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">findFromHead (value) &#123;</span><br><span class="line">  <span class="keyword">let</span> currHead = <span class="built_in">this</span>.head;</span><br><span class="line">  <span class="keyword">while</span> (currHead.next) &#123;</span><br><span class="line">    <span class="keyword">if</span> (currHead.data === value) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    currHead = currHead.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>단일 연결 리스트 뒤집기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> reverseSinglyLinkedList = <span class="function"><span class="params">sll</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> node = sll.head;</span><br><span class="line">  <span class="keyword">let</span> prev = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 방향성을 반대로 바꾸는 과정</span></span><br><span class="line">  <span class="keyword">while</span> (node) &#123;</span><br><span class="line">    <span class="keyword">let</span> temp = node.next;</span><br><span class="line">    node.next = prev;</span><br><span class="line">    prev = node;</span><br><span class="line">    <span class="keyword">if</span> (!temp) <span class="keyword">break</span>;</span><br><span class="line">    node = temp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>연결 리스트에서 중복된 항목 제거하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> deleteDuplicateDataInSLL = <span class="function"><span class="params">sll</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> track = [];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> temp = sll.head;</span><br><span class="line">  <span class="keyword">let</span> prev = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">while</span> (temp) &#123;</span><br><span class="line">    <span class="keyword">if</span> (track.indexOf(temp.data) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      prev.next = temp.next;</span><br><span class="line">      sll.size--;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      track.push(temp.data);</span><br><span class="line">      prev = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    temp = temp.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(temp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>개선하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> deleteDuplicateDataInSLL = <span class="function"><span class="params">sll</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> track = &#123;&#125;;</span><br><span class="line">  <span class="keyword">let</span> temp = sll.head;</span><br><span class="line">  <span class="keyword">let</span> prev = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">while</span> (temp) &#123;</span><br><span class="line">    <span class="keyword">if</span>(track[temp.data]) &#123;</span><br><span class="line">      prev.next = temp.next;</span><br><span class="line">      sll.size--;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      track[temp.data] = <span class="literal">true</span>;</span><br><span class="line">      prev = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    temp = temp.next;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(temp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="14장-캐싱"><a href="#14장-캐싱" class="headerlink" title="14장 캐싱"></a>14장 캐싱</h3></li>
+<li>캐싱은 자료를 임시 메모리에 저장하는 과정으로 대표적인 캐싱 방법에는 LFU(Least Frequently Used) 캐싱과 LRU(Least Recently Used) 캐싱이 있다</li>
+<li>최근에 접근한 메모리 위치를 다시 접근할 가능성이 높고(시간적 지역성), 최근에 접근한 메모리 위치 주변의 위치를 다시 접근할 가능성이 높다(공간적 지역성)</li>
+<li>LFU 캐싱은 운영체제가 메모리를 관리하기 위해 사용하는 캐싱 알고리즘으로 가장 참조 빈도가 낮은 항목을 삭제한다</li>
+<li>LFU 캐시는 이중 연결 리스트를 사용해 O(1)시간에 항목을 제거한다</li>
+<li>LFU의 노드에는 freqCount 속성이 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LFUNode</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params">key, value</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.prev = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.next = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.key = key;</span><br><span class="line">    <span class="built_in">this</span>.data = data;</span><br><span class="line">    <span class="built_in">this</span>.freqCount = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LFUDoublyLinkedList</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.head = <span class="keyword">new</span> LFUNODE(<span class="string">&#x27;buffer head&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="built_in">this</span>.tail = <span class="keyword">new</span> LFUNODE(<span class="string">&#x27;buffer tail&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="built_in">this</span>.head.next = <span class="built_in">this</span>.tail;</span><br><span class="line">    <span class="built_in">this</span>.tail.prev = <span class="built_in">this</span>.head;</span><br><span class="line">    <span class="built_in">this</span>.size = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  insertHead (node) &#123;</span><br><span class="line">    node.next = <span class="built_in">this</span>.head.next;</span><br><span class="line">    <span class="built_in">this</span>.head.next.prev = node;</span><br><span class="line">    <span class="built_in">this</span>.head.next = node;</span><br><span class="line">    node.prev = <span class="built_in">this</span>.head;</span><br><span class="line">    <span class="built_in">this</span>.size++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  removeTail () &#123;</span><br><span class="line">    <span class="keyword">let</span> oldTail = <span class="built_in">this</span>.tail.prev;</span><br><span class="line">    <span class="keyword">let</span> prev = <span class="built_in">this</span>.tail.prev;</span><br><span class="line">    prev.prev.next = <span class="built_in">this</span>.tail; <span class="comment">// 전 전 노드의 next를 테일로 지정</span></span><br><span class="line">    <span class="built_in">this</span>.tail.prev = prev.prev; <span class="comment">// 테일을 제거하면 테일 앞 값을 테일로 지정해주어야 함</span></span><br><span class="line">    <span class="built_in">this</span>.size--;</span><br><span class="line">    <span class="keyword">return</span> oldTail;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">removeNode</span>(<span class="params">node</span>)</span> &#123;</span><br><span class="line">    node.prev.next = node.next;</span><br><span class="line">    node.next.prev = node.prev;</span><br><span class="line">    <span class="built_in">this</span>.size--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">    LFU의 set을 구현하기 위해서는 신규 항목의 삽입과 예전 항목의 교체가 필요함</span></span><br><span class="line"><span class="comment">    신규 항목을 삽입할 때 신규 노드가 생성되고 캐시 capacity가 꽉차지 않았다면 freq의 빈도 이중 연결 리스트에 삽입할 수 있다</span></span><br><span class="line"><span class="comment">    캐시가 꽉 찬 경우 빈도 이중 연결 리스트의 테일 항목이 삭제된 다음 삽입된다</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="function"><span class="title">set</span>(<span class="params">key, value</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> node = <span class="built_in">this</span>.keys[key];</span><br><span class="line">    <span class="keyword">if</span> (node === <span class="literal">undefined</span>) &#123;</span><br><span class="line">      node = <span class="keyword">new</span> LFUNode(key, value);</span><br><span class="line"></span><br><span class="line">      <span class="built_in">this</span>.keys[key] = node;</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.size !== <span class="built_in">this</span>.capacity) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.freq[<span class="number">1</span>] === <span class="literal">undefined</span>) &#123;</span><br><span class="line">          <span class="built_in">this</span>.freq[<span class="number">1</span>] = <span class="keyword">new</span> LFUDoublyLinkedList();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.freq[<span class="number">1</span>].insertHead(node);</span><br><span class="line">        <span class="built_in">this</span>.size++</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> oldTail = <span class="built_in">this</span>.freq[<span class="built_in">this</span>.minFreq].removeTail();</span><br><span class="line">        <span class="keyword">delete</span> <span class="built_in">this</span>.keys[oldTail.key];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.freq[<span class="number">1</span>] === <span class="literal">undefined</span>) &#123;</span><br><span class="line">          <span class="built_in">this</span>.req[<span class="number">1</span>] = <span class="keyword">new</span> LFUDoublyLinkedList();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">this</span>.freq[<span class="number">1</span>].insertHead(node);</span><br><span class="line">        <span class="built_in">this</span>.minFreq = <span class="number">1</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> oldFreqCount = node.freqCount;</span><br><span class="line">        node.data = value;</span><br><span class="line">        node.freqCount++;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">this</span>.freq[oldFreqCount].removeNode(node);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.freq[node.freqCount] === <span class="literal">undefined</span>) &#123;</span><br><span class="line">          <span class="built_in">this</span>.freq[node.freqCount] = <span class="keyword">new</span> LFUDoublyLinkedList();</span><br><span class="line">        &#125; </span><br><span class="line"></span><br><span class="line">        <span class="built_in">this</span>.freq[node.freqCount].insertHead(node);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (oldFreqCount === <span class="built_in">this</span>.minFreq </span><br><span class="line">            &amp;&amp; <span class="built_in">Object</span>.keys(<span class="built_in">this</span>.freq[oldFreqCount]).size === <span class="number">0</span>) &#123;</span><br><span class="line">              <span class="built_in">this</span>.minFreq++;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  get (key) &#123;</span><br><span class="line">    <span class="keyword">let</span> node = <span class="built_in">this</span>.keys[key];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (node === <span class="literal">undefined</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> oldFreqCount = node.freqCount;</span><br><span class="line">      node.freqCount++;</span><br><span class="line">      <span class="built_in">this</span>.freq[oldFreqCount].removeNode(node);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.freq[node.freqCount] === <span class="literal">undefined</span>) &#123;</span><br><span class="line">        <span class="built_in">this</span>.freq[node.freqCount] = <span class="keyword">new</span> LFUDoublyLinkedList();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="built_in">this</span>.freq[node.freqCount].insertHead(node);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (oldFreqCount === <span class="built_in">this</span>.minFreq </span><br><span class="line">          &amp;&amp; <span class="built_in">Object</span>.keys(<span class="built_in">this</span>.freq[oldFreqCount]).length === <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">this</span>.minFreq++;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> node.data;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LFUCache</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params">capacity</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.key = &#123;&#125;; <span class="comment">// LFUNode를 저장하는 공간</span></span><br><span class="line">    <span class="built_in">this</span>.freq = &#123;&#125;;<span class="comment">// LFUDoublyLinkedList를 저장하는 공간</span></span><br><span class="line">    <span class="built_in">this</span>.capacity = capacity;</span><br><span class="line">    <span class="built_in">this</span>.minFreq = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">this</span>.size = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>LRU 캐싱은 가장 오래된 항목을 먼저 제거하는 캐싱 알고리즘이다</li>
+<li>캐시의 항목에 접근하면 해당 항목은 리스트의 뒤(가장 최신)로 이동하고 가장 앞에 있는 항목이 제거되며 새 항목은 가장 뒤에 추가된다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DLLNode</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params">key, data</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.key = key;</span><br><span class="line">    <span class="built_in">this</span>.data = data;</span><br><span class="line">    <span class="built_in">this</span>.next = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">this</span>.prev = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params">capacity</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.keys = &#123;&#125;;</span><br><span class="line">    <span class="built_in">this</span>.capacity = capacity;</span><br><span class="line">    <span class="built_in">this</span>.head = <span class="keyword">new</span> DLLNode(<span class="string">&#x27;&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="built_in">this</span>.tail = <span class="keyword">new</span> DLLNode(<span class="string">&#x27;&#x27;</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="built_in">this</span>.head.next = <span class="built_in">this</span>.tail</span><br><span class="line">    <span class="built_in">this</span>.tail.prev = <span class="built_in">this</span>.head;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  removeNode (node) &#123;</span><br><span class="line">    <span class="keyword">let</span> prev = node.prev,</span><br><span class="line">        next = node.next;</span><br><span class="line">    prev.next = next;</span><br><span class="line">    next.prev = prev;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  addNode (node) &#123;</span><br><span class="line">    <span class="keyword">let</span> realTail = <span class="built_in">this</span>.tail.prev;</span><br><span class="line">    realTail.next = node;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.tail.prev = node;</span><br><span class="line">    node.prev = realTail;</span><br><span class="line">    node.next = <span class="built_in">this</span>.tail;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  get (key) &#123;</span><br><span class="line">    <span class="keyword">let</span> node = <span class="built_in">this</span>.keys[key];</span><br><span class="line">    <span class="keyword">if</span> (node === <span class="literal">undefined</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.removeNode(node);</span><br><span class="line">      <span class="built_in">this</span>.addNode(node);</span><br><span class="line">      <span class="keyword">return</span> node.data;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  set (key, value) &#123;</span><br><span class="line">    <span class="keyword">let</span> node = <span class="built_in">this</span>.keys[key];</span><br><span class="line">    <span class="keyword">if</span> (node) <span class="built_in">this</span>.removeNode(node);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> newNode = <span class="keyword">new</span> DLLNode(key, value);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.addNode(newNode);</span><br><span class="line">    <span class="built_in">this</span>.keys[key] = newNode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Object</span>.keys(<span class="built_in">this</span>.keys).length &gt; <span class="built_in">this</span>.capacity) &#123;</span><br><span class="line">      <span class="keyword">let</span> realHead = <span class="built_in">this</span>.head.next;</span><br><span class="line">      <span class="built_in">this</span>.removeNode(realHead);</span><br><span class="line">      <span class="keyword">delete</span> <span class="built_in">this</span>.keys[realHead.key];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>대부분의 경우 LFU는 LRU보다 성능이 떨어진다 LFU는 특정 시점에 한해 자주 사용된 경우를 배제할 수 없기 때문</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-6/"
+                    data-tooltip="21-03-12 자바스크립트로 하는 자료구조와 알고리즘(6)"
+                    aria-label="NEXT: 21-03-12 자바스크립트로 하는 자료구조와 알고리즘(6)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-6/"
+                    data-tooltip="21-03-12 자바스크립트로 하는 자료구조와 알고리즘(6)"
+                    aria-label="NEXT: 21-03-12 자바스크립트로 하는 자료구조와 알고리즘(6)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/12/21-03-12-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-7/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
