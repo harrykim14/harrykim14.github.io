@@ -188,6 +188,71 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/08/21-03-08-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                            aria-label=": 21-03-08 알고리즘 강의 노트정리"
+                        >
+                            21-03-08 알고리즘 강의 노트정리
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-08T13:17:40+09:00">
+	
+		    Mar 08, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="단어-세기"><a href="#단어-세기" class="headerlink" title="단어 세기"></a>단어 세기</h3><ul>
+<li>해당 강의에서는 C++의 string.h 라이브러리 내 strtok() 함수를 사용하여 해결하였으나 자바스크립트에서는 널 포인트를 사용하지 않기 때문에 따로 구현하고 넘어감</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> countWords = <span class="function"><span class="params">p</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> divide = p.split(<span class="string">&#x27;\n&#x27;</span>).map(<span class="function"><span class="params">el</span> =&gt;</span> el.split(<span class="string">&#x27; &#x27;</span>))</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; divide.length; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> result = [];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; divide[i].length; j++)&#123;</span><br><span class="line">            <span class="keyword">let</span> fCondition = divide[i][j];</span><br><span class="line">            <span class="comment">// 객체 내의 원소를 받고 해당 원소로 배열을 필터</span></span><br><span class="line">            <span class="comment">// 필터된 배열의 길이가 해당 아이템의 숫자가 됨</span></span><br><span class="line">            <span class="keyword">let</span> cnt = divide[i].filter(<span class="function"><span class="params">el</span> =&gt;</span> el === fCondition).length;</span><br><span class="line">            <span class="keyword">let</span> element = <span class="string">`<span class="subst">$&#123;fCondition&#125;</span> : <span class="subst">$&#123;cnt&#125;</span>`</span></span><br><span class="line">            <span class="keyword">if</span>(!result.includes(element))</span><br><span class="line">                result.push(element)</span><br><span class="line">        &#125;</span><br><span class="line">        result = result.sort(<span class="function">(<span class="params">a,b</span>) =&gt;</span> a.charCodeAt() - b.charCodeAt())</span><br><span class="line">        <span class="built_in">console</span>.log(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>출력 예제와 다른 점 : sort()함수를 사용하여 ASCII 값을 비교하여 정렬하였으나 출력 예제의 ‘A : 1’, ‘AM : 2’, ‘DOG : 4’, ‘I : 2’와는 달리 ‘AM : 2’, ‘A : 1’, ‘DOG : 4’, ‘I : 2’로 출력되었다</li>
+<li>어떻게 해결하면 될까?를 고민해봐야 함</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/08/21-03-08-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
                             aria-label=": 21-03-07 알고리즘 강의 노트정리"
                         >
@@ -1001,97 +1066,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                            aria-label=": 21-03-01 알고리즘 기초강의"
-                        >
-                            21-03-01 알고리즘 기초강의
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-03-01T12:46:40+09:00">
-	
-		    Mar 01, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="허프만-코드와-허프만-알고리즘"><a href="#허프만-코드와-허프만-알고리즘" class="headerlink" title="허프만 코드와 허프만 알고리즘"></a>허프만 코드와 허프만 알고리즘</h3><ul>
-<li><p>이진 코드 (binary code)</p>
-<ul>
-<li>ASCII / UNICODE와 같은 fixed-length 이진 코드</li>
-<li>variable-length 이진 코드</li>
-</ul>
-</li>
-<li><p>최적 이진 코드 문제 (optimal binary code)</p>
-<ul>
-<li>주어진 파일에 있는 문자들을 이진코드로 표현할 때 필요한 최소한의 이진 코드는?</li>
-</ul>
-</li>
-<li><p>전치 코드 (prefix code)</p>
-<ul>
-<li>한 문자의 코드 워드가 다른 문자의 코드 워드의 앞부분이 될 수 없다<br>→ 01이 ‘a’의 코드워드라면 011은 ‘b’의 코드워드가 될 수 없다</li>
-<li>모든 전치코드는 리프노드가 코드 문자인 이진 트리로 표현 가능하다</li>
-<li>파일을 디코딩 할 때 뒷부분을 미리 볼 필요가 없음</li>
-</ul>
-</li>
-<li><p><strong>허프만 알고리즘</strong> : 허프만 코드에 해당하는 이진 트리를 구축하는 Greedy approach</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; n: 주어진 데이터 파일 내 문자의 개수</span><br><span class="line">&#x2F;&#x2F; PQ: **빈도수가 낮은 노드를 먼저 리턴하는** 우선순위 큐(min-heap)</span><br><span class="line"> 1. PQ는 빈도수로 오름차순 정렬되어 있다</span><br><span class="line"> 2. PQ에서 두 개의 인자를 pop하여 처음 pop한 인자(p)를 left 노드로, </span><br><span class="line">    다음 인자(q)를 right 노드로 하는 새 노드를 구축한다</span><br><span class="line"> 3. 새 노드의 빈도수는 자식 노드(p, q)의 빈도수의 합이 된다</span><br><span class="line"> 4. 이 노드를 PQ에 다시 삽입한다 (오름차순에 맞게 위치함)</span><br></pre></td></tr></table></figure></li>
-<li><p>최적 이진 코드를 위한 이진 트리의 구축</p>
-<ul>
-<li>데이터 파일을 인코딩하는 데 필요한 비트 수 계산</li>
-<li>주어진 이진트리는 T</li>
-<li>{v1, v2, …, vn} : 데이터 파일 내 문자들의 집합</li>
-<li>frequency(vi): 문자 vi가 파일 내에서 나타나는 빈도수</li>
-<li>depth(vi): 이진 트리 T에서 문자 vi 노드의 깊이</li>
-<li>bits(T) = 모든 frequency(vi) * depth(vi) 의 합 (0 &lt; i &lt; n)</li>
-</ul>
-</li>
-</ul>
-<p><strong>파이썬으로 허프만 코드와 허프만 알고리즘</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HuffNode</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span> (<span class="params">self, symbol, freq</span>):</span></span><br><span class="line">        self.symbol = symbol</span><br><span class="line">        self.freq = freq</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorder</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(self.freq, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        <span class="keyword">if</span>(self.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>):</span><br><span class="line">            self.left.preorder()</span><br><span class="line">        <span class="keyword">if</span>(self.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>):</span><br><span class="line">            self.right.preorder()</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span>(self.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>):</span><br><span class="line">            self.left.inorder()</span><br><span class="line">        print(self.freq, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        <span class="keyword">if</span>(self.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>):</span><br><span class="line">            self.right.inorder()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">huffman</span> (<span class="params">n, PQ</span>):</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>):</span><br><span class="line">        p = PQ.get()[<span class="number">1</span>]</span><br><span class="line">        q = PQ.get()[<span class="number">1</span>]</span><br><span class="line">        r = HuffNode(<span class="string">&#x27; &#x27;</span>, p.freq + q.freq)</span><br><span class="line">        r.left = p</span><br><span class="line">        r.right = q</span><br><span class="line">        PQ.put((r.freq, r))</span><br><span class="line">    <span class="keyword">return</span> PQ.get()[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 파이썬에는 Priority Queue가 있어 이 자료구조를 사용할 것</span></span><br></pre></td></tr></table></figure>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1107,7 +1081,18 @@
           </li>
         
         
-        <li class="pagination-number">page 2 of 2</li>
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/archives/2021/03/page/3/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 2 of 3</li>
     </ul>
 </div>
 
