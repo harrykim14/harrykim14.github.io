@@ -1,0 +1,627 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-14 자바스크립트로 하는 자료구조와 알고리즘(9) - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"16장 힙\n힙은 O(1) 시간으로 가장 높은 항목이나 가장 낮은 항목을 반환하는 중요한 자료 구조\n힙은 트리와 비슷한 자료 구조의 일종으로 최대 힙의 경우 부모가 자식보다 크고 최소 힙의 경우 부모가 자식보다 작다\n힙은 자식에 대한 포인터를 갖는 대신에 배열을 사용해 자료를 저장함\n배열을 사용하므로 인덱스를 통해 힙 노드의 자식 위치를 쉽게 계산할 수 있다\n힙이 배열을 사용해 자료를 저장하기 때문에 인덱스는 각 항목의 차수/높이를 정의 한다\n첫 번째 배열 항목을 루트로 설정하고 각 왼쪽 항목과 오른쪽 항목을 순서대로 채워 이진 힙을 만들 수 있다\n최대 힙은 루트노드가 가장 높은 값을 갖고 최소 힙은 루트노드가 가장 낮은 값을 갖는다123456789101112131415161718192021222324252627282930313233343536373839404142434445class Heap &#123;    // 힙은 배열을 사용해 자료를 저장    constructor () &#123;        this.items = [];    &#125;    // 두 개의 인덱스에 위치한 값을 바꾸는 것도 인덱스 값으로 변경 가능함    swap(idx1, idx2) &#123;        let temp = this.itmes[idx1];        this.itmes[idx1] = this.items[idx2];        this.items[idx2] = temp;    &#125;     parentIndex(idx) &#123;        return Math.floor((idx-1)/2);    &#125;    leftChildIndex(idx) &#123;        return index * 2 + 1;    &#125;    rightChildIndex(idx) &#123;        return idx * 2 + 2;    &#125;    parent(idx) &#123;        return this.items[this.parentIndex(idx)];    &#125;    leftChild(idx) &#123;        return this.items[this.leftChildIndex(idx)];    &#125;    rightChild(idx) &#123;        return this.items[this.rightChildIndex(idx)];    &#125;    peek(item) &#123;        return this.items[0];    &#125;    size() &#123;        return this.items.length;    &#125;&#125;\n예를들어 최소 힙 구조인 배열이 [2, 4, 23, 12, 13] 라면 부모 노드인 0번 인덱스 2가 부모가 될 것이고 1번 인덱스인 4는 왼쪽 자식이, 2번 인덱스인 23은 오른쪽 자식이 된다 \n항상 좌측이 먼저 채워지고 우측이 채워지므로 3번 인덱스는 1번 인덱스의 왼쪽 자식이 되고 4번 인덱스는 1번 인덱스의 오른쪽 자식이 된다\n정리하면 자신의 인덱스가 N이라고 한다면 부모는 (N - 1)/2 의 인덱스를 가질 것이고(예를 들어 N = 3 일 때, 부모의 인덱스는 1), 왼쪽 자식은 (N * 2) + 1 의 인덱스를, 힙 배열이 순차적이라면 오른쪽 자식은 바로 옆에 붙어있어야 하므로 (N * 2) + 2 의 인덱스를 가질 것이다 \n항목을 추가하거나 삭제하더라도 힙의 구조가 유지되어야 한다1234567891011121314151617181920212223242526272829303132333435363738class MinHeap extends Heap&#123;    constructor () &#123;        super();        this.items = [];    &#125;    add(item) &#123;        this.items[this.items.length] = item;        this.bubbleUp();    &#125;    poll() &#123;        let item = this.items[0];        this.items[0] = this.items[this.items.length - 1];        this.items.pop();        this.bubbleDown();        return item;    &#125;    bubbleDown() &#123;        let index = 0;        while (this.leftChild(index) &amp;&amp; this.leftChild(index) &lt; this.items[index]) &#123;            let smallerIndex = this.leftChildIndex(index);            if (this.rightChild(index) &amp;&amp; this.rightChild(index) &lt; this.items[smallerIndex])                smallerIndex = this.rightChildrenIndex(index);              this.swap(smallerIndex, index);            index = smallerIndex;        &#125;    &#125;    bubbleUp() &#123;        let index = this.items.length - 1;        while(this.parent(index) &amp;&amp; this.parent(index) &gt; this.items[index]) &#123;            this.swap(this.parentIndeX(index), index);            index = this.parentIndex(index);        &#125;    &#125;&#125;\n최대 힙의 경우 최소 힙에서 구현한 bubbleDown과 bubbleUp 내 비교자 뿐이다12345678910111213141516171819bubbleDown() &#123;    let index = 0;    while (this.leftChild(index) &amp;&amp; this.leftChild(index) &gt; this.items[index]            || this.rightChild(index) &gt; this.items[index]) &#123;        let biggerIndex = this.leftChildIndex(index);        if (this.rightChild(index) &amp;&amp; this.rightChild(index) &lt; this.items[biggerIndex])            biggerIndex = this.rightChildrenIndex(index);          this.swap(biggerIndex, index);        index = biggerIndex;    &#125;&#125;bubbleUp() &#123;    let index = this.items.length - 1;    while(this.parent(index) &amp;&amp; this.parent(index) &lt; this.items[index]) &#123;        this.swap(this.parentIndeX(index), index);        index = this.parentIndex(index);    &#125;&#125;\n힙 노드 인덱스 요약\n\n\n\n\n노드\n인덱스\n\n\n\n자신\nN\n\n\n부모\n(N - 1) / 2\n\n\n왼쪽 자식\n(N * 2) + 1\n\n\n오른쪽 자식\n(N * 2) + 2\n\n\n\n힙은 삼투를 통해 자신의 구조를 유지한다(bubbleUp, bubbleDown)\n이 삼투 과정이 있어 삭제와 삽입이 O(log2(n)) 시간에 가능해진다\n일련의 숫자에서 중간 값을 찾기1234567891011121314151617181920212223242526272829303132333435/*    하나의 최소 힙과 하나의 최대 힙을 만들면 중간 값을 얻는 데 O(1)시간이 걸림*/class MedianHeap &#123;    constructor() &#123;        this.minHeap = new MinHeap();        this.maxHeap = new MaxHeap();    &#125;    add(value) &#123;        if (value &gt; this.median())             this.minHeap.add(value);        else             this.maxHeap.add(value);                if (this.minHeap.size() - this.maxHeap.size() &gt; 1)             this.maxHeap.add(this.minHeap.poll());                if (this.maxHeap.size() - this.minHeap.size() &gt; 1)            this.minHeap.add(this.maxHeap.poll());    &#125;    median() &#123;        if(this.minHeap.size() === 0 &amp;&amp; this.maxHeap.size() === 0)             return Number.NEGATIVE_INFINITY;        else if (this.minHeap.size() === this.maxHeap.size())            return (this.minHeap.peek() + this.maxHeap.peek()) / 2;        else if (this.minHeap.size() &gt; this.maxHeap.size())             return this.minHeap.peek();        else             return this.maxHeap.peek();    &#125;&#125;\n배열에서 K번째로 가장 작은/큰 값 찾기1234567891011121314151617181920212223242526let arr = [12, 3, 13, 4 ,2, 40, 23];const getKthSmallestElement = (arr, k) =&gt; &#123;    let minH = new MinHeap();    for (let i = 0, len = arr.length; i &lt; len; i++) &#123;        minH.add(arr[i]);    &#125;        for (let i = 1; i &lt; k; i++) &#123;        minH.poll();    &#125;    return minH.poll();&#125;const getKthSmallestElement = (arr, k) =&gt; &#123;    let maxH = new MaxHeap();    for (let i = 0, len = arr.length; i &lt; len; i++) &#123;        maxH.add(arr[i]);    &#125;        for (let i = 1; i &lt; k; i++) &#123;        maxH.poll();    &#125;    return maxH.poll();&#125;\n17장 그래프\n그래프를 사용하면 객체 간의 연결을 다양하게 나타낼 수 있다\n그래프 기본 용어 및 개념\n\n\n\n\n단어\n뜻\n\n\n\n정점\n그래프를 형성하는 노드로 원으로 표기\n\n\n간선\n그래프에서 노드 간의 연결로 정점(원)사이의 선으로 표기\n\n\n정점 차수\n해당 점점에 연결된 간선의 개수\n\n\n희소 그래프\n정점들 간 가능한 연결 중 일부만 존재하는 경우\n\n\n밀집 그래프\n다양한 정점들 간에 연결이 많은 경우\n\n\n순환 그래프\n어떤 정점에서 출발해 해당 정점으로 다시 돌아오는 경로가 있는 지향성 그래프\n\n\n가중치\n간선에 대한 값으로 문맥에 따라 다양한 것을 나타냄(정점 간 거리 등)\n\n\n\n무지향성 그래프는 간선 간에 방향이 없는 그래프로 노드 간 방향 없이 상호 연결을 뜻한다\n인접 행렬과 인접 리스트를 사용하여 무지향성 그래프를 자료 구조 클래스로 표현할 수 있다\n가중치가 있는 무지향성 그래프에 정점과 간선을 추가하기123456789101112131415161718192021222324252627282930class UndirectedGraph &#123;    constructor () &#123;        this.edges = &#123;&#125;;    &#125;    addVertext(vertex) &#123;        this.edges[vertex] = &#123;&#125;;    &#125;    addEdge(vertex1, vertex2, weight) &#123;        if (weight === undefined)            weight = 0;        this.edges[vertex1][vertex2] = weight;        this.edges[vertex2][vertex1] = weight;    &#125;    removeEdge(vertex1, vertex2) &#123;        if (this.edges[vertex1] &amp;&amp; this.edges[vertex1][vertex2] !== undefined)             delete this.edges[vertex1][vertex2]        if (this.edges[vertex2] &amp;&amp; this.edges[vertex2][vertex1] !== undefined)            delete this.deges[vertex2][vertex1]    &#125;    removeVertex = function(vertex) &#123;        for (let adjacentVertex in this.edges[vertex]) &#123;            this.removeEdge(adjacentVertex, vertex);        &#125;        delete this.edges[vertex];    &#125;&#125;\n정점간에 방향이 있는 지향성 그래프를 구현하기123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657class DirectedGraph &#123;    constructor() &#123;        this.edges = &#123;&#125;;    &#125;    addVertex(vertex) &#123;        this.edges[vertex] = &#123;&#125;;    &#125;    addEdge(origVertex, destVertex, weight) &#123;        if(weight === undefined)            weight = 0;        this.edges[origVertex][destVertex] = weight;    &#125;    removeEdge(origVertex, destVertex) &#123;        if(this.edges[origVertex] &amp;&amp; this.edges[origVertex][destVertex] !== undefined)            delete this.deges[origVertex][destVertex];    &#125;    removeVertex(vertex) &#123;        for (let adjacentVertex in this.edges[vertex])            this.removeEdge(adjacentVertex, vertex);        delete this.edges[vertex];    &#125;    traverseBFS(vertex, fn) &#123;        let queue = [], visited = &#123;&#125;;        queue.push(vertex);        while(queue.length) &#123;            vertex = queue.shift();            if(!visited[vertex]) &#123;                visited[vertex] = true;                fn(vertex);                for (let adjacentVertex in this.edges[vertex]) &#123;                    queue.push(adjacentVertex);                &#125;            &#125;        &#125;    &#125;    traverseDFS(vertex, fn) &#123;        let visited = &#123;&#125;;        this._traverseDFS(vertex, visited, fn);    &#125;    _traverseDFS(vertex, visited, fn) &#123;        visited[vertex] = true;        fn(vertex);        for (let adjacentVertex in this.edges[vertex]) &#123;            if(!visited[adjacentVertex])                this. _traverseDFS(adjacentVertex, visited, fn)        &#125;    &#125;&#125;\n가중치가 있는 그래프와 최단 경로\n다익스트라 알고리즘은 목적지에 도달하기 위해 각 단계에서 최단 경로를 취하는 방식으로 동작한다\n처음에는 일부 노드에 도달할 수 없을 수도 있기 때문에 거리를 무한으로 표기한다123456789101112131415161718192021222324252627282930313233343536function _isEmpty(obj) &#123;    return Object.keys(obj).length === 0;&#125;function _extractMin(Q, dist) &#123;    let minimumDistance = Infinity,        nodeWithMinimumDistance = null;    for (let node in Q) &#123;        if (dist[node] &lt;= minimumDistance) &#123;            minimumDistance = dist[node];            nodeWithMinimumDistance = node;        &#125;    &#125;    return nodeWithMinimumDistance;&#125;// class DirectedGraph 내부라고 가정    Dijkstra(source) &#123;        let Q = &#123;&#125;, dist = &#123;&#125;;        for (let vertex in this.edges) &#123;            dist[vertex] = Infinity;            Q[vertex] = this.edges[vertex];        &#125;        dist[source] = 0;        while (!_isEmpty(Q)) &#123;            let u = _extractMin(Q, dist);            delete Q[u];            for (var neighbor in this.edges[u])&#123;                let alt = dist[u] + this.edges[u][neighbor];                if (alt &lt; dist[neighbor])                     dist[neighbor] = alt;            &#125;        &#125;        return dist;    &#125;\n위상 정렬 알고리즘은 순서를 기록하기 위해 스택을 사용하는 수정된 버전의 깊이 우선 정렬\n이 알고리즘은 어떤 노드로부터 깊이 우선 정렬을 수행해 해당 노드와 연결된 모든 노드들을 재귀적으로 방문하면서 해당 노드들을 스택에 추가한다123456789101112131415161718192021// class DirectedGraph 내부라고 가정    topologicalSortUtil(v, visited, stack) &#123;        visited.add(v);        for (let item in this.edges[v])&#123;            if (visited.has(item) === false) &#123;                this.topologicalSortUtil(item, visited, stack)            &#125;        &#125;        stack.unshift(v);    &#125;    topologicalSort() &#123;        let visited = new Set(), stack = [];        for (let item in this.edges) &#123;            if (visited.has(item) === false) &#123;                this.topologicalSortUtil(item, visited, stack);            &#125;        &#125;        return stack;    &#125;\n\n","dateCreated":"2021-03-14T01:46:17+09:00","dateModified":"2021-03-14T17:49:28+09:00","datePublished":"2021-03-14T01:46:17+09:00","description":"","headline":"21-03-14 자바스크립트로 하는 자료구조와 알고리즘(9)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"}</script>
+    <meta name="description" content="16장 힙 힙은 O(1) 시간으로 가장 높은 항목이나 가장 낮은 항목을 반환하는 중요한 자료 구조 힙은 트리와 비슷한 자료 구조의 일종으로 최대 힙의 경우 부모가 자식보다 크고 최소 힙의 경우 부모가 자식보다 작다 힙은 자식에 대한 포인터를 갖는 대신에 배열을 사용해 자료를 저장함 배열을 사용하므로 인덱스를 통해 힙 노드의 자식 위치를 쉽게 계산할 수 있다">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-14 자바스크립트로 하는 자료구조와 알고리즘(9)">
+<meta property="og:url" content="http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="16장 힙 힙은 O(1) 시간으로 가장 높은 항목이나 가장 낮은 항목을 반환하는 중요한 자료 구조 힙은 트리와 비슷한 자료 구조의 일종으로 최대 힙의 경우 부모가 자식보다 크고 최소 힙의 경우 부모가 자식보다 작다 힙은 자식에 대한 포인터를 갖는 대신에 배열을 사용해 자료를 저장함 배열을 사용하므로 인덱스를 통해 힙 노드의 자식 위치를 쉽게 계산할 수 있다">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-13T16:46:17.000Z">
+<meta property="article:modified_time" content="2021-03-14T08:49:28.851Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-14 자바스크립트로 하는 자료구조와 알고리즘(9)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-14T01:46:17+09:00">
+	
+		    Mar 14, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>, <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%84%9C%EC%A0%81/">서적</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="16장-힙"><a href="#16장-힙" class="headerlink" title="16장 힙"></a>16장 힙</h3><ul>
+<li>힙은 O(1) 시간으로 가장 높은 항목이나 가장 낮은 항목을 반환하는 중요한 자료 구조</li>
+<li>힙은 트리와 비슷한 자료 구조의 일종으로 최대 힙의 경우 부모가 자식보다 크고 최소 힙의 경우 부모가 자식보다 작다</li>
+<li>힙은 자식에 대한 포인터를 갖는 대신에 배열을 사용해 자료를 저장함</li>
+<li>배열을 사용하므로 인덱스를 통해 힙 노드의 자식 위치를 쉽게 계산할 수 있다</li>
+<li>힙이 배열을 사용해 자료를 저장하기 때문에 <strong>인덱스는 각 항목의 차수/높이를 정의</strong> 한다</li>
+<li>첫 번째 배열 항목을 루트로 설정하고 각 왼쪽 항목과 오른쪽 항목을 순서대로 채워 이진 힙을 만들 수 있다</li>
+<li>최대 힙은 루트노드가 가장 높은 값을 갖고 최소 힙은 루트노드가 가장 낮은 값을 갖는다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Heap</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 힙은 배열을 사용해 자료를 저장</span></span><br><span class="line">    <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">this</span>.items = [];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 두 개의 인덱스에 위치한 값을 바꾸는 것도 인덱스 값으로 변경 가능함</span></span><br><span class="line">    <span class="function"><span class="title">swap</span>(<span class="params">idx1, idx2</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> temp = <span class="built_in">this</span>.itmes[idx1];</span><br><span class="line">        <span class="built_in">this</span>.itmes[idx1] = <span class="built_in">this</span>.items[idx2];</span><br><span class="line">        <span class="built_in">this</span>.items[idx2] = temp;</span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">parentIndex</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.floor((idx-<span class="number">1</span>)/<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">leftChildIndex</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> index * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">rightChildIndex</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> idx * <span class="number">2</span> + <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">parent</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="built_in">this</span>.parentIndex(idx)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">leftChild</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="built_in">this</span>.leftChildIndex(idx)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">rightChild</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="built_in">this</span>.rightChildIndex(idx)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">peek</span>(<span class="params">item</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">size</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>예를들어 최소 힙 구조인 배열이 [2, 4, 23, 12, 13] 라면 부모 노드인 0번 인덱스 2가 부모가 될 것이고 1번 인덱스인 4는 왼쪽 자식이, 2번 인덱스인 23은 오른쪽 자식이 된다 </li>
+<li>항상 좌측이 먼저 채워지고 우측이 채워지므로 3번 인덱스는 1번 인덱스의 왼쪽 자식이 되고 4번 인덱스는 1번 인덱스의 오른쪽 자식이 된다</li>
+<li>정리하면 자신의 인덱스가 N이라고 한다면 부모는 <strong>(N - 1)/2</strong> 의 인덱스를 가질 것이고(예를 들어 N = 3 일 때, 부모의 인덱스는 1), 왼쪽 자식은 <strong>(N * 2) + 1</strong> 의 인덱스를, 힙 배열이 순차적이라면 오른쪽 자식은 바로 옆에 붙어있어야 하므로 <strong>(N * 2) + 2</strong> 의 인덱스를 가질 것이다 </li>
+<li>항목을 추가하거나 삭제하더라도 힙의 구조가 유지되어야 한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinHeap</span> <span class="keyword">extends</span> <span class="title">Heap</span></span>&#123;</span><br><span class="line">    <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">        <span class="built_in">this</span>.items = [];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">add</span>(<span class="params">item</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.items[<span class="built_in">this</span>.items.length] = item;</span><br><span class="line">        <span class="built_in">this</span>.bubbleUp();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">poll</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> item = <span class="built_in">this</span>.items[<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">this</span>.items[<span class="number">0</span>] = <span class="built_in">this</span>.items[<span class="built_in">this</span>.items.length - <span class="number">1</span>];</span><br><span class="line">        <span class="built_in">this</span>.items.pop();</span><br><span class="line">        <span class="built_in">this</span>.bubbleDown();</span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">bubbleDown</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="built_in">this</span>.leftChild(index) &amp;&amp; <span class="built_in">this</span>.leftChild(index) &lt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">            <span class="keyword">let</span> smallerIndex = <span class="built_in">this</span>.leftChildIndex(index);</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">this</span>.rightChild(index) &amp;&amp; <span class="built_in">this</span>.rightChild(index) &lt; <span class="built_in">this</span>.items[smallerIndex])</span><br><span class="line">                smallerIndex = <span class="built_in">this</span>.rightChildrenIndex(index);  </span><br><span class="line">            <span class="built_in">this</span>.swap(smallerIndex, index);</span><br><span class="line">            index = smallerIndex;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">bubbleUp</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> index = <span class="built_in">this</span>.items.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="built_in">this</span>.parent(index) &amp;&amp; <span class="built_in">this</span>.parent(index) &gt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">            <span class="built_in">this</span>.swap(<span class="built_in">this</span>.parentIndeX(index), index);</span><br><span class="line">            index = <span class="built_in">this</span>.parentIndex(index);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>최대 힙의 경우 최소 힙에서 구현한 bubbleDown과 bubbleUp 내 비교자 뿐이다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">bubbleDown</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">this</span>.leftChild(index) &amp;&amp; <span class="built_in">this</span>.leftChild(index) &gt; <span class="built_in">this</span>.items[index]</span><br><span class="line">            || <span class="built_in">this</span>.rightChild(index) &gt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">        <span class="keyword">let</span> biggerIndex = <span class="built_in">this</span>.leftChildIndex(index);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.rightChild(index) &amp;&amp; <span class="built_in">this</span>.rightChild(index) &lt; <span class="built_in">this</span>.items[biggerIndex])</span><br><span class="line">            biggerIndex = <span class="built_in">this</span>.rightChildrenIndex(index);  </span><br><span class="line">        <span class="built_in">this</span>.swap(biggerIndex, index);</span><br><span class="line">        index = biggerIndex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">bubbleUp</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="built_in">this</span>.items.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">this</span>.parent(index) &amp;&amp; <span class="built_in">this</span>.parent(index) &lt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">        <span class="built_in">this</span>.swap(<span class="built_in">this</span>.parentIndeX(index), index);</span><br><span class="line">        index = <span class="built_in">this</span>.parentIndex(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>힙 노드 인덱스 요약</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>노드</th>
+<th>인덱스</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>자신</td>
+<td>N</td>
+</tr>
+<tr>
+<td>부모</td>
+<td>(N - 1) / 2</td>
+</tr>
+<tr>
+<td>왼쪽 자식</td>
+<td>(N * 2) + 1</td>
+</tr>
+<tr>
+<td>오른쪽 자식</td>
+<td>(N * 2) + 2</td>
+</tr>
+</tbody></table>
+<ul>
+<li>힙은 삼투를 통해 자신의 구조를 유지한다(bubbleUp, bubbleDown)</li>
+<li>이 삼투 과정이 있어 삭제와 삽입이 <strong>O(log2(n))</strong> 시간에 가능해진다</li>
+<li>일련의 숫자에서 중간 값을 찾기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    하나의 최소 힙과 하나의 최대 힙을 만들면 중간 값을 얻는 데 O(1)시간이 걸림</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MedianHeap</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.minHeap = <span class="keyword">new</span> MinHeap();</span><br><span class="line">        <span class="built_in">this</span>.maxHeap = <span class="keyword">new</span> MaxHeap();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">add</span>(<span class="params">value</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (value &gt; <span class="built_in">this</span>.median()) </span><br><span class="line">            <span class="built_in">this</span>.minHeap.add(value);</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            <span class="built_in">this</span>.maxHeap.add(value);</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.minHeap.size() - <span class="built_in">this</span>.maxHeap.size() &gt; <span class="number">1</span>) </span><br><span class="line">            <span class="built_in">this</span>.maxHeap.add(<span class="built_in">this</span>.minHeap.poll());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.maxHeap.size() - <span class="built_in">this</span>.minHeap.size() &gt; <span class="number">1</span>)</span><br><span class="line">            <span class="built_in">this</span>.minHeap.add(<span class="built_in">this</span>.maxHeap.poll());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">median</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">this</span>.minHeap.size() === <span class="number">0</span> &amp;&amp; <span class="built_in">this</span>.maxHeap.size() === <span class="number">0</span>) </span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">Number</span>.NEGATIVE_INFINITY;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">this</span>.minHeap.size() === <span class="built_in">this</span>.maxHeap.size())</span><br><span class="line">            <span class="keyword">return</span> (<span class="built_in">this</span>.minHeap.peek() + <span class="built_in">this</span>.maxHeap.peek()) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">this</span>.minHeap.size() &gt; <span class="built_in">this</span>.maxHeap.size()) </span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>.minHeap.peek();</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>.maxHeap.peek();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>배열에서 K번째로 가장 작은/큰 값 찾기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">12</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="number">4</span> ,<span class="number">2</span>, <span class="number">40</span>, <span class="number">23</span>];</span><br><span class="line"><span class="keyword">const</span> getKthSmallestElement = <span class="function">(<span class="params">arr, k</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> minH = <span class="keyword">new</span> MinHeap();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">        minH.add(arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; k; i++) &#123;</span><br><span class="line">        minH.poll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> minH.poll();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getKthSmallestElement = <span class="function">(<span class="params">arr, k</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> maxH = <span class="keyword">new</span> MaxHeap();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">        maxH.add(arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; k; i++) &#123;</span><br><span class="line">        maxH.poll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> maxH.poll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="17장-그래프"><a href="#17장-그래프" class="headerlink" title="17장 그래프"></a>17장 그래프</h3></li>
+<li>그래프를 사용하면 객체 간의 연결을 다양하게 나타낼 수 있다</li>
+<li>그래프 기본 용어 및 개념</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>단어</th>
+<th>뜻</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>정점</td>
+<td>그래프를 형성하는 노드로 원으로 표기</td>
+</tr>
+<tr>
+<td>간선</td>
+<td>그래프에서 노드 간의 연결로 정점(원)사이의 선으로 표기</td>
+</tr>
+<tr>
+<td>정점 차수</td>
+<td>해당 점점에 연결된 간선의 개수</td>
+</tr>
+<tr>
+<td>희소 그래프</td>
+<td>정점들 간 가능한 연결 중 일부만 존재하는 경우</td>
+</tr>
+<tr>
+<td>밀집 그래프</td>
+<td>다양한 정점들 간에 연결이 많은 경우</td>
+</tr>
+<tr>
+<td>순환 그래프</td>
+<td>어떤 정점에서 출발해 해당 정점으로 다시 돌아오는 경로가 있는 지향성 그래프</td>
+</tr>
+<tr>
+<td>가중치</td>
+<td>간선에 대한 값으로 문맥에 따라 다양한 것을 나타냄(정점 간 거리 등)</td>
+</tr>
+</tbody></table>
+<ul>
+<li>무지향성 그래프는 간선 간에 방향이 없는 그래프로 노드 간 방향 없이 상호 연결을 뜻한다</li>
+<li>인접 행렬과 인접 리스트를 사용하여 무지향성 그래프를 자료 구조 클래스로 표현할 수 있다</li>
+<li>가중치가 있는 무지향성 그래프에 정점과 간선을 추가하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UndirectedGraph</span> </span>&#123;</span><br><span class="line">    <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addVertext</span>(<span class="params">vertex</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex] = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addEdge</span>(<span class="params">vertex1, vertex2, weight</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (weight === <span class="literal">undefined</span>)</span><br><span class="line">            weight = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex1][vertex2] = weight;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex2][vertex1] = weight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">removeEdge</span>(<span class="params">vertex1, vertex2</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.edges[vertex1] &amp;&amp; <span class="built_in">this</span>.edges[vertex1][vertex2] !== <span class="literal">undefined</span>) </span><br><span class="line">            <span class="keyword">delete</span> <span class="built_in">this</span>.edges[vertex1][vertex2]</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.edges[vertex2] &amp;&amp; <span class="built_in">this</span>.edges[vertex2][vertex1] !== <span class="literal">undefined</span>)</span><br><span class="line">            <span class="keyword">delete</span> <span class="built_in">this</span>.deges[vertex2][vertex1]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    removeVertex = <span class="function"><span class="keyword">function</span>(<span class="params">vertex</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex]) &#123;</span><br><span class="line">            <span class="built_in">this</span>.removeEdge(adjacentVertex, vertex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">delete</span> <span class="built_in">this</span>.edges[vertex];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>정점간에 방향이 있는 지향성 그래프를 구현하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DirectedGraph</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addVertex</span>(<span class="params">vertex</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex] = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addEdge</span>(<span class="params">origVertex, destVertex, weight</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(weight === <span class="literal">undefined</span>)</span><br><span class="line">            weight = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">this</span>.edges[origVertex][destVertex] = weight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">removeEdge</span>(<span class="params">origVertex, destVertex</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">this</span>.edges[origVertex] &amp;&amp; <span class="built_in">this</span>.edges[origVertex][destVertex] !== <span class="literal">undefined</span>)</span><br><span class="line">            <span class="keyword">delete</span> <span class="built_in">this</span>.deges[origVertex][destVertex];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">removeVertex</span>(<span class="params">vertex</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex])</span><br><span class="line">            <span class="built_in">this</span>.removeEdge(adjacentVertex, vertex);</span><br><span class="line">        <span class="keyword">delete</span> <span class="built_in">this</span>.edges[vertex];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">traverseBFS</span>(<span class="params">vertex, fn</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> queue = [], visited = &#123;&#125;;</span><br><span class="line">        queue.push(vertex);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(queue.length) &#123;</span><br><span class="line">            vertex = queue.shift();</span><br><span class="line">            <span class="keyword">if</span>(!visited[vertex]) &#123;</span><br><span class="line">                visited[vertex] = <span class="literal">true</span>;</span><br><span class="line">                fn(vertex);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex]) &#123;</span><br><span class="line">                    queue.push(adjacentVertex);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">traverseDFS</span>(<span class="params">vertex, fn</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> visited = &#123;&#125;;</span><br><span class="line">        <span class="built_in">this</span>._traverseDFS(vertex, visited, fn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">_traverseDFS</span>(<span class="params">vertex, visited, fn</span>)</span> &#123;</span><br><span class="line">        visited[vertex] = <span class="literal">true</span>;</span><br><span class="line">        fn(vertex);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex]) &#123;</span><br><span class="line">            <span class="keyword">if</span>(!visited[adjacentVertex])</span><br><span class="line">                <span class="built_in">this</span>. _traverseDFS(adjacentVertex, visited, fn)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>가중치가 있는 그래프와 최단 경로</li>
+<li>다익스트라 알고리즘은 목적지에 도달하기 위해 각 단계에서 최단 경로를 취하는 방식으로 동작한다</li>
+<li>처음에는 일부 노드에 도달할 수 없을 수도 있기 때문에 거리를 무한으로 표기한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_isEmpty</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(obj).length === <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_extractMin</span>(<span class="params">Q, dist</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> minimumDistance = <span class="literal">Infinity</span>,</span><br><span class="line">        nodeWithMinimumDistance = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> node <span class="keyword">in</span> Q) &#123;</span><br><span class="line">        <span class="keyword">if</span> (dist[node] &lt;= minimumDistance) &#123;</span><br><span class="line">            minimumDistance = dist[node];</span><br><span class="line">            nodeWithMinimumDistance = node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nodeWithMinimumDistance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// class DirectedGraph 내부라고 가정</span></span><br><span class="line">    <span class="function"><span class="title">Dijkstra</span>(<span class="params">source</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> Q = &#123;&#125;, dist = &#123;&#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> vertex <span class="keyword">in</span> <span class="built_in">this</span>.edges) &#123;</span><br><span class="line">            dist[vertex] = <span class="literal">Infinity</span>;</span><br><span class="line">            Q[vertex] = <span class="built_in">this</span>.edges[vertex];</span><br><span class="line">        &#125;</span><br><span class="line">        dist[source] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!_isEmpty(Q)) &#123;</span><br><span class="line">            <span class="keyword">let</span> u = _extractMin(Q, dist);</span><br><span class="line">            <span class="keyword">delete</span> Q[u];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> neighbor <span class="keyword">in</span> <span class="built_in">this</span>.edges[u])&#123;</span><br><span class="line">                <span class="keyword">let</span> alt = dist[u] + <span class="built_in">this</span>.edges[u][neighbor];</span><br><span class="line">                <span class="keyword">if</span> (alt &lt; dist[neighbor]) </span><br><span class="line">                    dist[neighbor] = alt;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dist;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li>위상 정렬 알고리즘은 순서를 기록하기 위해 스택을 사용하는 수정된 버전의 깊이 우선 정렬</li>
+<li>이 알고리즘은 어떤 노드로부터 깊이 우선 정렬을 수행해 해당 노드와 연결된 모든 노드들을 재귀적으로 방문하면서 해당 노드들을 스택에 추가한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// class DirectedGraph 내부라고 가정</span></span><br><span class="line">    <span class="function"><span class="title">topologicalSortUtil</span>(<span class="params">v, visited, stack</span>)</span> &#123;</span><br><span class="line">        visited.add(v);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">in</span> <span class="built_in">this</span>.edges[v])&#123;</span><br><span class="line">            <span class="keyword">if</span> (visited.has(item) === <span class="literal">false</span>) &#123;</span><br><span class="line">                <span class="built_in">this</span>.topologicalSortUtil(item, visited, stack)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stack.unshift(v);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">topologicalSort</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> visited = <span class="keyword">new</span> <span class="built_in">Set</span>(), stack = [];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">in</span> <span class="built_in">this</span>.edges) &#123;</span><br><span class="line">            <span class="keyword">if</span> (visited.has(item) === <span class="literal">false</span>) &#123;</span><br><span class="line">                <span class="built_in">this</span>.topologicalSortUtil(item, visited, stack);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stack;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/13/21-03-13-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-8/"
+                    data-tooltip="21-03-13 자바스크립트로 하는 자료구조와 알고리즘(8)"
+                    aria-label="NEXT: 21-03-13 자바스크립트로 하는 자료구조와 알고리즘(8)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/13/21-03-13-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-8/"
+                    data-tooltip="21-03-13 자바스크립트로 하는 자료구조와 알고리즘(8)"
+                    aria-label="NEXT: 21-03-13 자바스크립트로 하는 자료구조와 알고리즘(8)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

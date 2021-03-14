@@ -188,6 +188,135 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
+                            aria-label=": 21-03-01 알고리즘 기초강의(2)"
+                        >
+                            21-03-01 알고리즘 기초강의(2)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-01T13:28:15+09:00">
+	
+		    Mar 01, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="백트랙킹과-n-Queens-문제"><a href="#백트랙킹과-n-Queens-문제" class="headerlink" title="백트랙킹과 n-Queens 문제"></a>백트랙킹과 n-Queens 문제</h3><ul>
+<li><p>backtracking</p>
+<ul>
+<li><strong>임의의 집합</strong>에서 <strong>주어진 기준대로</strong> 원소의 <strong>순서를 선택</strong>하는 문제를 푸는 데 적합함</li>
+<li>트리 자료구조의 변형된 깊이우선탐색</li>
+<li>모든 문제 사례에 대해서 효율적이지 않지만 많은 문제 사례에 대해 효율적</li>
+</ul>
+</li>
+<li><p>미로찾기 문제를 트리 탐색 문제로 해석 (DFS를 통한 preorder 방식)</p>
+</li>
+<li><p>상태공간트리 (State Space Tree)</p>
+</li>
+<li><p>백트래킹 기법</p>
+<ul>
+<li>상태공간트리를 깊이우선탐색으로 탐색</li>
+<li>방문중인 노드에서 더 하위 노드로 가면 해답이 없을 경우엔 해당 노드의 하위 트리를 방문하지 않고 부모 노드로 <strong>되돌아감</strong></li>
+</ul>
+</li>
+<li><p>유망함 (promising)</p>
+<ul>
+<li>방문중인 노드에서 하위 노드가 해답을 발견할 가능성이 있으면 유망</li>
+<li>하위 노드에서 해답을 발견할 가능성이 없으면 유망하지 않음</li>
+</ul>
+</li>
+<li><p>백트래킹과 <strong>가지치기</strong></p>
+<ol>
+<li>상태공간트리를 DFS로 탐색</li>
+<li>방문 중인 노드가 유망한지 체크</li>
+<li>만약 유망하지 않으면 부모 노드로 돌아감</li>
+<li>그리고 유망하지 않는 하위 트리를 가지치기함</li>
+</ol>
+</li>
+</ul>
+<p><strong>슈도 코드</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def checknode (node v): </span><br><span class="line">    node u;</span><br><span class="line">    if (promising(v)):</span><br><span class="line">        if (v에 해답이 있다면)</span><br><span class="line">            해답을 출력</span><br><span class="line">        else</span><br><span class="line">            for (v의 모든 자식 노드)</span><br><span class="line">                checknode(u);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>백트래킹 알고리즘의 구현</p>
+<ul>
+<li>상태공간트리를 실제로 구현할 필요는 없음</li>
+<li>현재 조사중인 가지의 값에 대해만 추적</li>
+<li>상태공간트리는 암묵적으로 존재한다고 가정</li>
+</ul>
+</li>
+<li><p>n-Queens 문제</p>
+<ul>
+<li>8-Queens의 일반화 문제</li>
+<li>n x n 체스보드에 n개의 퀸을 배치하는 문제<br>  → 어떤 퀸도 다른 퀸에게 잡아먹지 않도록 배치할 것</li>
+</ul>
+</li>
+<li><p>n-Queens를 backtracking approach로 해결하기</p>
+<ul>
+<li><strong>임의의 집합</strong>에서 <strong>기준</strong>에 따라 <strong>원소의 순서</strong>를 선택</li>
+<li>임의의 집합: 체스보드에 있는 n^2^개의 가능한 위치</li>
+<li>기준: 새로 놓을 퀸이 다른 퀸을 위협할 수 없음</li>
+<li>원소의 순서: 퀸을 놓을 수 있는 n개의 위치</li>
+</ul>
+</li>
+<li><p>4-Queens 문제 (n = 4)</p>
+<ul>
+<li>일단 같은 행에는 놓을 수 없다고 가정하면 후보 해답은 4(가로 4칸) x 4(가로 4칸) x 4(가로 4칸) x 4(가로 4칸) = 256 가지의 탐색 공간이 있음</li>
+</ul>
+</li>
+<li><p>n-Queen 문제의 해결</p>
+<ul>
+<li>같은 행에는 퀸을 놓지 않는다(기본 가정)</li>
+<li>같은 열이나 같은 대각선에 놓이는지를 확인</li>
+<li>같은 열을 체크하기<br>→ col[i]: i번째 행에서 퀸이 놓여있는 열의 위치<br>→ col[k]: k번째 행에서 퀸이 놓여있는 열의 위치<br>→ 따라서, col[i] == col[k] 이라면 유망하지 않다</li>
+<li>대각선 체크하기<br>→ 왼쪽에서 위협하는 퀸과 오른쪽에서 위협하는 퀸은 |i - k|값으로 판단할 수 있다</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 n-Queens 문제를 위한 백트래킹 알고리즘</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">n_queens</span> (<span class="params">i, col</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(col) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (promising(i, col)):</span><br><span class="line">        <span class="keyword">if</span> (i == n): </span><br><span class="line">            print(col[<span class="number">1</span>: n+<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n+<span class="number">1</span>):</span><br><span class="line">                col[i+<span class="number">1</span>] = j</span><br><span class="line">                n_queens(i+<span class="number">1</span>, col)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span> (<span class="params">i, col</span>):</span></span><br><span class="line">    k = <span class="number">1</span></span><br><span class="line">    flag = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">while</span> (k &lt; i <span class="keyword">and</span> flag):</span><br><span class="line">        <span class="keyword">if</span> (col[i] == col[k] <span class="keyword">or</span> <span class="built_in">abs</span>(col[i] - col[k]) == (i - k)):</span><br><span class="line">            flag = <span class="literal">False</span></span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> flag</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                             aria-label=": 21-03-01 알고리즘 기초강의"
                         >
@@ -1006,93 +1135,6 @@
                         <p>
                             <a
                                 href="/2021/02/22/21-02-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/21/21-02-21-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                            aria-label=": 21-02-21 알고리즘 기초강의"
-                        >
-                            21-02-21 알고리즘 기초강의
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-02-21T00:35:02+09:00">
-	
-		    Feb 21, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="큰-정수의-계산"><a href="#큰-정수의-계산" class="headerlink" title="큰 정수의 계산"></a>큰 정수의 계산</h3><ul>
-<li>특정 컴퓨터/언어가 표현할 수 없는 큰 정수의 산술 연산은 어떻게 할까?</li>
-<li>int값은 대부분 32bit (부호값 1bit + 31bit) 이므로 -2^32^ ~ 2^31^-1까지만 표현 가능</li>
-<li>가정: 10진수 체계에서의 덧셈과 곱셈</li>
-<li>10진수를 소프트웨어적으로 표현하는 법 : 리스트를 이용하여 각 자리수를 하나의 원소로 저장 (예: <code>567,832: S = [2,3,8,7,6,5]</code>)<br>:point_right: <strong>참고</strong> 자바스크립트가 숫자를 다루는 법<ul>
-<li>자바스크립트에는 number라는 하나의 숫자형만 존재하며 이는 64비트 2진 부동소수점 타입</li>
-<li>1개의 부호비트와 11비트의 지수, 53비트의 유효 숫자로 구성됨</li>
-<li><code>Number.MAX_SAFE_INTEGER = 9007199254740991</code></li>
-<li>예로 숫자 9000000000000000000 는 <code>[&quot;+&quot;, 8650752, 7098594, 31974]</code>로 표현된다</li>
-</ul>
-</li>
-</ul>
-<h4 id="큰-정수의-덧셈"><a href="#큰-정수의-덧셈" class="headerlink" title="큰 정수의 덧셈"></a>큰 정수의 덧셈</h4><ul>
-<li>n개의 자릿수 각각을 더하면서 올림수(carry)를 고려</li>
-</ul>
-<p><strong>파이썬으로 정수 더하기</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ladd</span> (<span class="params">u, v</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(u) <span class="keyword">if</span> (<span class="built_in">len</span>(u) &gt; <span class="built_in">len</span>(v)) <span class="keyword">else</span> <span class="built_in">len</span>(v) </span><br><span class="line">    <span class="comment"># 파이썬에서 타 언어의 삼항연산자 처럼 쓰는 법</span></span><br><span class="line">    <span class="comment"># (u.length &gt; v.length) ? n = u.length : n = v.length; 같은 것</span></span><br><span class="line">    result = []</span><br><span class="line">    carry = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        i = u[k] <span class="keyword">if</span>(k &lt; <span class="built_in">len</span>(u)) <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        j = v[k] <span class="keyword">if</span>(k &lt; <span class="built_in">len</span>(v)) <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        value = i + j + carry</span><br><span class="line">        carry = value // <span class="number">10</span></span><br><span class="line">        result.append(value % <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">if</span> (carry &gt; <span class="number">0</span>):</span><br><span class="line">        result.append(carry)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
-<p><strong>자바스크립트로 정수 더하기</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> n = <span class="number">0</span>;</span><br><span class="line">    (a.length &gt; b.length) ? n = a.length : n = b.length;</span><br><span class="line">    <span class="keyword">let</span> result = [];</span><br><span class="line">    <span class="keyword">let</span> carry  = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k = <span class="number">0</span>; k &lt; n; k++) &#123;</span><br><span class="line">        <span class="keyword">let</span> i = <span class="number">0</span>, j = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (k &lt; a.length) i = a[k]</span><br><span class="line">        <span class="keyword">else</span>              i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (k &lt; b.length) j = b[k]</span><br><span class="line">        <span class="keyword">else</span>              j = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> value = i + j + carry;</span><br><span class="line">        carry = <span class="built_in">Math</span>.floor(value / <span class="number">10</span>)</span><br><span class="line">        result.push(value % <span class="number">10</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (carry &gt; <span class="number">0</span>) result.push(carry);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Number</span>(result.reverse().join(<span class="string">&#x27;&#x27;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="큰-정수의-곱셈"><a href="#큰-정수의-곱셈" class="headerlink" title="큰 정수의 곱셈"></a>큰 정수의 곱셈</h4><ul>
-<li>Brute-Force 방법 : O(n^2^)</li>
-<li>Divide-and-Conquer<ul>
-<li><strong>u</strong> (n자리) = *<em>x * 10^m^*</em> (n/2자리) + <strong>y</strong> (n/2자리)</li>
-<li><strong>uv</strong> = (<strong>x * 10^m^** + <strong>y</strong>)(**w * 10^m^</strong> + <strong>z</strong>)<br>→ <strong>uv</strong> = <strong>xw</strong> * 10^2m^ + <strong>(xy + yw)</strong> * 10^m^ + <strong>yz</strong> </li>
-</ul>
-</li>
-</ul>
-<p><strong>파이썬으로 정수 곱하기</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">prod</span>(<span class="params">u, v</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(u) <span class="keyword">if</span> (<span class="built_in">len</span>(u) &gt; <span class="built_in">len</span>(v)) <span class="keyword">else</span> <span class="built_in">len</span>(v) </span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">len</span>(u) == <span class="number">0</span> <span class="keyword">or</span> <span class="built_in">len</span>(v) == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">elif</span> (n &lt;= threshold):</span><br><span class="line">        <span class="keyword">return</span> lmult(u, v)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        m = n // <span class="number">2</span></span><br><span class="line">        <span class="comment"># divide</span></span><br><span class="line">        x = div(u, m); y = rem(u, m)</span><br><span class="line">        w = div(v, m); z = rem(v, m)</span><br><span class="line">        <span class="comment"># conquer</span></span><br><span class="line">        p1 = prod(x, w) <span class="comment"># xw</span></span><br><span class="line">        p2 = ladd(prod(x, z), prod(w, y)) <span class="comment"># (xy + yw)</span></span><br><span class="line">        p3 = prod(y, z) <span class="comment"># yz</span></span><br><span class="line">        <span class="keyword">return</span> ladd(ladd(exp(p1, <span class="number">2</span>*m), exp(p2, m)), p3)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exp</span>(<span class="params">u, m</span>):</span></span><br><span class="line">    <span class="keyword">if</span>(u == [<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> ([<span class="number">0</span>] * m) + u</span><br><span class="line">         <span class="comment"># 배열의 합은 두 배열을 단순히 합하는 것</span></span><br><span class="line">         <span class="comment"># ex) [0, 0, 0] + [5, 6, 7] = [0, 0, 0, 5, 6, 7]</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">div</span>(<span class="params">u, m</span>):</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">len</span>(u) &lt; m):</span><br><span class="line">        u.append(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> u[m : <span class="built_in">len</span>(u)]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rem</span>(<span class="params">u, m</span>):</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">len</span>(u) &lt; m):</span><br><span class="line">        u.append(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> u[<span class="number">0</span> : m]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lmult</span> (<span class="params">u, v</span>):</span></span><br><span class="line">    i = u[<span class="number">0</span>] <span class="keyword">if</span> (<span class="number">0</span> &lt; <span class="built_in">len</span>(u)) <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">    j = v[<span class="number">0</span>] <span class="keyword">if</span> (<span class="number">0</span> &lt; <span class="built_in">len</span>(v)) <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">    value = i * j</span><br><span class="line">    carry = value // <span class="number">10</span></span><br><span class="line">    result = []</span><br><span class="line">    result.append(value % <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">if</span>(carry &gt; <span class="number">0</span>):</span><br><span class="line">        result.append(carry)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
-<p><strong>곱셈 개선</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">prod2</span>(<span class="params">u, v</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(u) <span class="keyword">if</span> (<span class="built_in">len</span>(u) &gt; <span class="built_in">len</span>(v)) <span class="keyword">else</span> <span class="built_in">len</span>(v) </span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">len</span>(u) == <span class="number">0</span> <span class="keyword">or</span> <span class="built_in">len</span>(v) == <span class="number">0</span>):</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">elif</span> (n &lt;= threshold):</span><br><span class="line">        <span class="keyword">return</span> lmult(u, v)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        m = n // <span class="number">2</span></span><br><span class="line">    </span><br><span class="line">        x = div(u, m); y = rem(u, m)</span><br><span class="line">        w = div(v, m); z = rem(v, m)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 이 부분이 바뀜</span></span><br><span class="line">        r = prod2(ladd(x, y), ladd(w, z))</span><br><span class="line">        </span><br><span class="line">        p1 = prod2(x, w) <span class="comment"># xw</span></span><br><span class="line">        p3 = prod2(y, z) <span class="comment"># yz</span></span><br><span class="line"></span><br><span class="line">         <span class="comment"># 이 부분이 바뀜</span></span><br><span class="line">        p2 = lsub(r, ladd(p1, p3)) <span class="comment"># (xy + yw)</span></span><br><span class="line">        <span class="keyword">return</span> ladd(ladd(exp(p1, <span class="number">2</span>*m), exp(p2, m)), p3)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsub</span> (<span class="params">u, v</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(u) <span class="keyword">if</span> (<span class="built_in">len</span>(u) &gt; <span class="built_in">len</span>(v)) <span class="keyword">else</span> <span class="built_in">len</span>(v)</span><br><span class="line">    result = []</span><br><span class="line">    borrow = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        i = u[k] <span class="keyword">if</span> (k &lt; <span class="built_in">len</span>(u)) <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        j = v[k] <span class="keyword">if</span> (k &lt; <span class="built_in">len</span>(v)) <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        value = i - j + borrow</span><br><span class="line">        <span class="keyword">if</span> (value &lt; <span class="number">0</span>):</span><br><span class="line">            value += <span class="number">10</span></span><br><span class="line">            borrow = -<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            borrow = <span class="number">0</span></span><br><span class="line">        result.apeend(value % <span class="number">10</span>)</span><br><span class="line">    <span class="keyword">if</span>(borrow &lt; <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">&quot;음의 정수는 처리할 수 없음&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 나머지 함수는 동일</span></span><br></pre></td></tr></table></figure>
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/02/21/21-02-21-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
