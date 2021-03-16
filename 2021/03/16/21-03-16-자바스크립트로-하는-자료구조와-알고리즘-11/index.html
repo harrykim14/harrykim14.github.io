@@ -1,0 +1,577 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-16 자바스크립트로 하는 자료구조와 알고리즘(11) - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"19장 동적 프로그래밍\n동적 프로그래밍(이하 DP)은 문제를 더 작은 부분들로 쪼개는 과정이 포함된다\n해시 테이블을 사용한다면 이미 계산된 피보나치 숫자를 저장할 수 있고 계산 없이 O(1)의 시간으로 그 값을 불러올 수 있기 때문에 더 빠르게 구현할 수 있다123456let cache = &#123;&#125;;const fiboBest = n =&gt; &#123;  if (n &lt;= 1) return n;  if(cache[n]) return cache[n];  return (cache[n] = fiboBest(n-1) + fiboBest(n-2));&#125;\nDP는 재계산을 피하기 위해 이미 계산된 값들을 저장하고 해당 값들을 사용하는 방법이다\n중복 부분 문제 : DP에서 보통 문제의 해결책으로 해시 테이블과 배열, 행렬에 저장하는 방식을 사용하는데, 이 방식을 메모이제이션이라고 부른다\n최적 부분 구조 : 문제의 부분 최적 해결책을 통해 큰 문제를 해결하는 방법\n\n\n배낭 문제 알고리즘은 대표적인 DP의 예로 무게와 가치를 지니는 n개의 항목이 주어졌을 때 최대 w의 무게를 담을 수 있는 배낭에 가치의 최대값을 담는 문제\n배열(배낭)에 담긴 n개의 항목이 최대값이 되려면\nn번째 항목이 제외되는 경우: n-1개의 항목에서 얻은 최대값\nn번째 항목을 포함하는 경우: n-1개의 항목에서 얻은 최대값 + n번째 항목의 값\n\n\n동적 프로그래밍의 구현은 현재 배열 인덱스와 목표치를 객체에 대한 키로 사용해 결과를 저장함 (메모이제이션 활용)123456789101112131415161718const knapsackDP = (idx, weights, values, target, matrix) =&gt; &#123;  let result = 0;  if(matrix[idx + &#x27;-&#x27; + target]) &#123;    return matrix[idx + &#x27;-&#x27; + target]  &#125;  if(idx &lt;= -1 || target &lt;= 0) &#123;    result = 0  &#125; else if (weights[idx] &gt; target) &#123;    result = knapsackDP(idx - 1, weights, values, target, matrix);  &#125; else &#123;    let current = knapsackDP(idx - 1, weights, values, target, matrix),        currentPlusOther = values[idx] + knapsackDP(idx - 1, weights, values, target - weights[idx], matrix);    result= Math.max(current, currentPlusOther);  &#125;  matrix[idx + &#x27;-&#x27; + target] = result  return result;&#125; \n최장 공통 부분 수열 알고리즘\n두 개의 수열이 있을 때 두 수열의 가장 긴 공통 부분 수열의 길이를 찾는 알고리즘\n부분 수열 내 항목들이 연속일 필요는 없고 순서만 맞으면 됨\n길이 m인 문자열 str1과 길이 n인 문자열 str2가 함수 LCS를 통해 최장 공통 부분을 구한다면123456if (두 수열의 마지막 글자가 일치한다면) &#123;  result &#x3D; 1 + LCS(X[0:m-2], Y[0:n-2])&#125;if (두 수열의 마지막 글자가 일치하지 않는다면) &#123;  result &#x3D; Math.max(LCS(X[0:m-1], Y[0:n-1]), LCS(X[0:m-2], Y[0:n-2]))&#125;\n재귀를 기반으로 의사 코드를 구현123456789101112131415161718const LCSNaive = (str1, str2, str1Length, str2Length) =&gt; &#123;  if (str1Length === 0 || str2Length === 0) &#123;    return 0;  &#125;  if (str1[str1Length-1] === str2[str2Length-1]) &#123;    return 1 + LCSNavie(str1, str2, str1Length - 1, str2Length - 1);  &#125; else &#123;    return Math.max(      LCSNavie(str1, str2, str1Length, str2Length - 1),      LCSNavie(str1, str2, str1Length - 1, str2Length)      )  &#125;&#125;const LCSNaiveWrapper = (str1, str2) =&gt; &#123;  return LCSNaive(str1, str2, str1.length, str2.length);&#125;\nDP식 접근법123456789101112131415161718const longestCommonSequenceLength = (str1, str2) =&gt; &#123;  let matrix = Array(str.length + 1).fill(Array(str2.length + 1).fill(0)),       rowLength = str1.length + 1,      colLength = str2.length + 1,      max = 0;  for (let row = 1; row &lt; rowLength; row++) &#123;    for (let col = 1; col &lt; colLength; col++) &#123;      let str1Char = str1.charAt(row - 1),          str2Char = str2.charAt(col - 1);            if (str1Char === str2Char) &#123;        matrix[row][col] = matrix[row - 1][col - 1] + 1;        max = Math.max(matrix[row][col], max);      &#125;    &#125;  &#125;  return max;&#125;\n동전 교환 알고리즘 : 동전의 금액 종류 M개가 들어있는 객체 S가 주어질때 금액 n을 동전으로 교환하기 위한 조합을 구하는 문제\n이때 이 문제의 최적 부분 구조는 (1) M번째 동전이 포함되지 않는 해결책과 (2) M번째 동전이 최소 한 개 포함되는 해결책 으로 나눌 수 있다coinChange(S, M, n) = coinChange(S, M-1, N) + coinChanges(S, M, N-Sm)1234567891011121314// coinArr의 인덱스는 [0, ..., coinIndex]const countCoinWays = (coinArr, coinIndex, total) =&gt; &#123;  if (total === 0) return 1;  // total 값이 0에 도달한 경우에는 아무 동전도 포함하지 않는 것  if (total &lt; 0 || (coinIndex &lt;= 0 &amp;&amp; total &gt;= 1)) return 0;  // total값이 0 보다 작다는 것은 M번째 동전이 포함되거나 포함되지 않을 때의 해결책이 없다는 뜻  // 남은 동전이 없을 때 (index값은 coinArr.length에서 점점 줄어드므로) total값을 채우지 못해도 해결책이 없다는 뜻  return countCoinWays(coinArr, coinIndex - 1, total) +        countCoinWays(coinArr, coinIndex - 1, total - coinArr[coinIndex - 1])&#125;const countCoinWaysWrapper = (coinArr, total) =&gt; &#123;  return countCoinWays(coinArr, coinArr.length, total);&#125;\n하지만 이 방법을 사용한다면 중복 부분 문제가 많다\n동전 교환 알고리즘을 DP로 구현하기1234567891011121314151617181920212223242526272829303132333435363738394041424344454647const countCoinWaysDP = (coinArr, coinIndex, total) =&gt; &#123;  let dpMatrix = [];  // 메모이제이션용 행렬, 추후 2차원 배열이 된다  for (let i = 0; i &lt;= total; i++) &#123;    dpMatrix[i] = [];    // 원하는 값까지 전부 배열이 들어가게 된다    for (let j = 0; j &lt; coinIndex; j++) &#123;      dpMatrix[i][j] = undefined;      // undefined로 초기화    &#125;  &#125;  for (let i = 0; i &lt; coinIndex; i++) &#123;    // 맨 윗줄을 1로 채움 (undefined에서 기본값으로)    dpMatrix[0][i] = 1;  &#125;  for (let i = 1; i &lt; total + 1; i++) &#123;    // 행렬의 세로이동    for (let j = 0; j &lt; coinIndex; j++) &#123;      // 행렬의 가로이동      let temp1 = 0, temp2 = 0;      // 두 가지의 부분 방법으로 나뉘므로 temp값도 두개가 필요함      if (i - coinArr[j] &gt;= 0) &#123;        temp1 = dpMatrix[i - coinArr[j]][j];        // temp1값에 dpMatrix[0][0] 번값부터 가로줄 값을 저장      &#125;      if (j &gt;= 1) &#123;        temp2 = dpMatrix[i][j-1];        // temp2값에 dpMatrix[1][0] 값부터  세로줄 값을 저장      &#125;            // dpMatrix[1][0] 값부터 temp1(M번째 동전이 포함되지 않는 해결책)값과       // temp2(M번째 동전이 최소한 한 개 포함되는 해결책)값을 더해 저장      dpMatrix[i][j] = temp1 + temp2;    &#125;  &#125;  // 결과값이 저장되어있는 것 중에서 total값을 만족하는 행의 max값을 리턴함   // if()에서도 i &lt; coinIndex 와 같이 리턴하였으므로 여기서도 -1 해주어야 함  return dpMatrix[total][coinIndex - 1]&#125;const countCoinWaysDPWrapper = (coinArr, coinValue) =&gt; &#123;  return countCoinWaysDP(coinArr, coinArr.length, coinValue);&#125;\n편집 거리 알고리즘 (레벤슈타인 거리 알고리즘)\n길이 m인 문자열 str1과 길이 n인 문자열 str2가 주어졌을때 str1을 str2로 변환하기 위환 최소 편집 횟수는? (이 때, 사용가능한 연산은 삽입, 제거, 교환만 가능하다)12345678if (문자가 동일하다)  아무것도하지 않는다if (문자가 다르다) &#123;  1) m과 n-1의 삽입  2) m-1과 n의 제거  3) m-1과 n-1의 교환   세가지를 재귀적으로 고려&#125;\nBrute-force 방법으로 구현하기1234567891011121314151617181920const editDistanceRecursive = (str1, str2, length1, length2) =&gt; &#123;  // 빈문자열이라면 나머지 한 쪽의 문자열을 그대로 복사하면 되므로 나머지 한 쪽 길이값을 리턴함 (length1 or length2번 시행해야 하므로)  if (length1 === 0) return length2;  if (length2 === 0) return length1;  // 마지막 글자가 같다면 마지막 글자를 제외한 나머지 문자만큼 돌면 된다  // 이 과정은 재귀적으로 반복되므로 맨 마지막 글자부터 첫번째 글자까지 비교를 할 것  if (str[length1-1] === str2[length2-1])     return editDistanceRecursive(str1, str2, length1-1, length2-1)  return 1 + Math.min(    editDistanceRecursive(str1, str2, length1, length2-1), // 삽입    editDistanceRecursive(str1, str2, length1-1, length2), // 제거    editDistanceRecursive(str1, str2, length1-1, length2-1) // 교환  )&#125;const editDistanceRecursiveWrapper = (str1, str2) =&gt; &#123;  return editDistanceRecursive(str1, str2, str1.length, str2.length)&#125;\nDP식 접근법123456789101112131415161718192021222324252627282930const editDistanceDP = (str1, str2, length1 = str1.length, length2 = str2.length2) =&gt; &#123;  let dpMatrix = [];  for (let i = 0; i &lt; length1+1; i++) &#123;    dpMatrix[i] = [];    for (let j = 0; j &lt; length2+1; j++) &#123;      dpMatrix[i][j] = undefined;    &#125;  &#125;  // let dpMatrix = Array.from(&#123;length: length1+1&#125;,   //           () =&gt; Array.from(&#123;length:length2+1&#125;, () =&gt; undefined))  for (let i = 0; i &lt; length+1; i++) &#123;    for (let j = 0; j &lt; length2+1; j++) &#123;      if (i === 0) &#123;        dpMatrix[i][j] = j;      &#125; else if (j === 0) &#123;        dpMatrix[i][j] = i;      &#125; else if (str1[i-1] === str2[j-1]) &#123;        dpMatrix[i][j] = dpMatrix[i-1][j-1];      &#125; else &#123;        let insertCost = dpMatrix[i][j-1],            removeCost = dpMatrix[i-1][j],            replaceCost = dpMatrix[i-1][j-1];        dpMatrix[i][j] = 1 + Math.min(insertCost, removeCost, replaceCost)      &#125;    &#125;  &#125;  return dpMatrix[length1][length2];&#125;\n20장 비트 조작\n고성능 서버 사이드 코드를 구현하길 원한다면 비트 조작도 알아야 함\n자바스크립트의 비트 연산자\n&amp;는 AND, |는 OR, ~는 NOT, ^는 XOR에 해당하고 왼쪽 이동은 &lt;&lt;로, 오른쪽 이동은 &gt;&gt;로, &gt;&gt;&gt;는 오른쪽 이동 후에 0으로 채운다는 뜻이다\nAND 연산자(&amp;)는 두 개의 비트가 모두 1일때 참이다a = 1100, b = 1010일 때, a &amp; b = 1000이다\nOR 연산자(|)는 두 개의 비트 중 하나만 1이어도 참이다a = 1100, b = 1010일 때, a &amp; b = 1110이다\nXOR 연산자(^)는 비트 중 하나가 1일 때만 참이 된다a = 1100, b = 1010일 때, a &amp; b = 0110이다\nNOT 연산자는 모든 비트를 뒤집는다a = 1100일 때 NOT a = 0011이다\n왼쪽 이동 연산자(&lt;&lt;)는 모든 비트가 왼쪽으로 이동되고 왼쪽 끝 범위를 벗어나는 비트는 버려진다 9(1001) &lt;&lt; 1 = 10010(2) = 18, 9 &lt;&lt; 2 = 100100(2) = 36\n위 예와 같이 왼쪽 이동 연산자는 해당 항목을 두 배로 증가시킨다 (이진 연산 체계이기 때문) 하지만 왼쪽 이동으로 비트가 넘친다면 버려지므로 값이 작아질 수 있다\n오른쪽 이동 연산자(&gt;&gt;)는 모든 비트가 오른쪽으로 이동되고 오른쪽 끝 범위를 벗어나면 버려진다 9(1001) &gt;&gt; 1 = 100(2) = 4\n오른쪽 이동 연산자는 항목을 2로 나눈 값이 된다\n비트 연산자를 사용해 연산해보기123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475// 이진수를 더하기는  두 수를 더한 다음 10을 초과하면 1을 다음 수로 올린다 (carry)const BitwiseAdd = (a, b) =&gt; &#123;  while (b !== 0) &#123;    let carry = (a &amp; b);    a = a ^ b;    b = carray &lt;&lt; 1;  &#125;  return a;&#125;// 이진수에서 음의 이진수로부터 양의 이진수를 빼려면 모든 비트를 뒤집은 다음 1을 더하면 된다const BitwiseNegate = a =&gt; &#123;  return BitwiseAdd(~a, 1);&#125;// 빼기는 음수를 더하는 것이기 때문에 음의 이진수를 구하고 더한다const BitwiseSubtract = (a, b) =&gt; &#123;  return BitwiseAdd(a, BitwiseNegate(b))&#125;// 곱셈은 두 수를 곱하고 10이 넘어가는 수는 다음 자릿수로 올리고 다음 자릿수로 이동해 해당 자릿수의 수를 곱한다const BitwiseMultiply = (a, b) =&gt; &#123;  let m = 1, c = 0;  if (a &lt; 0) &#123;    a = BitwiseNegate(a);    b = BitwiseNegate(b);  &#125;  while (a &gt;= m &amp;&amp; b) &#123;    if (a &amp; m)       c = BitwiseAdd(b, c);    b = b &lt;&lt; 1;    m = m &lt;&lt; 1;  &#125;  return c;&#125;// a나누기 b는 b를 여러번 빼는 것이라고 생각하면 쉽다const BitwiseDividePositive = (a, b) =&gt; &#123;  let c = 0;  if (b !== 0) &#123;    while (a &gt;= b) &#123;      a = BitwiseSubtract(a, b);      c++    &#125;  &#125;  return c;&#125;// 하지만 음의 정수를 나누기한다면 while값이 무한히 반복될 것이기 때문에 부호를 저장할 값이 필요하다const BitwiseDivide = (a, b) =&gt; &#123;  let c = 0, isNegative = 0;  if (a &lt; 0) &#123;    a = BitwiseNegate(a);    isNegative = !isNegative;  &#125;  if (b &lt; 0) &#123;    b = BitwiseNegate(b);    isNegative = !isNegative;  &#125;  if (b !== 0) &#123;    while (a &gt;= b) &#123;      a = bitwiseSubstract(a, b);      c++;    &#125;  &#125;  if (isNegative) &#123;    c = BitwiseNegate(c);  &#125;  return c;&#125;\n비트연산자는 Math의 기본 함수보다 빠르다\n최근의 자바스크립트는 Node.js를 활용해 서버 측 프로그래밍에 진입하고 있기 때문에 비트 연산자는 효율적인 코드를 만드는데 도움이 될 것이다\n\n","dateCreated":"2021-03-16T15:43:03+09:00","dateModified":"2021-03-16T15:43:25+09:00","datePublished":"2021-03-16T15:43:03+09:00","description":"","headline":"21-03-16 자바스크립트로 하는 자료구조와 알고리즘(11)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"}</script>
+    <meta name="description" content="19장 동적 프로그래밍 동적 프로그래밍(이하 DP)은 문제를 더 작은 부분들로 쪼개는 과정이 포함된다 해시 테이블을 사용한다면 이미 계산된 피보나치 숫자를 저장할 수 있고 계산 없이 O(1)의 시간으로 그 값을 불러올 수 있기 때문에 더 빠르게 구현할 수 있다123456let cache &#x3D; &amp;#123;&amp;#125;;const fiboBest &#x3D; n &#x3D;&gt;">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-16 자바스크립트로 하는 자료구조와 알고리즘(11)">
+<meta property="og:url" content="http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="19장 동적 프로그래밍 동적 프로그래밍(이하 DP)은 문제를 더 작은 부분들로 쪼개는 과정이 포함된다 해시 테이블을 사용한다면 이미 계산된 피보나치 숫자를 저장할 수 있고 계산 없이 O(1)의 시간으로 그 값을 불러올 수 있기 때문에 더 빠르게 구현할 수 있다123456let cache &#x3D; &amp;#123;&amp;#125;;const fiboBest &#x3D; n &#x3D;&gt;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-16T06:43:03.000Z">
+<meta property="article:modified_time" content="2021-03-16T06:43:25.423Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-16 자바스크립트로 하는 자료구조와 알고리즘(11)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-16T15:43:03+09:00">
+	
+		    Mar 16, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>, <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%84%9C%EC%A0%81/">서적</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="19장-동적-프로그래밍"><a href="#19장-동적-프로그래밍" class="headerlink" title="19장 동적 프로그래밍"></a>19장 동적 프로그래밍</h3><ul>
+<li>동적 프로그래밍(이하 DP)은 문제를 더 작은 부분들로 쪼개는 과정이 포함된다</li>
+<li>해시 테이블을 사용한다면 이미 계산된 피보나치 숫자를 저장할 수 있고 계산 없이 O(1)의 시간으로 그 값을 불러올 수 있기 때문에 더 빠르게 구현할 수 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> cache = &#123;&#125;;</span><br><span class="line"><span class="keyword">const</span> fiboBest = <span class="function"><span class="params">n</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> n;</span><br><span class="line">  <span class="keyword">if</span>(cache[n]) <span class="keyword">return</span> cache[n];</span><br><span class="line">  <span class="keyword">return</span> (cache[n] = fiboBest(n-<span class="number">1</span>) + fiboBest(n-<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>DP는 재계산을 피하기 위해 이미 계산된 값들을 저장하고 해당 값들을 사용하는 방법이다<ul>
+<li>중복 부분 문제 : DP에서 보통 문제의 해결책으로 해시 테이블과 배열, 행렬에 저장하는 방식을 사용하는데, 이 방식을 메모이제이션이라고 부른다</li>
+<li>최적 부분 구조 : 문제의 부분 최적 해결책을 통해 큰 문제를 해결하는 방법</li>
+</ul>
+</li>
+<li>배낭 문제 알고리즘은 대표적인 DP의 예로 무게와 가치를 지니는 n개의 항목이 주어졌을 때 최대 w의 무게를 담을 수 있는 배낭에 가치의 최대값을 담는 문제</li>
+<li>배열(배낭)에 담긴 n개의 항목이 최대값이 되려면<ol>
+<li>n번째 항목이 제외되는 경우: n-1개의 항목에서 얻은 최대값</li>
+<li>n번째 항목을 포함하는 경우: n-1개의 항목에서 얻은 최대값 + n번째 항목의 값</li>
+</ol>
+</li>
+<li>동적 프로그래밍의 구현은 현재 배열 인덱스와 목표치를 객체에 대한 키로 사용해 결과를 저장함 (메모이제이션 활용)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> knapsackDP = <span class="function">(<span class="params">idx, weights, values, target, matrix</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span>(matrix[idx + <span class="string">&#x27;-&#x27;</span> + target]) &#123;</span><br><span class="line">    <span class="keyword">return</span> matrix[idx + <span class="string">&#x27;-&#x27;</span> + target]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(idx &lt;= -<span class="number">1</span> || target &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (weights[idx] &gt; target) &#123;</span><br><span class="line">    result = knapsackDP(idx - <span class="number">1</span>, weights, values, target, matrix);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> current = knapsackDP(idx - <span class="number">1</span>, weights, values, target, matrix),</span><br><span class="line">        currentPlusOther = values[idx] + knapsackDP(idx - <span class="number">1</span>, weights, values, target - weights[idx], matrix);</span><br><span class="line">    result= <span class="built_in">Math</span>.max(current, currentPlusOther);</span><br><span class="line">  &#125;</span><br><span class="line">  matrix[idx + <span class="string">&#x27;-&#x27;</span> + target] = result</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
+<li>최장 공통 부분 수열 알고리즘</li>
+<li>두 개의 수열이 있을 때 두 수열의 가장 긴 공통 부분 수열의 길이를 찾는 알고리즘</li>
+<li>부분 수열 내 항목들이 연속일 필요는 없고 순서만 맞으면 됨</li>
+<li>길이 m인 문자열 str1과 길이 n인 문자열 str2가 함수 LCS를 통해 최장 공통 부분을 구한다면<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (두 수열의 마지막 글자가 일치한다면) &#123;</span><br><span class="line">  result &#x3D; 1 + LCS(X[0:m-2], Y[0:n-2])</span><br><span class="line">&#125;</span><br><span class="line">if (두 수열의 마지막 글자가 일치하지 않는다면) &#123;</span><br><span class="line">  result &#x3D; Math.max(LCS(X[0:m-1], Y[0:n-1]), LCS(X[0:m-2], Y[0:n-2]))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>재귀를 기반으로 의사 코드를 구현<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> LCSNaive = <span class="function">(<span class="params">str1, str2, str1Length, str2Length</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (str1Length === <span class="number">0</span> || str2Length === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (str1[str1Length-<span class="number">1</span>] === str2[str2Length-<span class="number">1</span>]) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> + LCSNavie(str1, str2, str1Length - <span class="number">1</span>, str2Length - <span class="number">1</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.max(</span><br><span class="line">      LCSNavie(str1, str2, str1Length, str2Length - <span class="number">1</span>),</span><br><span class="line">      LCSNavie(str1, str2, str1Length - <span class="number">1</span>, str2Length)</span><br><span class="line">      )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> LCSNaiveWrapper = <span class="function">(<span class="params">str1, str2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> LCSNaive(str1, str2, str1.length, str2.length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>DP식 접근법<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> longestCommonSequenceLength = <span class="function">(<span class="params">str1, str2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> matrix = <span class="built_in">Array</span>(str.length + <span class="number">1</span>).fill(<span class="built_in">Array</span>(str2.length + <span class="number">1</span>).fill(<span class="number">0</span>)), </span><br><span class="line">      rowLength = str1.length + <span class="number">1</span>,</span><br><span class="line">      colLength = str2.length + <span class="number">1</span>,</span><br><span class="line">      max = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> row = <span class="number">1</span>; row &lt; rowLength; row++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> col = <span class="number">1</span>; col &lt; colLength; col++) &#123;</span><br><span class="line">      <span class="keyword">let</span> str1Char = str1.charAt(row - <span class="number">1</span>),</span><br><span class="line">          str2Char = str2.charAt(col - <span class="number">1</span>);</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (str1Char === str2Char) &#123;</span><br><span class="line">        matrix[row][col] = matrix[row - <span class="number">1</span>][col - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">        max = <span class="built_in">Math</span>.max(matrix[row][col], max);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>동전 교환 알고리즘 : 동전의 금액 종류 M개가 들어있는 객체 S가 주어질때 금액 n을 동전으로 교환하기 위한 조합을 구하는 문제</li>
+<li>이때 이 문제의 최적 부분 구조는 (1) M번째 동전이 포함되지 않는 해결책과 (2) M번째 동전이 최소 한 개 포함되는 해결책 으로 나눌 수 있다<br><code>coinChange(S, M, n) = coinChange(S, M-1, N) + coinChanges(S, M, N-Sm)</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// coinArr의 인덱스는 [0, ..., coinIndex]</span></span><br><span class="line"><span class="keyword">const</span> countCoinWays = <span class="function">(<span class="params">coinArr, coinIndex, total</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (total === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// total 값이 0에 도달한 경우에는 아무 동전도 포함하지 않는 것</span></span><br><span class="line">  <span class="keyword">if</span> (total &lt; <span class="number">0</span> || (coinIndex &lt;= <span class="number">0</span> &amp;&amp; total &gt;= <span class="number">1</span>)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// total값이 0 보다 작다는 것은 M번째 동전이 포함되거나 포함되지 않을 때의 해결책이 없다는 뜻</span></span><br><span class="line">  <span class="comment">// 남은 동전이 없을 때 (index값은 coinArr.length에서 점점 줄어드므로) total값을 채우지 못해도 해결책이 없다는 뜻</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> countCoinWays(coinArr, coinIndex - <span class="number">1</span>, total) +</span><br><span class="line">        countCoinWays(coinArr, coinIndex - <span class="number">1</span>, total - coinArr[coinIndex - <span class="number">1</span>])</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> countCoinWaysWrapper = <span class="function">(<span class="params">coinArr, total</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> countCoinWays(coinArr, coinArr.length, total);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>하지만 이 방법을 사용한다면 중복 부분 문제가 많다</li>
+<li>동전 교환 알고리즘을 DP로 구현하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> countCoinWaysDP = <span class="function">(<span class="params">coinArr, coinIndex, total</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> dpMatrix = [];</span><br><span class="line">  <span class="comment">// 메모이제이션용 행렬, 추후 2차원 배열이 된다</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt;= total; i++) &#123;</span><br><span class="line">    dpMatrix[i] = [];</span><br><span class="line">    <span class="comment">// 원하는 값까지 전부 배열이 들어가게 된다</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; coinIndex; j++) &#123;</span><br><span class="line">      dpMatrix[i][j] = <span class="literal">undefined</span>;</span><br><span class="line">      <span class="comment">// undefined로 초기화</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; coinIndex; i++) &#123;</span><br><span class="line">    <span class="comment">// 맨 윗줄을 1로 채움 (undefined에서 기본값으로)</span></span><br><span class="line">    dpMatrix[<span class="number">0</span>][i] = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; total + <span class="number">1</span>; i++) &#123;</span><br><span class="line">    <span class="comment">// 행렬의 세로이동</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; coinIndex; j++) &#123;</span><br><span class="line">      <span class="comment">// 행렬의 가로이동</span></span><br><span class="line">      <span class="keyword">let</span> temp1 = <span class="number">0</span>, temp2 = <span class="number">0</span>;</span><br><span class="line">      <span class="comment">// 두 가지의 부분 방법으로 나뉘므로 temp값도 두개가 필요함</span></span><br><span class="line">      <span class="keyword">if</span> (i - coinArr[j] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        temp1 = dpMatrix[i - coinArr[j]][j];</span><br><span class="line">        <span class="comment">// temp1값에 dpMatrix[0][0] 번값부터 가로줄 값을 저장</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (j &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        temp2 = dpMatrix[i][j-<span class="number">1</span>];</span><br><span class="line">        <span class="comment">// temp2값에 dpMatrix[1][0] 값부터  세로줄 값을 저장</span></span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// dpMatrix[1][0] 값부터 temp1(M번째 동전이 포함되지 않는 해결책)값과 </span></span><br><span class="line">      <span class="comment">// temp2(M번째 동전이 최소한 한 개 포함되는 해결책)값을 더해 저장</span></span><br><span class="line">      dpMatrix[i][j] = temp1 + temp2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 결과값이 저장되어있는 것 중에서 total값을 만족하는 행의 max값을 리턴함 </span></span><br><span class="line">  <span class="comment">// if()에서도 i &lt; coinIndex 와 같이 리턴하였으므로 여기서도 -1 해주어야 함</span></span><br><span class="line">  <span class="keyword">return</span> dpMatrix[total][coinIndex - <span class="number">1</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> countCoinWaysDPWrapper = <span class="function">(<span class="params">coinArr, coinValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> countCoinWaysDP(coinArr, coinArr.length, coinValue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>편집 거리 알고리즘 (레벤슈타인 거리 알고리즘)</li>
+<li>길이 m인 문자열 str1과 길이 n인 문자열 str2가 주어졌을때 str1을 str2로 변환하기 위환 최소 편집 횟수는? (이 때, 사용가능한 연산은 삽입, 제거, 교환만 가능하다)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if (문자가 동일하다)</span><br><span class="line">  아무것도하지 않는다</span><br><span class="line">if (문자가 다르다) &#123;</span><br><span class="line">  1) m과 n-1의 삽입</span><br><span class="line">  2) m-1과 n의 제거</span><br><span class="line">  3) m-1과 n-1의 교환 </span><br><span class="line">  세가지를 재귀적으로 고려</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>Brute-force 방법으로 구현하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> editDistanceRecursive = <span class="function">(<span class="params">str1, str2, length1, length2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 빈문자열이라면 나머지 한 쪽의 문자열을 그대로 복사하면 되므로 나머지 한 쪽 길이값을 리턴함 (length1 or length2번 시행해야 하므로)</span></span><br><span class="line">  <span class="keyword">if</span> (length1 === <span class="number">0</span>) <span class="keyword">return</span> length2;</span><br><span class="line">  <span class="keyword">if</span> (length2 === <span class="number">0</span>) <span class="keyword">return</span> length1;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 마지막 글자가 같다면 마지막 글자를 제외한 나머지 문자만큼 돌면 된다</span></span><br><span class="line">  <span class="comment">// 이 과정은 재귀적으로 반복되므로 맨 마지막 글자부터 첫번째 글자까지 비교를 할 것</span></span><br><span class="line">  <span class="keyword">if</span> (str[length1-<span class="number">1</span>] === str2[length2-<span class="number">1</span>]) </span><br><span class="line">    <span class="keyword">return</span> editDistanceRecursive(str1, str2, length1-<span class="number">1</span>, length2-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span> + <span class="built_in">Math</span>.min(</span><br><span class="line">    editDistanceRecursive(str1, str2, length1, length2-<span class="number">1</span>), <span class="comment">// 삽입</span></span><br><span class="line">    editDistanceRecursive(str1, str2, length1-<span class="number">1</span>, length2), <span class="comment">// 제거</span></span><br><span class="line">    editDistanceRecursive(str1, str2, length1-<span class="number">1</span>, length2-<span class="number">1</span>) <span class="comment">// 교환</span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> editDistanceRecursiveWrapper = <span class="function">(<span class="params">str1, str2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> editDistanceRecursive(str1, str2, str1.length, str2.length)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>DP식 접근법<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> editDistanceDP = <span class="function">(<span class="params">str1, str2, length1 = str1.length, length2 = str2.length2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> dpMatrix = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; length1+<span class="number">1</span>; i++) &#123;</span><br><span class="line">    dpMatrix[i] = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; length2+<span class="number">1</span>; j++) &#123;</span><br><span class="line">      dpMatrix[i][j] = <span class="literal">undefined</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// let dpMatrix = Array.from(&#123;length: length1+1&#125;, </span></span><br><span class="line">  <span class="comment">//           () =&gt; Array.from(&#123;length:length2+1&#125;, () =&gt; undefined))</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; length+<span class="number">1</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; length2+<span class="number">1</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i === <span class="number">0</span>) &#123;</span><br><span class="line">        dpMatrix[i][j] = j;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j === <span class="number">0</span>) &#123;</span><br><span class="line">        dpMatrix[i][j] = i;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (str1[i-<span class="number">1</span>] === str2[j-<span class="number">1</span>]) &#123;</span><br><span class="line">        dpMatrix[i][j] = dpMatrix[i-<span class="number">1</span>][j-<span class="number">1</span>];</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> insertCost = dpMatrix[i][j-<span class="number">1</span>],</span><br><span class="line">            removeCost = dpMatrix[i-<span class="number">1</span>][j],</span><br><span class="line">            replaceCost = dpMatrix[i-<span class="number">1</span>][j-<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">        dpMatrix[i][j] = <span class="number">1</span> + <span class="built_in">Math</span>.min(insertCost, removeCost, replaceCost)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dpMatrix[length1][length2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="20장-비트-조작"><a href="#20장-비트-조작" class="headerlink" title="20장 비트 조작"></a>20장 비트 조작</h3></li>
+<li>고성능 서버 사이드 코드를 구현하길 원한다면 비트 조작도 알아야 함</li>
+<li>자바스크립트의 비트 연산자</li>
+<li>&amp;는 AND, |는 OR, ~는 NOT, ^는 XOR에 해당하고 왼쪽 이동은 &lt;&lt;로, 오른쪽 이동은 &gt;&gt;로, &gt;&gt;&gt;는 오른쪽 이동 후에 0으로 채운다는 뜻이다</li>
+<li>AND 연산자(&amp;)는 두 개의 비트가 모두 1일때 참이다<br><code>a = 1100, b = 1010일 때, a &amp; b = 1000이다</code></li>
+<li>OR 연산자(|)는 두 개의 비트 중 하나만 1이어도 참이다<br><code>a = 1100, b = 1010일 때, a &amp; b = 1110이다</code></li>
+<li>XOR 연산자(^)는 비트 중 하나가 1일 때만 참이 된다<br><code>a = 1100, b = 1010일 때, a &amp; b = 0110이다</code></li>
+<li>NOT 연산자는 모든 비트를 뒤집는다<br><code>a = 1100일 때 NOT a = 0011이다</code></li>
+<li>왼쪽 이동 연산자(&lt;&lt;)는 모든 비트가 왼쪽으로 이동되고 왼쪽 끝 범위를 벗어나는 비트는 버려진다<br><code> 9(1001) &lt;&lt; 1 = 10010(2) = 18</code>, <code>9 &lt;&lt; 2 = 100100(2) = 36</code></li>
+<li>위 예와 같이 왼쪽 이동 연산자는 해당 항목을 두 배로 증가시킨다 (이진 연산 체계이기 때문) 하지만 왼쪽 이동으로 비트가 넘친다면 버려지므로 값이 작아질 수 있다</li>
+<li>오른쪽 이동 연산자(&gt;&gt;)는 모든 비트가 오른쪽으로 이동되고 오른쪽 끝 범위를 벗어나면 버려진다<br><code> 9(1001) &gt;&gt; 1 = 100(2) = 4</code></li>
+<li>오른쪽 이동 연산자는 항목을 2로 나눈 값이 된다</li>
+<li>비트 연산자를 사용해 연산해보기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 이진수를 더하기는  두 수를 더한 다음 10을 초과하면 1을 다음 수로 올린다 (carry)</span></span><br><span class="line"><span class="keyword">const</span> BitwiseAdd = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (b !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> carry = (a &amp; b);</span><br><span class="line">    a = a ^ b;</span><br><span class="line">    b = carray &lt;&lt; <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이진수에서 음의 이진수로부터 양의 이진수를 빼려면 모든 비트를 뒤집은 다음 1을 더하면 된다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseNegate = <span class="function"><span class="params">a</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> BitwiseAdd(~a, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 빼기는 음수를 더하는 것이기 때문에 음의 이진수를 구하고 더한다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseSubtract = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> BitwiseAdd(a, BitwiseNegate(b))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 곱셈은 두 수를 곱하고 10이 넘어가는 수는 다음 자릿수로 올리고 다음 자릿수로 이동해 해당 자릿수의 수를 곱한다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseMultiply = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> m = <span class="number">1</span>, c = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (a &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    a = BitwiseNegate(a);</span><br><span class="line">    b = BitwiseNegate(b);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (a &gt;= m &amp;&amp; b) &#123;</span><br><span class="line">    <span class="keyword">if</span> (a &amp; m) </span><br><span class="line">      c = BitwiseAdd(b, c);</span><br><span class="line">    b = b &lt;&lt; <span class="number">1</span>;</span><br><span class="line">    m = m &lt;&lt; <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// a나누기 b는 b를 여러번 빼는 것이라고 생각하면 쉽다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseDividePositive = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> c = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (b !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (a &gt;= b) &#123;</span><br><span class="line">      a = BitwiseSubtract(a, b);</span><br><span class="line">      c++</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 하지만 음의 정수를 나누기한다면 while값이 무한히 반복될 것이기 때문에 부호를 저장할 값이 필요하다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseDivide = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> c = <span class="number">0</span>, isNegative = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (a &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    a = BitwiseNegate(a);</span><br><span class="line">    isNegative = !isNegative;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (b &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    b = BitwiseNegate(b);</span><br><span class="line">    isNegative = !isNegative;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (b !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (a &gt;= b) &#123;</span><br><span class="line">      a = bitwiseSubstract(a, b);</span><br><span class="line">      c++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isNegative) &#123;</span><br><span class="line">    c = BitwiseNegate(c);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>비트연산자는 Math의 기본 함수보다 빠르다</li>
+<li>최근의 자바스크립트는 Node.js를 활용해 서버 측 프로그래밍에 진입하고 있기 때문에 비트 연산자는 효율적인 코드를 만드는데 도움이 될 것이다</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/15/21-03-15-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-10/"
+                    data-tooltip="21-03-15 자바스크립트로 하는 자료구조와 알고리즘(10)"
+                    aria-label="NEXT: 21-03-15 자바스크립트로 하는 자료구조와 알고리즘(10)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/15/21-03-15-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-10/"
+                    data-tooltip="21-03-15 자바스크립트로 하는 자료구조와 알고리즘(10)"
+                    aria-label="NEXT: 21-03-15 자바스크립트로 하는 자료구조와 알고리즘(10)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
