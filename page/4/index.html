@@ -187,6 +187,96 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                            aria-label=": 21-02-23 알고리즘 기초강의"
+                        >
+                            21-02-23 알고리즘 기초강의
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-02-23T10:23:43+09:00">
+	
+		    Feb 23, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="연쇄-행렬-곱셈"><a href="#연쇄-행렬-곱셈" class="headerlink" title="연쇄 행렬 곱셈"></a>연쇄 행렬 곱셈</h3><p><strong>연쇄 행렬 곱셈</strong>은 주어진 n개의 연쇄 행렬을 곱하는 최적의 순서를 구하는 문제</p>
+<ul>
+<li>행렬 곱셈은 결합 법칙이 성립하지만 곱셈 순서에 따라 각 원소의 곱셈 횟수가 달라짐 → 이 <strong>곱셈 횟수가 가장 작아지는 최적의 순서</strong>를 구하기</li>
+<li>2 x 3 행렬과 3 x 4 행렬을 곱하면 2 x 4 행렬이 됨<br>→ i x k 행렬과 k x j 행렬을 곱하면 i x j 행렬이 되며<br>→ 원소 곱셈의 횟수는 i * k * j가 된다</li>
+</ul>
+<ul>
+<li>Brute-force 방식으로 접근하기<ul>
+<li>모든 경우의 수(카탈랑 수)를 계산하여 최적의 순서를 선택</li>
+<li>카탈랑 수는 결국 지수함수이므로 너무 오래걸림</li>
+</ul>
+</li>
+<li>Dynamic Programming 방식으로 접근하기<ol>
+<li>재귀 관계식을 찾는다</li>
+</ol>
+<ul>
+<li><strong>M</strong>: 연쇄 행렬을 곱하는데 필요한 최소 횟수 행렬</li>
+<li><strong>M[i][j]</strong>: A<del>i</del>에서 A<del>j</del>까지 행렬을 곱하는데 필요한 최소 횟수</li>
+<li>A<del>i</del> … A<del>j</del> 행렬을 (A<del>i</del> … A<del>k</del>)(A<del>k+1</del> … A<del>j</del>)로 분할하는 재귀 관계식 찾기</li>
+</ul>
+<ol start="2">
+<li>상향식 방법으로 해답을 구하기</li>
+</ol>
+<ul>
+<li>M[i][i] = 0 (대각선에 위치하는 원소를 0으로 초기화)</li>
+<li>M[1][n]을 상향식으로 계산 (대각선 1번, 대각선 2번 … 대각선 n-1번)</li>
+<li>n개의 행렬을 두 개의 최적 부분행렬의 곱으로 분할</li>
+<li><strong>M[i][j] = minimum(M[i][k] + M[k+1][j] + d<del>i-1</del>d<del>k</del>d<del>j</del>)</strong> // 단, i ≤ k ≤ j-1</li>
+</ul>
+</li>
+</ul>
+<p><strong>파이썬으로 연쇄 행렬 곱셈</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minmult</span> (<span class="params">d</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(d) - <span class="number">1</span></span><br><span class="line">    M = [[-<span class="number">1</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n+<span class="number">1</span>)]</span><br><span class="line">    P = [[-<span class="number">1</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n+<span class="number">1</span>)]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        M[i][i] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> diagonal <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n - diagonal + <span class="number">1</span>):</span><br><span class="line">            j = i + diagonal</span><br><span class="line">            M[i][j], P[i][j] = minimum(M, d, i, j)</span><br><span class="line">    <span class="keyword">return</span> M, P </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minimum</span> (<span class="params">M, d, i, j</span>):</span></span><br><span class="line">    minVal = INF</span><br><span class="line">    minK = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(i, j):</span><br><span class="line">        value = M[i][k] + M[k + <span class="number">1</span>][j]</span><br><span class="line">        value += d[i -<span class="number">1</span>] * d[k] * d[j]</span><br><span class="line">        <span class="keyword">if</span> (minVal &gt; value):</span><br><span class="line">            minVal = value</span><br><span class="line">            minK = k</span><br><span class="line">    <span class="keyword">return</span> minVal, minK</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">order</span>(<span class="params">P, i, j</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (i == j):</span><br><span class="line">        print(<span class="string">&#x27;A%d&#x27;</span>%(i), end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        k = P[i][j]</span><br><span class="line">        print(<span class="string">&#x27;(&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        order(P, j, k)</span><br><span class="line">        order(P, k + <span class="number">1</span>, j)</span><br><span class="line">        print(<span class="string">&#x27;)&#x27;</span>, end = <span class="string">&#x27;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>자바스크립트로 연쇄 행렬 곱셈</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> minmult = <span class="function"><span class="params">d</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> n = d.length -<span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> arr = <span class="built_in">Array</span>.from(<span class="built_in">Array</span>(n+<span class="number">1</span>), <span class="function">() =&gt;</span> <span class="built_in">Array</span>(n+<span class="number">1</span>).fill(-<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">let</span> arr2 = [...arr];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n+<span class="number">1</span>; i++)&#123;</span><br><span class="line">        arr[i][i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> diagonal = <span class="number">1</span>; diagonal &lt; n; diagonal++)&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n - diagonal + <span class="number">1</span>; i++)&#123;</span><br><span class="line">            j = i + diagonal;</span><br><span class="line">            arr[i][j] = minimum(arr, d, i, j).minVal; </span><br><span class="line">            arr2[i][j] = minimum(arr, d, i, j).minK; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">result</span> : arr, <span class="attr">optimal</span>: arr2 &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> minimum = <span class="function">(<span class="params">arr, d, i, j</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> minVal = <span class="literal">Infinity</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k = i; k &lt; j; k++) &#123;</span><br><span class="line">        <span class="keyword">let</span> value = arr[i][k] + arr[k+<span class="number">1</span>][j] + d[i - <span class="number">1</span>] * d[k] * d[j]</span><br><span class="line">        <span class="keyword">if</span> (minVal &gt; value)&#123;</span><br><span class="line">            minVal = value;</span><br><span class="line">            minK = k</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="attr">minVal</span> : minVal, <span class="attr">minK</span> : minK&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> order = <span class="function">(<span class="params">arr2, i, j</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (i === j) str += <span class="string">`A<span class="subst">$&#123;i&#125;</span>`</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> k = arr2[i][j]</span><br><span class="line">        str += <span class="string">&#x27;(&#x27;</span></span><br><span class="line">        order(arr2, i, k)</span><br><span class="line">        order(arr2, k+<span class="number">1</span>, j)</span><br><span class="line">        str += <span class="string">&#x27;)&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">예시) </span></span><br><span class="line"><span class="comment">let d = [5, 2, 3, 4, 6, 7, 8];</span></span><br><span class="line"><span class="comment">let &#123; result, optimal &#125; = minmult(d)</span></span><br><span class="line"><span class="comment">order(optimal, 1, d.length - 1)</span></span><br><span class="line"><span class="comment">console.log(result)</span></span><br><span class="line"><span class="comment">console.log(str) -&gt; `(A1(A2(A3(A4(A5A6)))))`</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/02/23/21-02-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/02/22/21-02-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2-1/"
                             aria-label=": 21-02-22 알고리즘 기초강의(2)"
                         >
