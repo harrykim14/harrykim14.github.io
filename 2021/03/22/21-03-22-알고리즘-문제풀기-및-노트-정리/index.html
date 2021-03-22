@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-22 알고리즘 문제풀기 및 노트 정리 - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"크레인 인형뽑기 게임해당 문제 링크\n\nstack 배열을 생성하고 인형을 차례대로 담으면서 이전에 추가한 인형(stack의 마지막값)과 같은지 비교해서 score 계산을 해 주면 된다\n\n1234567891011121314151617181920212223function solution(board, moves) &#123;    let stack = [];    let score = 0;    for(let i = 0; i &lt; moves.length; i++) &#123;        let move = moves[i]-1; // x좌표를 구함 (index는 1부터 시작하므로 1을 빼줌)        for (let j = 0; j &lt;board.length; j++)&#123; // board 길이만큼 돌고            if (board[j][move] !== 0) &#123; // 해당 좌표에 있는 인형이 0이 아니고                if (board[j][move] === stack[stack.length-1] &amp;&amp; stack.length &gt; 0)&#123;                    // 이전에 추가한 인형과 값이 같다면 stack에서 빼주고 scoring하기                    stack.pop();                    score += 2                &#125; else &#123;                    // 값이 다르다면 그냥 stack에 push만 하기                    stack.push(board[j][move])                &#125;                // 해당 인형은 옮겼으니 0으로 바꿔 다시 선택하지 않도록 하기                board[j][move] = 0;                break;            &#125;         &#125;    &#125;    return score;&#125;\n다트 게임해당 문제 링크\n\n처음에 혼자 풀 때 짰던 코드\n스타상이 이전 점수에도 영향을 준다는 것을 고려하지 못함\n또, 10점을 고려하기 위해 같은 코드가 반복되어 지저분해보임123456789101112131415161718192021222324252627282930function solution(dartResult) &#123;    let answer = 0;    let split = dartResult.split(&#x27;&#x27;);    let dartScore = 0, alphabet = &#x27;&#x27;, powValue = 0, starOrSharp = &#x27;&#x27;;    while (split.length &gt; 0)&#123;        if (split[1] === &#x27;0&#x27;) &#123;            dartScore = split.shift() * 10;            split.shift();            alphabet = split.shift();            powValue = alphabet === &#x27;S&#x27; ? 1 : alphabet === &#x27;D&#x27; ? 2 : 3            if (split[0] === &#x27;*&#x27; || split[0] === &#x27;#&#x27;) &#123;                starOrSharp = split.shift() === &#x27;*&#x27; ? 2 : -1;            &#125; else &#123;                starOrSharp = 1;            &#125;            answer += Math.pow(dartScore, powValue) * starOrSharp;        &#125; else if (split[1] !== &#x27;0&#x27;) &#123;            dartScore = split.shift() * 1;            alphabet = split.shift();            powValue = alphabet === &#x27;S&#x27; ? 1 : alphabet === &#x27;D&#x27; ? 2 : 3            if (split[0] === &#x27;*&#x27; || split[0] === &#x27;#&#x27;) &#123;                starOrSharp = split.shift() === &#x27;*&#x27; ? 2 : -1;            &#125; else &#123;                starOrSharp = 1;            &#125;            answer += Math.pow(dartScore, powValue) * starOrSharp;        &#125;    &#125;    return answer;        &#125;\n다른분 풀이\nObject로 S, D, T값을 설정해 찾아 쓰는 방식은 O(1)로 가능하므로 보고 배워야겠다는 생각을 함\n스택 구조를 만들고 스택 내에 점수를 하나씩 저장해놓고 스타상이 두번째에 온다면 스택 내 값을 수정하는 방식을 미처 생각치 못함12345678910111213141516171819202122232425262728293031function solution(dartResult) &#123;    let stack = [];    let score = &#123;        S: 1,        D: 2,        T: 3    &#125;    let count = 0;    const len = dartResult.length;        for (let i = 0; i &lt; len; i++) &#123;        let isChar = dartResult.charAt(i);        if (+isChar != isChar) &#123;            if(score[isChar]) &#123;                stack.push(Math.pow(dartResult.slice(i - count, i), score[isChar]));                count = 0;            &#125; else &#123;                const sharpOrStar = isChar === &#x27;*&#x27; ? 2 : -1;                const stackLen = stack.length;                if (sharpOrStar == 2 &amp;&amp; stackLen &gt; 1) &#123;                    stack[stackLen-2] = stack[stackLen-2] * sharpOrStar;                &#125;                stack[stackLen-1] = stack[stackLen-1] * sharpOrStar;            &#125;        &#125; else &#123;            count++;        &#125;    &#125;    return stack.reduce((acc, cur) =&gt; acc+ cur, 0)&#125;\n폰켓몬해당 문제 링크\n처음에 든 생각은 그냥 set에 넣고 unique한 값만 뽑으면 되는 것 아닌가? 했음\n문제에서 폰켓몬은 N/2마리를 선택해야 하므로 만약에 들어오는 배열의 길이를 반으로 나눈 값이 set의 사이즈보다 작다면 단순히 배열 길이를 반으로 나눈 값을 리턴하면 될 일이었음\n\n1234567891011121314function solution(nums) &#123;    let answer = 0;    let set = new Set ();    for(let number of nums)&#123;        set.add(number);    &#125;    if(set.size &lt; nums.length/2) &#123;        answer = set.size;    &#125; else &#123;         answer = nums.length/2;    &#125;    return answer;&#125;","dateCreated":"2021-03-22T17:33:08+09:00","dateModified":"2021-03-22T18:52:18+09:00","datePublished":"2021-03-22T17:33:08+09:00","description":"","headline":"21-03-22 알고리즘 문제풀기 및 노트 정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"}</script>
+    <meta name="description" content="크레인 인형뽑기 게임해당 문제 링크  stack 배열을 생성하고 인형을 차례대로 담으면서 이전에 추가한 인형(stack의 마지막값)과 같은지 비교해서 score 계산을 해 주면 된다  1234567891011121314151617181920212223function solution(board, moves) &amp;#123;    let stack &#x3D; [];">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-22 알고리즘 문제풀기 및 노트 정리">
+<meta property="og:url" content="http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="크레인 인형뽑기 게임해당 문제 링크  stack 배열을 생성하고 인형을 차례대로 담으면서 이전에 추가한 인형(stack의 마지막값)과 같은지 비교해서 score 계산을 해 주면 된다  1234567891011121314151617181920212223function solution(board, moves) &amp;#123;    let stack &#x3D; [];">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-22T08:33:08.000Z">
+<meta property="article:modified_time" content="2021-03-22T09:52:18.786Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-22 알고리즘 문제풀기 및 노트 정리
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-22T17:33:08+09:00">
+	
+		    Mar 22, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="크레인-인형뽑기-게임"><a href="#크레인-인형뽑기-게임" class="headerlink" title="크레인 인형뽑기 게임"></a>크레인 인형뽑기 게임</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/64061?language=javascript">해당 문제 링크</a></p>
+<ul>
+<li>stack 배열을 생성하고 인형을 차례대로 담으면서 이전에 추가한 인형(stack의 마지막값)과 같은지 비교해서 score 계산을 해 주면 된다</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">board, moves</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> score = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; moves.length; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> move = moves[i]-<span class="number">1</span>; <span class="comment">// x좌표를 구함 (index는 1부터 시작하므로 1을 빼줌)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt;board.length; j++)&#123; <span class="comment">// board 길이만큼 돌고</span></span><br><span class="line">            <span class="keyword">if</span> (board[j][move] !== <span class="number">0</span>) &#123; <span class="comment">// 해당 좌표에 있는 인형이 0이 아니고</span></span><br><span class="line">                <span class="keyword">if</span> (board[j][move] === stack[stack.length-<span class="number">1</span>] &amp;&amp; stack.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="comment">// 이전에 추가한 인형과 값이 같다면 stack에서 빼주고 scoring하기</span></span><br><span class="line">                    stack.pop();</span><br><span class="line">                    score += <span class="number">2</span></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 값이 다르다면 그냥 stack에 push만 하기</span></span><br><span class="line">                    stack.push(board[j][move])</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 해당 인형은 옮겼으니 0으로 바꿔 다시 선택하지 않도록 하기</span></span><br><span class="line">                board[j][move] = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="다트-게임"><a href="#다트-게임" class="headerlink" title="다트 게임"></a>다트 게임</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/17682?language=javascript">해당 문제 링크</a></p>
+<ul>
+<li>처음에 혼자 풀 때 짰던 코드</li>
+<li>스타상이 <strong>이전 점수</strong>에도 영향을 준다는 것을 고려하지 못함</li>
+<li>또, 10점을 고려하기 위해 같은 코드가 반복되어 지저분해보임<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">dartResult</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> split = dartResult.split(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">    <span class="keyword">let</span> dartScore = <span class="number">0</span>, alphabet = <span class="string">&#x27;&#x27;</span>, powValue = <span class="number">0</span>, starOrSharp = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> (split.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> (split[<span class="number">1</span>] === <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">            dartScore = split.shift() * <span class="number">10</span>;</span><br><span class="line">            split.shift();</span><br><span class="line">            alphabet = split.shift();</span><br><span class="line">            powValue = alphabet === <span class="string">&#x27;S&#x27;</span> ? <span class="number">1</span> : alphabet === <span class="string">&#x27;D&#x27;</span> ? <span class="number">2</span> : <span class="number">3</span></span><br><span class="line">            <span class="keyword">if</span> (split[<span class="number">0</span>] === <span class="string">&#x27;*&#x27;</span> || split[<span class="number">0</span>] === <span class="string">&#x27;#&#x27;</span>) &#123;</span><br><span class="line">                starOrSharp = split.shift() === <span class="string">&#x27;*&#x27;</span> ? <span class="number">2</span> : -<span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                starOrSharp = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            answer += <span class="built_in">Math</span>.pow(dartScore, powValue) * starOrSharp;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (split[<span class="number">1</span>] !== <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">            dartScore = split.shift() * <span class="number">1</span>;</span><br><span class="line">            alphabet = split.shift();</span><br><span class="line">            powValue = alphabet === <span class="string">&#x27;S&#x27;</span> ? <span class="number">1</span> : alphabet === <span class="string">&#x27;D&#x27;</span> ? <span class="number">2</span> : <span class="number">3</span></span><br><span class="line">            <span class="keyword">if</span> (split[<span class="number">0</span>] === <span class="string">&#x27;*&#x27;</span> || split[<span class="number">0</span>] === <span class="string">&#x27;#&#x27;</span>) &#123;</span><br><span class="line">                starOrSharp = split.shift() === <span class="string">&#x27;*&#x27;</span> ? <span class="number">2</span> : -<span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                starOrSharp = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            answer += <span class="built_in">Math</span>.pow(dartScore, powValue) * starOrSharp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> answer;        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>다른분 풀이</li>
+<li>Object로 S, D, T값을 설정해 찾아 쓰는 방식은 O(1)로 가능하므로 보고 배워야겠다는 생각을 함</li>
+<li>스택 구조를 만들고 스택 내에 점수를 하나씩 저장해놓고 스타상이 두번째에 온다면 스택 내 값을 수정하는 방식을 미처 생각치 못함<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">dartResult</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> score = &#123;</span><br><span class="line">        S: <span class="number">1</span>,</span><br><span class="line">        D: <span class="number">2</span>,</span><br><span class="line">        T: <span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">const</span> len = dartResult.length;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> isChar = dartResult.charAt(i);</span><br><span class="line">        <span class="keyword">if</span> (+isChar != isChar) &#123;</span><br><span class="line">            <span class="keyword">if</span>(score[isChar]) &#123;</span><br><span class="line">                stack.push(<span class="built_in">Math</span>.pow(dartResult.slice(i - count, i), score[isChar]));</span><br><span class="line">                count = <span class="number">0</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> sharpOrStar = isChar === <span class="string">&#x27;*&#x27;</span> ? <span class="number">2</span> : -<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">const</span> stackLen = stack.length;</span><br><span class="line">                <span class="keyword">if</span> (sharpOrStar == <span class="number">2</span> &amp;&amp; stackLen &gt; <span class="number">1</span>) &#123;</span><br><span class="line">                    stack[stackLen-<span class="number">2</span>] = stack[stackLen-<span class="number">2</span>] * sharpOrStar;</span><br><span class="line">                &#125;</span><br><span class="line">                stack[stackLen-<span class="number">1</span>] = stack[stackLen-<span class="number">1</span>] * sharpOrStar;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> stack.reduce(<span class="function">(<span class="params">acc, cur</span>) =&gt;</span> acc+ cur, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="폰켓몬"><a href="#폰켓몬" class="headerlink" title="폰켓몬"></a>폰켓몬</h3><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/1845?language=javascript">해당 문제 링크</a></li>
+<li>처음에 든 생각은 그냥 set에 넣고 unique한 값만 뽑으면 되는 것 아닌가? 했음</li>
+<li>문제에서 폰켓몬은 N/2마리를 선택해야 하므로 만약에 들어오는 배열의 길이를 반으로 나눈 값이 set의 사이즈보다 작다면 단순히 배열 길이를 반으로 나눈 값을 리턴하면 될 일이었음</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span> ();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> number <span class="keyword">of</span> nums)&#123;</span><br><span class="line">        set.add(number);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(set.size &lt; nums.length/<span class="number">2</span>) &#123;</span><br><span class="line">        answer = set.size;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">        answer = nums.length/<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/21/21-03-21-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    data-tooltip="21-03-21 알고리즘 문제풀기 및 노트 정리"
+                    aria-label="NEXT: 21-03-21 알고리즘 문제풀기 및 노트 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/21/21-03-21-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    data-tooltip="21-03-21 알고리즘 문제풀기 및 노트 정리"
+                    aria-label="NEXT: 21-03-21 알고리즘 문제풀기 및 노트 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
