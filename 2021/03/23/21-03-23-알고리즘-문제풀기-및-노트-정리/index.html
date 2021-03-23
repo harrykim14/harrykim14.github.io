@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-23 알고리즘 문제풀기 및 노트 정리 - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"소수 만들기해당 문제 링크\n\n에라토스테네스의 체를 세 정수의 최대값인 2997까지 구함\nnums 배열을 돌며 세 정수의 합을 구해 배열에 push\n해당 배열 값을 인덱스로 가지는 에라토스테네스의 체의 값이 false가 아니라면 answer값을 증가시킨다\n\n1234567891011121314151617181920212223242526272829function solution(nums) &#123;   let combination = [];    let answer = 0;    let primeNums = [];    for(let i = 2; i &lt;= 2997; i++)&#123;         if(primeNums[i] == false)             continue;         for(let k = i + i; k &lt;= 2997; k += i) &#123;             primeNums[k] = false;         &#125;     &#125;    for (let i = 0; i &lt; nums.length; i++) &#123;        for (let j = i+1; j &lt; nums.length; j++) &#123;            for (let k = j+1; k &lt; nums.length; k++)&#123;                let temp = nums[i]+nums[j]+nums[k];                combination.push(temp);            &#125;        &#125;    &#125;    for (let i = 0; i &lt; combination.length; i++) &#123;        if(primeNums[combination[i]] !== false)            answer++    &#125;    return answer;&#125;\n신규 아이디 추천해당 문제 링크\n123456781. 모든 대문자를 대응되는 소문자로 치환합니다.2. 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거합니다.3. 마침표(.)가 2번 이상 연속된 부분을 하나의 마침표(.)로 치환합니다.4. 마침표(.)가 처음이나 끝에 위치한다면 제거합니다.5. 빈 문자열이라면, &quot;a&quot;를 대입합니다.6. 길이가 16자 이상이면, 첫 15개의 문자를 제외한 나머지 문자들을 모두 제거합니다.7. 만약 제거 후 마침표(.)가 끝에 위치한다면 끝에 위치한 마침표(.) 문자를 제거합니다.8. 길이가 2자 이하라면, 마지막 문자를 길이가 3이 될 때까지 반복해서 끝에 붙입니다.\n\n정규식을 사용해 1번부터 8번을 구현하기\n4번, 5번을 모르겠어서 다른 분의 풀이를 참고함\n정규식은 언제 봐도 어렵다…\n\n1234567891011function solution(new_id) &#123;    const answer = new_id        .toLowerCase() // 1. 모두 소문자로 치환        .replace(/[^\\w-_.]/g, &#x27;&#x27;) // 2. \\w는 밑줄 문자를 포함한 영숫자 문자에 대응        .replace(/\\.&#123;2,&#125;/g, &#x27;.&#x27;) // 3. \\.&#123;2,&#125;로 2개 이상 연속된다면 &#x27;.&#x27;로 replace        .replace(/^\\.|\\.$/g, &#x27;&#x27;) // 4. 마침표가 처음과 끝에 있는지 확인 ^\\.| \\.$(^: 입력의 시작부분, $: 입력의 끝부분)        .replace(/^$/, &#x27;a&#x27;) // 5. 시작(^)과 끝($)이 빈 문자열이라면 a로 replace        .slice(0, 15).replace(/\\.$/, &#x27;&#x27;); // 6, 7. slice로 15개 문자만 남기고 4번과 마찬가지로 \\.$를 사용해 끝문자열의 마침표 삭제    const len = answer.length;    return len &gt; 2 ? answer : answer + answer.charAt(len - 1).repeat(3 - len); // 8. 길이가 2보다 작다면 아이디 끝에 반복해서 붙이기&#125;\n\n키패드 누르기해당 문제 링크\n123456맨 처음 왼손 엄지손가락은 * 키패드에 오른손 엄지손가락은 # 키패드 위치에서 시작하며, 엄지손가락을 사용하는 규칙은 다음과 같습니다.1. 엄지손가락은 상하좌우 4가지 방향으로만 이동할 수 있으며 키패드 이동 한 칸은 거리로 1에 해당합니다.2. 왼쪽 열의 3개의 숫자 1, 4, 7을 입력할 때는 왼손 엄지손가락을 사용합니다.3. 오른쪽 열의 3개의 숫자 3, 6, 9를 입력할 때는 오른손 엄지손가락을 사용합니다.4. 가운데 열의 4개의 숫자 2, 5, 8, 0을 입력할 때는 두 엄지손가락의 현재 키패드의 위치에서 더 가까운 엄지손가락을 사용합니다.  4-1. 만약 두 엄지손가락의 거리가 같다면, 오른손잡이는 오른손 엄지손가락, 왼손잡이는 왼손 엄지손가락을 사용합니다.\n\n간단한 해시 테이블을 사용하여 키의 위치를 할당하고 번호마다 왼손, 오른손의 현재 위치와의 거리를 구하여 이동하게 함\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647function solution (numbers, hand) &#123;    let answer = &#x27;&#x27;;    let keypad = &#123;         1: [1,1], 2: [1,2], 3: [1,3],         4: [2,1], 5: [2,2], 6: [2,3],         7: [3,1], 8: [3,2], 9: [3,3],         &#x27;*&#x27;: [4,1], 0: [4,2], &#x27;#&#x27;: [4,3],     &#125;    let curLeft = keypad[&#x27;*&#x27;]    let curRight = keypad[&#x27;#&#x27;]    numbers.forEach(num =&gt; &#123;        let numPosition = keypad[num];        if (numPosition[1] === 1) &#123;            curLeft = numPosition            answer += &#x27;L&#x27;        &#125; else if (numPosition[1] === 3) &#123;            curRight = numPosition            answer += &#x27;R&#x27;        &#125; else &#123;            let distanceLeft = calDistance(curLeft, numPosition)            let distanceRight = calDistance(curRight, numPosition)            if(distanceLeft === distanceRight) &#123;                if(hand === &#x27;left&#x27;) &#123;                    curLeft = numPosition;                    answer += &#x27;L&#x27;                &#125; else &#123;                    curRight = numPosition;                    answer += &#x27;R&#x27;                &#125;            &#125; else if (distanceLeft &lt; distanceRight) &#123;                curLeft = numPosition;                answer += &#x27;L&#x27;;            &#125; else &#123;                curRight = numPosition;                answer += &#x27;R&#x27;;            &#125;        &#125;    &#125;)    return answer;&#125;function calDistance(LeftOrRight, numPosition) &#123;    return Math.abs(LeftOrRight[0] - numPosition[0]) + Math.abs(LeftOrRight[1] - numPosition[1])&#125;\n하샤드 수해당 문제 링크\n\n1분컷함…1234function solution(x) &#123;    let sum = (&#x27;&#x27;+x).split(&#x27;&#x27;).map(el =&gt; el*1).reduce((acc, cur) =&gt; acc+cur, 0);    return x%sum === 0; &#125;\n\n\n\n","dateCreated":"2021-03-23T14:52:29+09:00","dateModified":"2021-03-23T15:30:03+09:00","datePublished":"2021-03-23T14:52:29+09:00","description":"","headline":"21-03-23 알고리즘 문제풀기 및 노트 정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"}</script>
+    <meta name="description" content="소수 만들기해당 문제 링크  에라토스테네스의 체를 세 정수의 최대값인 2997까지 구함 nums 배열을 돌며 세 정수의 합을 구해 배열에 push 해당 배열 값을 인덱스로 가지는 에라토스테네스의 체의 값이 false가 아니라면 answer값을 증가시킨다  1234567891011121314151617181920212223242526272829function">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-23 알고리즘 문제풀기 및 노트 정리">
+<meta property="og:url" content="http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="소수 만들기해당 문제 링크  에라토스테네스의 체를 세 정수의 최대값인 2997까지 구함 nums 배열을 돌며 세 정수의 합을 구해 배열에 push 해당 배열 값을 인덱스로 가지는 에라토스테네스의 체의 값이 false가 아니라면 answer값을 증가시킨다  1234567891011121314151617181920212223242526272829function">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-23T05:52:29.000Z">
+<meta property="article:modified_time" content="2021-03-23T06:30:03.486Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-23 알고리즘 문제풀기 및 노트 정리
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-23T14:52:29+09:00">
+	
+		    Mar 23, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="소수-만들기"><a href="#소수-만들기" class="headerlink" title="소수 만들기"></a>소수 만들기</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/12977?language=javascript">해당 문제 링크</a></p>
+<ul>
+<li>에라토스테네스의 체를 세 정수의 최대값인 2997까지 구함</li>
+<li>nums 배열을 돌며 세 정수의 합을 구해 배열에 push</li>
+<li>해당 배열 값을 인덱스로 가지는 에라토스테네스의 체의 값이 false가 아니라면 answer값을 증가시킨다</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">let</span> combination = [];</span><br><span class="line">    <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> primeNums = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">2</span>; i &lt;= <span class="number">2997</span>; i++)&#123; </span><br><span class="line">        <span class="keyword">if</span>(primeNums[i] == <span class="literal">false</span>) </span><br><span class="line">            <span class="keyword">continue</span>; </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> k = i + i; k &lt;= <span class="number">2997</span>; k += i) &#123; </span><br><span class="line">            primeNums[k] = <span class="literal">false</span>; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = i+<span class="number">1</span>; j &lt; nums.length; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> k = j+<span class="number">1</span>; k &lt; nums.length; k++)&#123;</span><br><span class="line">                <span class="keyword">let</span> temp = nums[i]+nums[j]+nums[k];</span><br><span class="line">                combination.push(temp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; combination.length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(primeNums[combination[i]] !== <span class="literal">false</span>)</span><br><span class="line">            answer++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="신규-아이디-추천"><a href="#신규-아이디-추천" class="headerlink" title="신규 아이디 추천"></a>신규 아이디 추천</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/72410?language=javascript">해당 문제 링크</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 모든 대문자를 대응되는 소문자로 치환합니다.</span><br><span class="line">2. 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거합니다.</span><br><span class="line">3. 마침표(.)가 2번 이상 연속된 부분을 하나의 마침표(.)로 치환합니다.</span><br><span class="line">4. 마침표(.)가 처음이나 끝에 위치한다면 제거합니다.</span><br><span class="line">5. 빈 문자열이라면, &quot;a&quot;를 대입합니다.</span><br><span class="line">6. 길이가 16자 이상이면, 첫 15개의 문자를 제외한 나머지 문자들을 모두 제거합니다.</span><br><span class="line">7. 만약 제거 후 마침표(.)가 끝에 위치한다면 끝에 위치한 마침표(.) 문자를 제거합니다.</span><br><span class="line">8. 길이가 2자 이하라면, 마지막 문자를 길이가 3이 될 때까지 반복해서 끝에 붙입니다.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>정규식을 사용해 1번부터 8번을 구현하기</li>
+<li>4번, 5번을 모르겠어서 다른 분의 풀이를 참고함</li>
+<li>정규식은 언제 봐도 어렵다…</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">new_id</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> answer = new_id</span><br><span class="line">        .toLowerCase() <span class="comment">// 1. 모두 소문자로 치환</span></span><br><span class="line">        .replace(<span class="regexp">/[^\w-_.]/g</span>, <span class="string">&#x27;&#x27;</span>) <span class="comment">// 2. \w는 밑줄 문자를 포함한 영숫자 문자에 대응</span></span><br><span class="line">        .replace(<span class="regexp">/\.&#123;2,&#125;/g</span>, <span class="string">&#x27;.&#x27;</span>) <span class="comment">// 3. \.&#123;2,&#125;로 2개 이상 연속된다면 &#x27;.&#x27;로 replace</span></span><br><span class="line">        .replace(<span class="regexp">/^\.|\.$/g</span>, <span class="string">&#x27;&#x27;</span>) <span class="comment">// 4. 마침표가 처음과 끝에 있는지 확인 ^\.| \.$(^: 입력의 시작부분, $: 입력의 끝부분)</span></span><br><span class="line">        .replace(<span class="regexp">/^$/</span>, <span class="string">&#x27;a&#x27;</span>) <span class="comment">// 5. 시작(^)과 끝($)이 빈 문자열이라면 a로 replace</span></span><br><span class="line">        .slice(<span class="number">0</span>, <span class="number">15</span>).replace(<span class="regexp">/\.$/</span>, <span class="string">&#x27;&#x27;</span>); <span class="comment">// 6, 7. slice로 15개 문자만 남기고 4번과 마찬가지로 \.$를 사용해 끝문자열의 마침표 삭제</span></span><br><span class="line">    <span class="keyword">const</span> len = answer.length;</span><br><span class="line">    <span class="keyword">return</span> len &gt; <span class="number">2</span> ? answer : answer + answer.charAt(len - <span class="number">1</span>).repeat(<span class="number">3</span> - len); <span class="comment">// 8. 길이가 2보다 작다면 아이디 끝에 반복해서 붙이기</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="키패드-누르기"><a href="#키패드-누르기" class="headerlink" title="키패드 누르기"></a>키패드 누르기</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/67256?language=javascript">해당 문제 링크</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">맨 처음 왼손 엄지손가락은 * 키패드에 오른손 엄지손가락은 # 키패드 위치에서 시작하며, 엄지손가락을 사용하는 규칙은 다음과 같습니다.</span><br><span class="line">1. 엄지손가락은 상하좌우 4가지 방향으로만 이동할 수 있으며 키패드 이동 한 칸은 거리로 1에 해당합니다.</span><br><span class="line">2. 왼쪽 열의 3개의 숫자 1, 4, 7을 입력할 때는 왼손 엄지손가락을 사용합니다.</span><br><span class="line">3. 오른쪽 열의 3개의 숫자 3, 6, 9를 입력할 때는 오른손 엄지손가락을 사용합니다.</span><br><span class="line">4. 가운데 열의 4개의 숫자 2, 5, 8, 0을 입력할 때는 두 엄지손가락의 현재 키패드의 위치에서 더 가까운 엄지손가락을 사용합니다.</span><br><span class="line">  4-1. 만약 두 엄지손가락의 거리가 같다면, 오른손잡이는 오른손 엄지손가락, 왼손잡이는 왼손 엄지손가락을 사용합니다.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>간단한 해시 테이블을 사용하여 키의 위치를 할당하고 번호마다 왼손, 오른손의 현재 위치와의 거리를 구하여 이동하게 함</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span> (<span class="params">numbers, hand</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> answer = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">let</span> keypad = &#123; </span><br><span class="line">        <span class="number">1</span>: [<span class="number">1</span>,<span class="number">1</span>], <span class="number">2</span>: [<span class="number">1</span>,<span class="number">2</span>], <span class="number">3</span>: [<span class="number">1</span>,<span class="number">3</span>], </span><br><span class="line">        <span class="number">4</span>: [<span class="number">2</span>,<span class="number">1</span>], <span class="number">5</span>: [<span class="number">2</span>,<span class="number">2</span>], <span class="number">6</span>: [<span class="number">2</span>,<span class="number">3</span>], </span><br><span class="line">        <span class="number">7</span>: [<span class="number">3</span>,<span class="number">1</span>], <span class="number">8</span>: [<span class="number">3</span>,<span class="number">2</span>], <span class="number">9</span>: [<span class="number">3</span>,<span class="number">3</span>], </span><br><span class="line">        <span class="string">&#x27;*&#x27;</span>: [<span class="number">4</span>,<span class="number">1</span>], <span class="number">0</span>: [<span class="number">4</span>,<span class="number">2</span>], <span class="string">&#x27;#&#x27;</span>: [<span class="number">4</span>,<span class="number">3</span>], </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> curLeft = keypad[<span class="string">&#x27;*&#x27;</span>]</span><br><span class="line">    <span class="keyword">let</span> curRight = keypad[<span class="string">&#x27;#&#x27;</span>]</span><br><span class="line">    numbers.forEach(<span class="function"><span class="params">num</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> numPosition = keypad[num];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (numPosition[<span class="number">1</span>] === <span class="number">1</span>) &#123;</span><br><span class="line">            curLeft = numPosition</span><br><span class="line">            answer += <span class="string">&#x27;L&#x27;</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (numPosition[<span class="number">1</span>] === <span class="number">3</span>) &#123;</span><br><span class="line">            curRight = numPosition</span><br><span class="line">            answer += <span class="string">&#x27;R&#x27;</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> distanceLeft = calDistance(curLeft, numPosition)</span><br><span class="line">            <span class="keyword">let</span> distanceRight = calDistance(curRight, numPosition)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(distanceLeft === distanceRight) &#123;</span><br><span class="line">                <span class="keyword">if</span>(hand === <span class="string">&#x27;left&#x27;</span>) &#123;</span><br><span class="line">                    curLeft = numPosition;</span><br><span class="line">                    answer += <span class="string">&#x27;L&#x27;</span></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    curRight = numPosition;</span><br><span class="line">                    answer += <span class="string">&#x27;R&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (distanceLeft &lt; distanceRight) &#123;</span><br><span class="line">                curLeft = numPosition;</span><br><span class="line">                answer += <span class="string">&#x27;L&#x27;</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                curRight = numPosition;</span><br><span class="line">                answer += <span class="string">&#x27;R&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calDistance</span>(<span class="params">LeftOrRight, numPosition</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.abs(LeftOrRight[<span class="number">0</span>] - numPosition[<span class="number">0</span>]) + <span class="built_in">Math</span>.abs(LeftOrRight[<span class="number">1</span>] - numPosition[<span class="number">1</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="하샤드-수"><a href="#하샤드-수" class="headerlink" title="하샤드 수"></a>하샤드 수</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/12947?language=javascript">해당 문제 링크</a></p>
+<ul>
+<li>1분컷함…<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> sum = (<span class="string">&#x27;&#x27;</span>+x).split(<span class="string">&#x27;&#x27;</span>).map(<span class="function"><span class="params">el</span> =&gt;</span> el*<span class="number">1</span>).reduce(<span class="function">(<span class="params">acc, cur</span>) =&gt;</span> acc+cur, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> x%sum === <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    data-tooltip="21-03-22 알고리즘 문제풀기 및 노트 정리"
+                    aria-label="NEXT: 21-03-22 알고리즘 문제풀기 및 노트 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    data-tooltip="21-03-22 알고리즘 문제풀기 및 노트 정리"
+                    aria-label="NEXT: 21-03-22 알고리즘 문제풀기 및 노트 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/23/21-03-23-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
