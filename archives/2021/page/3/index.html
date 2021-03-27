@@ -188,6 +188,89 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                            aria-label=": 21-03-07 알고리즘 강의 노트정리"
+                        >
+                            21-03-07 알고리즘 강의 노트정리
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-07T13:48:26+09:00">
+	
+		    Mar 07, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="진법을-변환하기"><a href="#진법을-변환하기" class="headerlink" title="진법을 변환하기"></a>진법을 변환하기</h3><ul>
+<li>A진법 수 N을 입력 받아 B진법 수로 변환하는 문제</li>
+<li>Horner’s Method<br><img src="/images/horners_method.png"><br>→ 해시 문제나 긴자리수 진법 변환 문제에 사용됨</li>
+<li>2진수를 10진수로 변환하기<br><img src="/images/binaryToDesimal.png"></li>
+<li>예1) 2진법 11010을 8진법으로 바꾸어보자<br>→ char str[] = “11010”<br>(의미는 없지만 JS에서는 let str = Number(10110).toString()로 표현가능함)</li>
+</ul>
+<blockquote>
+<p>d = d * 2 + ‘1’ - ‘0’; // d(3) = 1 * 2 + 1<br>d = 0<em>2 + 1 = 1<br>d = 1</em>2 + 1 = 3<br>d = 3<em>2 + 0 = 13<br>d = 6</em>2 + 1 = 13<br>d = 13*2 + 1 = <strong>26</strong></p>
+</blockquote>
+<ul>
+<li><p>10진법을 먼저 구하고 10진법 26을 8진법으로 바꾸기</p>
+<blockquote>
+<p>3<em>8 + 2  ``26/8</em>8 + 26%8<code>(0*8 +**3**) * 8 + **2**</code>(3/8<em>8 + 3%8)*8 + 26%8``<br>*</em>32** (Octet)</p>
+</blockquote>
+</li>
+<li><p>예2) 10진법 2543을 16진법으로 바꾸기</p>
+<blockquote>
+<p>158 * 16 + ‘F’ <code>2543/16 * 16 + 2543%16 // 158*16 + 15</code><br>(9<em>16 + ‘E’) * 16 + ‘F’ ``(158/16)*16 + 158%16 + ‘F’ // 9</em>16 + 14 + ‘F’``<br>((0<em>16 + <strong>9</strong>) * 16 + *</em>‘E’*<em>) * 16 + *</em>‘F’** = <strong>9EF</strong> (Hexadecimal)</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>자바스크립트의 진법 변환은 매우 간단하기 때문에 별도의 코드는 첨부하지 않음</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> value = <span class="number">10</span>;</span><br><span class="line">value.toString(<span class="number">2</span>) <span class="comment">// 2진법으로 변경</span></span><br><span class="line"><span class="keyword">let</span> binary = <span class="number">1010</span>;</span><br><span class="line"><span class="built_in">Number</span>.parseInt(binary, <span class="number">2</span>) <span class="comment">// 10진법으로 변경</span></span><br></pre></td></tr></table></figure>
+<h3 id="앞뒤-같은-제곱"><a href="#앞뒤-같은-제곱" class="headerlink" title="앞뒤 같은 제곱"></a>앞뒤 같은 제곱</h3><ul>
+<li>N(1≤N≤300)중에서 N의 제곱값을 B(2≤B≤20)진수로 바꿨을 때 앞뒤가 같은 수가 되는 N값과 N의 제곱값을 B진수로 바꾸는 문제 (단, 10보다 큰 숫자는 A~J로 표현)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> changeNumBase = <span class="function"><span class="params">powNum</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= <span class="number">300</span>; i++) &#123;</span><br><span class="line">        arr.push(<span class="built_in">Math</span>.pow(i, powNum))</span><br><span class="line">    &#125;</span><br><span class="line">    arr = arr.filter(<span class="function"><span class="params">num</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num.toString() === num.toString().split(<span class="string">&#x27;&#x27;</span>).reverse().join(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> solution = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> arr = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i &lt;= <span class="number">20</span>; i++) &#123;</span><br><span class="line">        arr.push(changeNumBase(i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr.filter(<span class="function"><span class="params">el</span> =&gt;</span> el.length &gt; <span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 출력 예시</span></span><br><span class="line"><span class="comment">[</span></span><br><span class="line"><span class="comment">  [     1,     4,     9,</span></span><br><span class="line"><span class="comment">      121,   484,   676,</span></span><br><span class="line"><span class="comment">    10201, 12321, 14641,</span></span><br><span class="line"><span class="comment">    40804, 44944, 69696</span></span><br><span class="line"><span class="comment">  ],</span></span><br><span class="line"><span class="comment">  [ 1, 8, 343, 1331, 1030301, 1367631 ],</span></span><br><span class="line"><span class="comment">  [ 1, 14641, 104060401 ]</span></span><br><span class="line"><span class="comment">]</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/07/21-03-07-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/06/21-03-06-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
                             aria-label=": 21-03-06 알고리즘 강의 노트정리"
                         >
@@ -996,81 +1079,6 @@
                         <p>
                             <a
                                 href="/2021/03/01/21-03-01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/"
-                            aria-label=": 21-02-28 알고리즘 기초강의(2)"
-                        >
-                            21-02-28 알고리즘 기초강의(2)
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-02-28T20:23:05+09:00">
-	
-		    Feb 28, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="마감시간이-있는-스케쥴-짜기"><a href="#마감시간이-있는-스케쥴-짜기" class="headerlink" title="마감시간이 있는 스케쥴 짜기"></a>마감시간이 있는 스케쥴 짜기</h3><ul>
-<li>마감시간과 함께 여러개의 작업이 주어지고 마감시간 내에 마치면 보상이 주어짐</li>
-<li>이 보상이 최대가 되는 스케쥴을 작성하는 문제</li>
-</ul>
-<p><strong>Greedy Approach로 해결하기</strong></p>
-<ul>
-<li>보상에 따라서 비오름차순으로 작업을 정렬하고 각 작업을 순서대로 하나씩 가능한 스케쥴에 포함시킴</li>
-</ul>
-<p><strong>슈도 코드로 작성해보기</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">S &#x3D; ∅</span><br><span class="line">while (답을 구하지 못함):</span><br><span class="line">    다음 작업을 선택</span><br><span class="line">    if (이 작업을 추가했을 때 S가 적절함)</span><br><span class="line">        이 작업을 S에 추가</span><br><span class="line">    if (더 이상 남은 작업이 없다면)</span><br><span class="line">        답을 구하였으니 return</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>적절함</strong> 의 정의<ul>
-<li>어떤 순서는 그 순서 내의 모든 작업이 데드라인 이전에 시작될 때 적절한 순서라 한다<br>예) [4,1]은 정렬된 데드라인이라 적절하나 [1,4]는 부적절함</li>
-<li>어떤 집합은 그 집합의 원소들로 하나 이상의 적절한 순서를 만들 수 있을 때 적절한 집합이라 한다<br>예) 집합 {1,4}는 [4,1]을 구성할 수 있으므로 적절한 집합임</li>
-</ul>
-</li>
-</ul>
-<p><strong>파이썬으로 구현하기</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">schedule</span> (<span class="params">deadline</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(deadline) - <span class="number">1</span></span><br><span class="line">    J = [<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">        K = insert(J, i, deadline)</span><br><span class="line">        <span class="keyword">if</span>(feasible(K, deadline)):</span><br><span class="line">            J = K[:] <span class="comment"># 파이썬에서 배열의 깊은 복사</span></span><br><span class="line">    <span class="keyword">return</span> J</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feasible</span>(<span class="params">K, deadline</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> rage(<span class="number">1</span>, <span class="built_in">len</span>(K) + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> (i &gt; deadline[K[i - <span class="number">1</span>]]):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert</span>(<span class="params">J, i, deadline</span>):</span></span><br><span class="line">    K = J[:]</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(J), <span class="number">0</span>, -<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> (deadline[i] &gt;= deadline[K[j-<span class="number">1</span>]]):</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    K.insert(j - <span class="number">1</span>, i)</span><br><span class="line">    <span class="keyword">return</span> K</span><br></pre></td></tr></table></figure>
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/02/28/21-02-28-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98-2/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
