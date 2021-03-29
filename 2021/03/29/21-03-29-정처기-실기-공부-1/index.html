@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-03-29 정처기 실기 공부(1) - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"Ⅰ. 요구사항 확인Chapter 01 소프트웨어 개발방법론(1) 소프트웨어 생명주기 모델\n\n요구사항 분석 → 설계 → 구현 → 테스트 → 유지보수\n폭포수 모델(순차적), 프로토타이핑 모델(프로토타입), 나선형 모델(절차 반복적), 반복적 모델(병행적) 등이 있음\n\n(2) 개발방법론\n\n구조적 방법론 : 기능에 따라 나누어 개발하고 통합하는 분할정복식 접근방법\n\n정보공학 방법론 : 개발주기를 이용해 대형 프로젝트를 수행하는 방법\n\n객체지향 방법론 : ‘객체’ 단위로 시스템을 분석 및 설계\n\n컴포넌트 기반 방법론 : 소프트웨어를 구성하는 컴포넌트를 조립해서 하나의 응용 프로그램을 작성하는 방법으로 확장성이 용이하며 소프트웨어의 재사용이 가능\n\n애자일 방법론 : 절차보다는 사람이 중심이 되어 변화에 유연하고 신속하게 적응하면서 효율적으로 시스템을 개발할 수 있는 경량 개발방법론으로 이터레이션 주기(분석→디자인→개발→테스트를 반복)를 통해 개발됨\n\n대표적인 애자일 방법론의 유형 : XP, Lean, 스크럼 등\n\n\nXP(eXtreme Programming) : 용기, 단순성, 의사소통, 피드백, 존중의 5가지 가치를 가지며 짝프로그래밍을 포함한 12가지 기본 원리로 구성됨\n\n스크럼 : 매일 정해진 시간·장소에서 개발팀을 위한 프로젝트 관리 중심 방법론\n\n백로그, 스프린트, 스크럼 미팅, 스크럼 마스터, 스프린트 회고, 번 다운 차트\n\n\nLean : Just In Time, 칸반 보드를 사용함\n\n\n(3) 비용산정, 일정관리 모형\n\n하향식, 상향식 산정방법\nLines of Code(LoC) 모형 : 낙관치, 중간치, 비관치를 측정하여 비용을 산정\nMan Month 모형 : LoC / 프로그래머의 월간 생산성, Man Month / 프로젝트 인력 = 프로젝트 기간\nCOCOMO 모형\n조직형 : 5만라인 이하의 소프트웨어 개발에 적용\n반 분리형 : 30만라인 이하의 소프트웨어 개발에 적용\n임베디드형 : 30만라인 이상의 소프트웨어 개발에 적용\n\n\n푸트남 모형 : 단계별로 요구할 인력의 분포를 가정\n기능점수 모형 : 요인별 가중치를 합산하고 총 기능의 점수를 계산하여 비용을 산정 (기능점수 = 총 기능점수 x (0.65 + (0.1 총 영향도)))\n일정관리 모델에는 주 공정법, PERT, 중요 연쇄 프로젝트 관리가 있다\n\n기출문제\n 절차보다는 사람이 중심이 되어 변화에 유연하고 신속하게 적응하면서 효율적으로 시스템을 갭라할 수 있는 신속 적응적 경량 개발방법론으로, 개발 기간이 짧고 신속하며, 워터폴에 대비되는 방법론으로 최근 회사에서 각광받는 방법론은 무엇인가?\n\n\n애자일 방법론\n\n\n LoC가 30,000 라인이고 개발자가 5명이며, 월평균 300라인을 개발한다면 프로젝트 개발 기간과 계산식을 쓰시오\n\n\n프로젝트 개발 기간 : Man Month = LoC / 월간 생산성 = 30,000 / 300 = 100개월프로젝트 기간 = 100 개월 / 5 명 = 20개월\n\n예상문제\n소프트웨어 생명주기 모델에 대해 서술하시오\n\n\n시스템의 요구분석부터 유지보수까지 전 공정을 체계화한 절차로 시스템이 개발될 때부터 운용과 유지보수를 거쳐 생애를 마칠 때 까지의 작업 프로세스를 모델화 한 것\n\n\n소프트웨어 생명주기 모델 중에서 시스템 명세 단계에서 정의한 기능을 실제 수행할 수 있도록 수행 방법을 논리적으로 결정하는 단계는 무엇인가?\n\n\n설계 단계\n\n\n소프트웨어 개발 시 각 단계를 확실히 마무리 지은 후에 다음 단계로 넘어가는 모델은 무엇인가?\n\n\n폭포수 모델\n\n\n전체 시스템을 기능에 따라 나누어 개발하고 이를 통합하는 분할과 정복 접근 방식의 방법론은 무엇인가?\n\n\n구조적 방법론\n\n\nTDD에 대해서 설명하시오\n\n\n테스트를 기반으로 한 개발 방식으로 작성해야 하는 프로그램에 대한 테스트를 먼저 수행하고 이 테스트를 통과할 수 있도록 코드를 작성하는 것\n\n\nXP 12가지 가치 중 매일 여러 번씩 소프트웨어를 통합하고 빌드해야 한다는 원리는 무엇인가?\n\n\n지속적인 통합\n\n\n애자일 방법론 중에서 매일 정해진 시간, 장소에서 짧은 시간의 개발을 하는 팀을 위한 프로젝트 관리 중심 방법론은 무엇인가?\n\n\n스크럼 기법\n\n\n델파이 기법에 대해 서술하시오\n\n\n전문가의 경험적 지식을 통한 문제 해결 및 미래 예측을 위한 기법\n\n\n요구 기능을 증가시키는 인자별로 가중치를 부여하고 요인별 가중치를 합산하여 총 기능 점수를 계산하고 비용을 산정하는 방식은 무엇인가?\n\n\n기능 점수 방식\n\n\n일의 순서를 계획적으로 정리하기 위한 수렴 기법으로 비관치, 중간치, 낙관치의 3점 추정방식을 통해 일정을 관리하는 기법은 무엇인가?\n\n\nPERT\n\n\nCPM 네트워크가 다음과 같을 때 임계 경로의 소요기일은 얼마인가?\n\n\n14일\n\n\nLoC가 50,000라인, 개발자 10명, 월평균 250라인을 개발한다면 Man Month는 얼마인가?\n\n\n50,000 / 250 = 200\n\n","dateCreated":"2021-03-29T10:25:23+09:00","dateModified":"2021-03-29T21:38:47+09:00","datePublished":"2021-03-29T10:25:23+09:00","description":"","headline":"21-03-29 정처기 실기 공부(1)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"}</script>
+    <meta name="description" content="Ⅰ. 요구사항 확인Chapter 01 소프트웨어 개발방법론(1) 소프트웨어 생명주기 모델  요구사항 분석 → 설계 → 구현 → 테스트 → 유지보수 폭포수 모델(순차적), 프로토타이핑 모델(프로토타입), 나선형 모델(절차 반복적), 반복적 모델(병행적) 등이 있음  (2) 개발방법론  구조적 방법론 : 기능에 따라 나누어 개발하고 통합하는 분할정복식 접근방법">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-03-29 정처기 실기 공부(1)">
+<meta property="og:url" content="http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="Ⅰ. 요구사항 확인Chapter 01 소프트웨어 개발방법론(1) 소프트웨어 생명주기 모델  요구사항 분석 → 설계 → 구현 → 테스트 → 유지보수 폭포수 모델(순차적), 프로토타이핑 모델(프로토타입), 나선형 모델(절차 반복적), 반복적 모델(병행적) 등이 있음  (2) 개발방법론  구조적 방법론 : 기능에 따라 나누어 개발하고 통합하는 분할정복식 접근방법">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-29T01:25:23.000Z">
+<meta property="article:modified_time" content="2021-03-29T12:38:47.277Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-03-29 정처기 실기 공부(1)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-03-29T10:25:23+09:00">
+	
+		    Mar 29, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC/">정보처리기사</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="Ⅰ-요구사항-확인"><a href="#Ⅰ-요구사항-확인" class="headerlink" title="Ⅰ. 요구사항 확인"></a>Ⅰ. 요구사항 확인</h2><h3 id="Chapter-01-소프트웨어-개발방법론"><a href="#Chapter-01-소프트웨어-개발방법론" class="headerlink" title="Chapter 01 소프트웨어 개발방법론"></a>Chapter 01 소프트웨어 개발방법론</h3><p>(1) 소프트웨어 생명주기 모델</p>
+<ul>
+<li>요구사항 분석 → 설계 → 구현 → 테스트 → 유지보수</li>
+<li>폭포수 모델(순차적), 프로토타이핑 모델(프로토타입), 나선형 모델(절차 반복적), 반복적 모델(병행적) 등이 있음</li>
+</ul>
+<p>(2) 개발방법론</p>
+<ul>
+<li><p>구조적 방법론 : 기능에 따라 나누어 개발하고 통합하는 분할정복식 접근방법</p>
+</li>
+<li><p>정보공학 방법론 : 개발주기를 이용해 대형 프로젝트를 수행하는 방법</p>
+</li>
+<li><p>객체지향 방법론 : ‘객체’ 단위로 시스템을 분석 및 설계</p>
+</li>
+<li><p>컴포넌트 기반 방법론 : 소프트웨어를 구성하는 컴포넌트를 조립해서 하나의 응용 프로그램을 작성하는 방법으로 확장성이 용이하며 소프트웨어의 재사용이 가능</p>
+</li>
+<li><p>애자일 방법론 : <strong>절차보다는 사람이 중심이 되어 변화에 유연하고 신속하게 적응하면서 효율적으로 시스템을 개발할 수 있는 경량 개발방법론</strong>으로 이터레이션 주기(분석→디자인→개발→테스트를 반복)를 통해 개발됨</p>
+<ul>
+<li>대표적인 애자일 방법론의 유형 : XP, Lean, 스크럼 등</li>
+</ul>
+</li>
+<li><p>XP(eXtreme Programming) : 용기, 단순성, 의사소통, 피드백, 존중의 5가지 가치를 가지며 짝프로그래밍을 포함한 12가지 기본 원리로 구성됨</p>
+</li>
+<li><p>스크럼 : 매일 정해진 시간·장소에서 개발팀을 위한 프로젝트 관리 중심 방법론</p>
+<ul>
+<li>백로그, 스프린트, 스크럼 미팅, 스크럼 마스터, 스프린트 회고, 번 다운 차트</li>
+</ul>
+</li>
+<li><p>Lean : Just In Time, 칸반 보드를 사용함</p>
+</li>
+</ul>
+<p>(3) 비용산정, 일정관리 모형</p>
+<ul>
+<li>하향식, 상향식 산정방법</li>
+<li>Lines of Code(LoC) 모형 : 낙관치, 중간치, 비관치를 측정하여 비용을 산정</li>
+<li>Man Month 모형 : LoC / 프로그래머의 월간 생산성, Man Month / 프로젝트 인력 = 프로젝트 기간</li>
+<li>COCOMO 모형<ul>
+<li>조직형 : 5만라인 이하의 소프트웨어 개발에 적용</li>
+<li>반 분리형 : 30만라인 이하의 소프트웨어 개발에 적용</li>
+<li>임베디드형 : 30만라인 이상의 소프트웨어 개발에 적용</li>
+</ul>
+</li>
+<li>푸트남 모형 : 단계별로 요구할 인력의 분포를 가정</li>
+<li>기능점수 모형 : 요인별 가중치를 합산하고 총 기능의 점수를 계산하여 비용을 산정 (기능점수 = 총 기능점수 x (0.65 + (0.1 총 영향도)))</li>
+<li>일정관리 모델에는 주 공정법, PERT, 중요 연쇄 프로젝트 관리가 있다</li>
+</ul>
+<h3 id="기출문제"><a href="#기출문제" class="headerlink" title="기출문제"></a>기출문제</h3><ol>
+<li> 절차보다는 사람이 중심이 되어 변화에 유연하고 신속하게 적응하면서 효율적으로 시스템을 갭라할 수 있는 신속 적응적 경량 개발방법론으로, 개발 기간이 짧고 신속하며, 워터폴에 대비되는 방법론으로 최근 회사에서 각광받는 방법론은 무엇인가?</li>
+</ol>
+<blockquote>
+<p>애자일 방법론</p>
+</blockquote>
+<ol start="2">
+<li> LoC가 30,000 라인이고 개발자가 5명이며, 월평균 300라인을 개발한다면 프로젝트 개발 기간과 계산식을 쓰시오</li>
+</ol>
+<blockquote>
+<p>프로젝트 개발 기간 : Man Month = LoC / 월간 생산성 = 30,000 / 300 = 100개월<br>프로젝트 기간 = 100 개월 / 5 명 = 20개월</p>
+</blockquote>
+<h3 id="예상문제"><a href="#예상문제" class="headerlink" title="예상문제"></a>예상문제</h3><ol>
+<li>소프트웨어 생명주기 모델에 대해 서술하시오</li>
+</ol>
+<blockquote>
+<p>시스템의 요구분석부터 유지보수까지 전 공정을 체계화한 절차로 시스템이 개발될 때부터 운용과 유지보수를 거쳐 생애를 마칠 때 까지의 작업 프로세스를 모델화 한 것</p>
+</blockquote>
+<ol start="2">
+<li>소프트웨어 생명주기 모델 중에서 시스템 명세 단계에서 정의한 기능을 실제 수행할 수 있도록 수행 방법을 논리적으로 결정하는 단계는 무엇인가?</li>
+</ol>
+<blockquote>
+<p>설계 단계</p>
+</blockquote>
+<ol start="3">
+<li>소프트웨어 개발 시 각 단계를 확실히 마무리 지은 후에 다음 단계로 넘어가는 모델은 무엇인가?</li>
+</ol>
+<blockquote>
+<p>폭포수 모델</p>
+</blockquote>
+<ol start="4">
+<li>전체 시스템을 기능에 따라 나누어 개발하고 이를 통합하는 분할과 정복 접근 방식의 방법론은 무엇인가?</li>
+</ol>
+<blockquote>
+<p>구조적 방법론</p>
+</blockquote>
+<ol start="5">
+<li>TDD에 대해서 설명하시오</li>
+</ol>
+<blockquote>
+<p>테스트를 기반으로 한 개발 방식으로 작성해야 하는 프로그램에 대한 테스트를 먼저 수행하고 이 테스트를 통과할 수 있도록 코드를 작성하는 것</p>
+</blockquote>
+<ol start="6">
+<li>XP 12가지 가치 중 매일 여러 번씩 소프트웨어를 통합하고 빌드해야 한다는 원리는 무엇인가?</li>
+</ol>
+<blockquote>
+<p>지속적인 통합</p>
+</blockquote>
+<ol start="7">
+<li>애자일 방법론 중에서 매일 정해진 시간, 장소에서 짧은 시간의 개발을 하는 팀을 위한 프로젝트 관리 중심 방법론은 무엇인가?</li>
+</ol>
+<blockquote>
+<p>스크럼 기법</p>
+</blockquote>
+<ol start="8">
+<li>델파이 기법에 대해 서술하시오</li>
+</ol>
+<blockquote>
+<p>전문가의 경험적 지식을 통한 문제 해결 및 미래 예측을 위한 기법</p>
+</blockquote>
+<ol start="9">
+<li>요구 기능을 증가시키는 인자별로 가중치를 부여하고 요인별 가중치를 합산하여 총 기능 점수를 계산하고 비용을 산정하는 방식은 무엇인가?</li>
+</ol>
+<blockquote>
+<p>기능 점수 방식</p>
+</blockquote>
+<ol start="10">
+<li>일의 순서를 계획적으로 정리하기 위한 수렴 기법으로 비관치, 중간치, 낙관치의 3점 추정방식을 통해 일정을 관리하는 기법은 무엇인가?</li>
+</ol>
+<blockquote>
+<p>PERT</p>
+</blockquote>
+<ol start="11">
+<li>CPM 네트워크가 다음과 같을 때 임계 경로의 소요기일은 얼마인가?</li>
+</ol>
+<blockquote>
+<p>14일</p>
+</blockquote>
+<ol start="12">
+<li>LoC가 50,000라인, 개발자 10명, 월평균 250라인을 개발한다면 Man Month는 얼마인가?</li>
+</ol>
+<blockquote>
+<p>50,000 / 250 = 200</p>
+</blockquote>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/27/21-03-27-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-2-01/"
+                    data-tooltip="21-03-27 자바스크립트로 하는 자료구조와 알고리즘(2-01)"
+                    aria-label="NEXT: 21-03-27 자바스크립트로 하는 자료구조와 알고리즘(2-01)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/03/27/21-03-27-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-2-01/"
+                    data-tooltip="21-03-27 자바스크립트로 하는 자료구조와 알고리즘(2-01)"
+                    aria-label="NEXT: 21-03-27 자바스크립트로 하는 자료구조와 알고리즘(2-01)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
