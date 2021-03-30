@@ -187,6 +187,249 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/31/21-03-31-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-2/"
+                            aria-label=": 21-03-31 정처기 실기 공부(2)"
+                        >
+                            21-03-31 정처기 실기 공부(2)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-31T01:01:04+09:00">
+	
+		    Mar 31, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC/">정보처리기사</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Ⅰ-요구사항-확인"><a href="#Ⅰ-요구사항-확인" class="headerlink" title="Ⅰ. 요구사항 확인"></a>Ⅰ. 요구사항 확인</h2><h3 id="Chapter-02-소프트웨어-개발방법론"><a href="#Chapter-02-소프트웨어-개발방법론" class="headerlink" title="Chapter 02 소프트웨어 개발방법론"></a>Chapter 02 소프트웨어 개발방법론</h3><p>(1) 현행 시스템 파악</p>
+<ul>
+<li><p>구성/기능/인터페이스 파악 → 아키텍처 및 소프트웨어 구성 파악 → 하드웨어 및 네트워크 구성 파악</p>
+<ul>
+<li><p>구성 현황 파악 : 주요 업무를 처리하는 기간 업무와 지원 업무로 구분하여 파악</p>
+</li>
+<li><p>기능 현황 파악 : 단위 업무 시스템이 현재 제공하고 있는 기능을 파악</p>
+</li>
+<li><p>인터페이스 파악 : 다른 시스템과 주고받는 데이터의 종류, 형식, 프로토콜, 연계유형, 주기를 파악</p>
+</li>
+<li><p>아키텍쳐 파악 : 계층별 기술 스택을 최상위 수준에서 파악</p>
+</li>
+<li><p>소프트웨어 파악 : 소프트웨어의 제품명, 용도, 라이선스 적용 방식 및 라이선스 수 파악</p>
+</li>
+<li><p>하드웨어 파악 : 서버의 위치 및 사양, 수량, 이중화 구현 여부 등을 파악</p>
+</li>
+<li><p>네트워크 파악 : 어떤 네트워크 장비를 사용하여 구성되어있는지 파악</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>(2) 소프트웨어 아키텍처</p>
+<ul>
+<li><p>소프트웨어 아키텍처 프레임워크 : 소프트웨어 집약적인 시스템에서 아키텍처가 표현해야 하는 내용 및 이들간의 관계를 제공하는 아키텍처 기술 표준</p>
+<ul>
+<li>아키텍처 명세서 : 이해관계자들의 관점에 맞추어 작성하며 개별 뷰, 뷰 개괄 문서, 인터페이스 명세 등이 있음</li>
+<li>이해관계자 : 시스템 개발과 관련도니 모든 사람과 조직</li>
+<li>관심사 : 사용자, 유지보수자, 개발자 입장으로 나뉨</li>
+<li>관점 : 개별 뷰를 개발할 때 토대가 되는 패턴이나 양식</li>
+<li>뷰 : 서로 관련 있는 관심사들의 집합이라는 관점에서 전체 시스템을 표현</li>
+<li>근거 : 아키텍처 결정 근거(회의나 보고 결과)</li>
+<li>목표 : 환경 안에서 한 명 이상의 이해관계자들이 의도하는 시스템의 목적, 사용, 운영 방법</li>
+<li>환경 : 시스템에 영향을 주는 요인</li>
+<li>시스템 : 각 앱의 서브 시스템, 시스템 집합, 제품군 등의 구현체</li>
+</ul>
+</li>
+<li><p>소프트웨어 아키텍처 4+1 뷰</p>
+<ul>
+<li>고객의 요구사항을 정리해 놓은 시나리오를 4개의 관점에서 바라보는 소프트웨어적인 접근방법으로 주로 유스케이스를 사용한다</li>
+<li>논리 뷰, 구현 뷰, 프로세스 뷰, 배포 뷰(4) + 유스케이스 뷰(1) 로 구성된다</li>
+<li>계측화 패턴, 클라이언트-서버 패턴, 파이프-필터 패턴, 브로커 패턴, 모델-뷰-컨트롤러 등으로 나뉨</li>
+</ul>
+</li>
+<li><p>소프트웨어 아키텍처 비용 평가 모델</p>
+<ul>
+<li>아키텍처 접근법이 품질 속성에 미치는 영향을 판단, 아키텍처의 적합성을 평가하는 모델로 SAAM, ATAM, CBAM, ADR, ARID 등의 모델이 있다</li>
+</ul>
+</li>
+<li><p>디자인 패턴</p>
+<ul>
+<li><p>소프트웨어 설계에서 공통으로 발생하는 문제에 대해 자주 쓰이는 설계 방법을 정리한 패턴</p>
+</li>
+<li><p>개발의 효율성, 유지보수성, 운용성이 높아지며 프로그램의 최적화에 도움이 된다</p>
+</li>
+<li><p>패턴의 이름, 문제 및 배경, 솔루션, 사례, 결과, 샘플 코드 등으로 구성되어 있다</p>
+</li>
+<li><p>디자인 패턴의 유형은 <strong>목적(생성, 구조, 행위)</strong> 과 범위(클래스, 객체)로 구성된다</p>
+</li>
+<li><p>디자인 패턴의 종류<br><strong>생성 패턴</strong></p>
+<ul>
+<li>Builder : 복잡한 인스턴스를 조립하여 만드는 구조로 객체를 생성하는 방법(과정)과 객체를 구현(표현)하는 방법을 분리</li>
+<li>Prototype : 처음부터 원형을 만들어놓고 복사 후 필요한 부분만 수정하여 사용하는 패턴</li>
+<li>Factory Method : 상위 클래스의 인터페이스를 하위 클래스에서 인스턴스를 생성하도록 하는 방식</li>
+<li>Abstract Factory : 제공된 API를 사용하여 생성된 클래스를 Concrete Product 클래스에서 구체적으로 구현하는 패턴</li>
+<li>Singleton : 한 클래스에 한 객체만 존재하도록 제한하는 패턴</li>
+</ul>
+<p><strong>구조 패턴</strong></p>
+<ul>
+<li>Bridge : 기능 계층과 구현 계층을 연계하고 구현부에서 추상화된 부분을 독립적으로 확장할 수 있는 디자인 패턴</li>
+<li>Decorator : 기존에 구현된 클래스에 필요한 기능을 추가해 나가는 설계 패턴으로 유연하게 확장 가능한 패턴</li>
+<li>Facade : 단순한 인터페이스를 사용해 결합도를 낮추고 시스템 구조 파악을 쉽게 하는 패턴</li>
+<li>Flyweight : 클래스의 경량화를 목적으로 하는 디자인 패턴</li>
+<li>Proxy : 대리 객체를 사용해 메모리 용량을 절약하고 정보 은닉의 역할도 수행하는 디자인 패턴</li>
+<li>Composite : 객체들을 트리 구조로 구성하여 복합 객체와 단일 객체를 모두 동일하게 다루도록 하는 패턴</li>
+<li>Adapter : 상속을 이용하는 클래스 패턴과 위임을 이용하는 인스턴스 패턴의 두 가지 형태로 사용되는 디자인 패턴</li>
+</ul>
+<p><strong>행위 패턴</strong></p>
+<ul>
+<li>Mediator : 객체지향 설계에서 중재자를 두고 통신의 빈도수를 줄여 객체 지향의 목표를 달성하게 해 주는 디자인 패턴</li>
+<li>Interpreter : 언어의 구문을 나누어 해석을 맡는 클래스를 각각 작성하여 여러 형태의 언어 구문을 해석할 수 있게 만드는 디자인 패턴</li>
+<li>Iterator : 내부 구조를 노출하지 않고 복잡한 객체의 원소를 순차적으로 순회 접근 가능하게 해주는 행위 패턴</li>
+<li>Template Method : 상위 클래스에선 추상 메서드로 기능의 골격을, 하위 클래스에선 세부 처리를 구체화 하는 방식의 디자인 패턴</li>
+<li>Observer : 객체의 상태 변화에 따라 다른 객체의 상태도 연동되는 일대다 의존 디자인 패턴</li>
+<li>State : 객체 상태를 캡슐화하여 클래스화하여 참조케 하는 방식의 디자인 패턴</li>
+<li>Visitor : 각 클래스 데이터 구조에서 처리기능을 분리, 별도의 클래스를 만들어놓고 해당 클래스의 메서드가 각 클래스를 돌아다니며 특정 작업을 수행하도록 만드는 패턴</li>
+<li>Command : 재사용성이 높은 클래스를 설계하는 패턴으로 하나의 추상 클래스에 메서드를 만들어 각 명령이 들어오면 각 명령이 들어오면 그에 맞는 서브 클래스가 선택되어 실행되는 디자인 패턴</li>
+<li>Strategy : 알고리즘을 하나의 클래스로 캡슐화하고 필요할 때서로 교환해서 사용할 수 있게 하는 패턴</li>
+<li>Memento : 객체의 정보를 저장할 필요가 있을 때 적용하는 디자인 패턴으로 ‘작업취소(Undo)’를 요청 할 수 있다</li>
+<li>Chain of Responsibility : 한 요청을 2개 이상의 객체에서 처리하도록 하는 디자인 패턴</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>(3) 현행 시스템 분석서 작성 및 검토</p>
+<ul>
+<li>현행 시스템 관련 자료 수집 → 수집 자료의 분석 → 분석한 결과를 기반으로 산출물 작성 → 산출물에 대한 검토 수행</li>
+</ul>
+<p>(4) 개발 기술 환경 정의</p>
+<ul>
+<li>운영체제 시스템 분석</li>
+<li>네트워크 시스템 분석<ul>
+<li>OSI 7계층(응용, 표현, 세션, 전송, 네트워크, 데이터 링크, 물리 계층)</li>
+</ul>
+</li>
+<li>DBMS 시스템 분석</li>
+<li>미들웨어 시스템 분석</li>
+<li>오픈소스 사용 시 고려 사항<ul>
+<li>라이선의 종류, 사용자 수, 기술의 지속 가능성 등을 고려</li>
+</ul>
+</li>
+</ul>
+<h3 id="기출문제"><a href="#기출문제" class="headerlink" title="기출문제"></a>기출문제</h3><ol>
+<li>다음 보기가 설명하는 패턴을 쓰시오</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">한 객체의 상태가 바뀌면 그 객체에 의존하는 다른 객체들에 연락이 가고</span><br><span class="line">자동으로 내용이 갱신되는 방법으로 일대다의 의존성을 가지며</span><br><span class="line">상호작용하는 객체 사이에서는 가능하면 느슨하게 결합하는 디자인을 사용해야 한다.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Observer Pattern</p>
+</blockquote>
+<ol start="2">
+<li>Linux 운영체제 위에서 구동하며 휴대폰 전화를 비롯한 휴대용 장치를 위한 운영체제와 미들웨어, 사용자 인터페이스 그리고 표준 응용 프로그램(웹 브라우저, 이메일 클라이언트, 단문 세시지 서비스, MMS) 등을 포함하고 있는 소프트웨어 스택이자 리눅스 모바일 운영체제로 개발자들이 자바와 코틀린 언어로 응용 프로그램을 작성할 수 있게 했고, 컴파일된 바이트 코드를 구동할 수 있는 런타임 라이브러리를 제공하는 운영체제는 무엇인지 쓰시오.</li>
+</ol>
+<blockquote>
+<p>안드로이드</p>
+</blockquote>
+<ol start="3">
+<li>목적에 다른 디자인 패턴의 유형에는 생성, 구조, ( )이/가 있다. 괄호 안에 알맞는 유형을 쓰시오.</li>
+</ol>
+<blockquote>
+<p>행위</p>
+</blockquote>
+<h3 id="예상문제"><a href="#예상문제" class="headerlink" title="예상문제"></a>예상문제</h3><ol>
+<li>소프트웨어 아키텍처에 대해서 서술하시오.</li>
+</ol>
+<blockquote>
+<p>여러 가지 소프트웨어 구성요소와 그 구성요소가 가진 특성 중에서 외부에 드러나는 특성, 그리고 구성요소 간의 관계를 표현하는 시스템의 구조나 구조체</p>
+</blockquote>
+<ol start="2">
+<li>4+1 뷰 중 다음 설명에 해당하는 뷰가 무엇인지 쓰시오.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 시스템의 비기능적인 속성으로서 자원의 효율적인 사용, 병행 실행, 비동기,</span><br><span class="line">  이벤트 처리 등을 표현한 뷰</span><br><span class="line">- 개발자, 시스템 통합자 관점</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>프로세스 뷰</strong></p>
+</blockquote>
+<ol start="3">
+<li>시스템을 계층으로 구분하여 구성하는 패턴으로 서로 마주 보는 두 개의 계층 사이에서만 상호작용이 이루어지는 패턴은 무엇인가?</li>
+</ol>
+<blockquote>
+<p><strong>계층화 패턴</strong></p>
+</blockquote>
+<ol start="4">
+<li>MVC 패턴에 대해 서술하시오.</li>
+</ol>
+<blockquote>
+<p>대화형 애플리케이션을 <strong>모델, 뷰, 컨트롤러 3개의 서브 시스템으로 구조화하는 패턴</strong></p>
+</blockquote>
+<ol start="5">
+<li>디자인 패턴에 대해서 서술하시오.</li>
+</ol>
+<blockquote>
+<p>소프트웨어 공학의 <strong>소프트웨어 설계에서 공통으로 발생하는 문제에 대해 자주 쓰이는 설계방법을 정리한 패턴</strong></p>
+</blockquote>
+<ol start="6">
+<li>전역 변수를 사용하지 않고 객체를 하나만 생성하도록 하며, 생성된 객체를 어디에서든지 참조할 수 있도록 하고, 한 클래스에 한 객체만 존재하도록 제한하는 디자인 패턴은 무엇인가?</li>
+</ol>
+<blockquote>
+<p><strong>싱글톤 패턴</strong></p>
+</blockquote>
+<ol start="7">
+<li>상위 클래스에서 객체를 생성하는 인터페이스를 정의하고, 하위 클래스에서 인스턴스를 생성하도록 하는 방식으로, 상위 클래스에서는 인스턴스를 만드는 방법만 결정하고, 하위 클래스에서 그 데이터의 생성을 책임지고 조작하는 함수들을 오버로딩하여 인터페이스와 실제 객체를 생성하는 클래스를 분리할 수 있는 특성을 갖는 디자인 패턴은 무엇인가?</li>
+</ol>
+<blockquote>
+<p><strong>팩토리 메서드 패턴</strong></p>
+</blockquote>
+<ol start="8">
+<li>알고리즘 군을 정의하고 같은 알고리즘을 각각 하나의 클래스로 캡슐화한 다음, 필요할 때 서로 교환해서 사용할 수 있게 하는 패턴으로, 행위를 클래스로 캡슐화해 동적으로 행위를 자유롭게 바꿀 수 있게 해주는 디자인 패턴은 무엇인가?</li>
+</ol>
+<blockquote>
+<p><strong>전략 패턴</strong></p>
+</blockquote>
+<ol start="9">
+<li>어떤 작업을 처리하는 일부분을 서브 클래스로 캡슐화해 전체 일을 수행하는 구조는 바꾸지 않으면서 특정 단계에서 수행하는 내역을 바꾸는 패턴으로 일반적으로 상위 클래스(추상 클래스)에는 추상 메서드를 통해 기능의 골격을 제공하고, 하위 클래스(구체 클래스) 메서드에는 세부 처리를 구체화하는 방식으로 사용하며 코드 양을 줄이고 유지보수를 용이하게 만드는 특징을 갖는 디자인 패턴은 무엇인가?</li>
+</ol>
+<blockquote>
+<p><strong>템플릿 패턴</strong></p>
+</blockquote>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/31/21-03-31-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-2/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/29/21-03-29-%EC%A0%95%EC%B2%98%EA%B8%B0-%EC%8B%A4%EA%B8%B0-%EA%B3%B5%EB%B6%80-1/"
                             aria-label=": 21-03-29 정처기 실기 공부(1)"
                         >
@@ -962,158 +1205,6 @@
                         <p>
                             <a
                                 href="/2021/03/15/21-03-15-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-10/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/"
-                            aria-label=": 21-03-14 자바스크립트로 하는 자료구조와 알고리즘(9)"
-                        >
-                            21-03-14 자바스크립트로 하는 자료구조와 알고리즘(9)
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-03-14T01:46:17+09:00">
-	
-		    Mar 14, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>, <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%84%9C%EC%A0%81/">서적</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="16장-힙"><a href="#16장-힙" class="headerlink" title="16장 힙"></a>16장 힙</h3><ul>
-<li>힙은 O(1) 시간으로 가장 높은 항목이나 가장 낮은 항목을 반환하는 중요한 자료 구조</li>
-<li>힙은 트리와 비슷한 자료 구조의 일종으로 최대 힙의 경우 부모가 자식보다 크고 최소 힙의 경우 부모가 자식보다 작다</li>
-<li>힙은 자식에 대한 포인터를 갖는 대신에 배열을 사용해 자료를 저장함</li>
-<li>배열을 사용하므로 인덱스를 통해 힙 노드의 자식 위치를 쉽게 계산할 수 있다</li>
-<li>힙이 배열을 사용해 자료를 저장하기 때문에 <strong>인덱스는 각 항목의 차수/높이를 정의</strong> 한다</li>
-<li>첫 번째 배열 항목을 루트로 설정하고 각 왼쪽 항목과 오른쪽 항목을 순서대로 채워 이진 힙을 만들 수 있다</li>
-<li>최대 힙은 루트노드가 가장 높은 값을 갖고 최소 힙은 루트노드가 가장 낮은 값을 갖는다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Heap</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 힙은 배열을 사용해 자료를 저장</span></span><br><span class="line">    <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">this</span>.items = [];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 두 개의 인덱스에 위치한 값을 바꾸는 것도 인덱스 값으로 변경 가능함</span></span><br><span class="line">    <span class="function"><span class="title">swap</span>(<span class="params">idx1, idx2</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> temp = <span class="built_in">this</span>.itmes[idx1];</span><br><span class="line">        <span class="built_in">this</span>.itmes[idx1] = <span class="built_in">this</span>.items[idx2];</span><br><span class="line">        <span class="built_in">this</span>.items[idx2] = temp;</span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">parentIndex</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.floor((idx-<span class="number">1</span>)/<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">leftChildIndex</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> index * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">rightChildIndex</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> idx * <span class="number">2</span> + <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">parent</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="built_in">this</span>.parentIndex(idx)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">leftChild</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="built_in">this</span>.leftChildIndex(idx)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">rightChild</span>(<span class="params">idx</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="built_in">this</span>.rightChildIndex(idx)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">peek</span>(<span class="params">item</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">size</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.items.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>예를들어 최소 힙 구조인 배열이 [2, 4, 23, 12, 13] 라면 부모 노드인 0번 인덱스 2가 부모가 될 것이고 1번 인덱스인 4는 왼쪽 자식이, 2번 인덱스인 23은 오른쪽 자식이 된다 </li>
-<li>항상 좌측이 먼저 채워지고 우측이 채워지므로 3번 인덱스는 1번 인덱스의 왼쪽 자식이 되고 4번 인덱스는 1번 인덱스의 오른쪽 자식이 된다</li>
-<li>정리하면 자신의 인덱스가 N이라고 한다면 부모는 <strong>(N - 1)/2</strong> 의 인덱스를 가질 것이고(예를 들어 N = 3 일 때, 부모의 인덱스는 1), 왼쪽 자식은 <strong>(N * 2) + 1</strong> 의 인덱스를, 힙 배열이 순차적이라면 오른쪽 자식은 바로 옆에 붙어있어야 하므로 <strong>(N * 2) + 2</strong> 의 인덱스를 가질 것이다 </li>
-<li>항목을 추가하거나 삭제하더라도 힙의 구조가 유지되어야 한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinHeap</span> <span class="keyword">extends</span> <span class="title">Heap</span></span>&#123;</span><br><span class="line">    <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">        <span class="built_in">this</span>.items = [];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">add</span>(<span class="params">item</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.items[<span class="built_in">this</span>.items.length] = item;</span><br><span class="line">        <span class="built_in">this</span>.bubbleUp();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">poll</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> item = <span class="built_in">this</span>.items[<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">this</span>.items[<span class="number">0</span>] = <span class="built_in">this</span>.items[<span class="built_in">this</span>.items.length - <span class="number">1</span>];</span><br><span class="line">        <span class="built_in">this</span>.items.pop();</span><br><span class="line">        <span class="built_in">this</span>.bubbleDown();</span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">bubbleDown</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="built_in">this</span>.leftChild(index) &amp;&amp; <span class="built_in">this</span>.leftChild(index) &lt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">            <span class="keyword">let</span> smallerIndex = <span class="built_in">this</span>.leftChildIndex(index);</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">this</span>.rightChild(index) &amp;&amp; <span class="built_in">this</span>.rightChild(index) &lt; <span class="built_in">this</span>.items[smallerIndex])</span><br><span class="line">                smallerIndex = <span class="built_in">this</span>.rightChildrenIndex(index);  </span><br><span class="line">            <span class="built_in">this</span>.swap(smallerIndex, index);</span><br><span class="line">            index = smallerIndex;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">bubbleUp</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> index = <span class="built_in">this</span>.items.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="built_in">this</span>.parent(index) &amp;&amp; <span class="built_in">this</span>.parent(index) &gt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">            <span class="built_in">this</span>.swap(<span class="built_in">this</span>.parentIndeX(index), index);</span><br><span class="line">            index = <span class="built_in">this</span>.parentIndex(index);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>최대 힙의 경우 최소 힙에서 구현한 bubbleDown과 bubbleUp 내 비교자 뿐이다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">bubbleDown</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">this</span>.leftChild(index) &amp;&amp; <span class="built_in">this</span>.leftChild(index) &gt; <span class="built_in">this</span>.items[index]</span><br><span class="line">            || <span class="built_in">this</span>.rightChild(index) &gt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">        <span class="keyword">let</span> biggerIndex = <span class="built_in">this</span>.leftChildIndex(index);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.rightChild(index) &amp;&amp; <span class="built_in">this</span>.rightChild(index) &lt; <span class="built_in">this</span>.items[biggerIndex])</span><br><span class="line">            biggerIndex = <span class="built_in">this</span>.rightChildrenIndex(index);  </span><br><span class="line">        <span class="built_in">this</span>.swap(biggerIndex, index);</span><br><span class="line">        index = biggerIndex;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">bubbleUp</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="built_in">this</span>.items.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">this</span>.parent(index) &amp;&amp; <span class="built_in">this</span>.parent(index) &lt; <span class="built_in">this</span>.items[index]) &#123;</span><br><span class="line">        <span class="built_in">this</span>.swap(<span class="built_in">this</span>.parentIndeX(index), index);</span><br><span class="line">        index = <span class="built_in">this</span>.parentIndex(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>힙 노드 인덱스 요약</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>노드</th>
-<th>인덱스</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>자신</td>
-<td>N</td>
-</tr>
-<tr>
-<td>부모</td>
-<td>(N - 1) / 2</td>
-</tr>
-<tr>
-<td>왼쪽 자식</td>
-<td>(N * 2) + 1</td>
-</tr>
-<tr>
-<td>오른쪽 자식</td>
-<td>(N * 2) + 2</td>
-</tr>
-</tbody></table>
-<ul>
-<li>힙은 삼투를 통해 자신의 구조를 유지한다(bubbleUp, bubbleDown)</li>
-<li>이 삼투 과정이 있어 삭제와 삽입이 <strong>O(log2(n))</strong> 시간에 가능해진다</li>
-<li>일련의 숫자에서 중간 값을 찾기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    하나의 최소 힙과 하나의 최대 힙을 만들면 중간 값을 얻는 데 O(1)시간이 걸림</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MedianHeap</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.minHeap = <span class="keyword">new</span> MinHeap();</span><br><span class="line">        <span class="built_in">this</span>.maxHeap = <span class="keyword">new</span> MaxHeap();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">add</span>(<span class="params">value</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (value &gt; <span class="built_in">this</span>.median()) </span><br><span class="line">            <span class="built_in">this</span>.minHeap.add(value);</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            <span class="built_in">this</span>.maxHeap.add(value);</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.minHeap.size() - <span class="built_in">this</span>.maxHeap.size() &gt; <span class="number">1</span>) </span><br><span class="line">            <span class="built_in">this</span>.maxHeap.add(<span class="built_in">this</span>.minHeap.poll());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.maxHeap.size() - <span class="built_in">this</span>.minHeap.size() &gt; <span class="number">1</span>)</span><br><span class="line">            <span class="built_in">this</span>.minHeap.add(<span class="built_in">this</span>.maxHeap.poll());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">median</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">this</span>.minHeap.size() === <span class="number">0</span> &amp;&amp; <span class="built_in">this</span>.maxHeap.size() === <span class="number">0</span>) </span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">Number</span>.NEGATIVE_INFINITY;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">this</span>.minHeap.size() === <span class="built_in">this</span>.maxHeap.size())</span><br><span class="line">            <span class="keyword">return</span> (<span class="built_in">this</span>.minHeap.peek() + <span class="built_in">this</span>.maxHeap.peek()) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">this</span>.minHeap.size() &gt; <span class="built_in">this</span>.maxHeap.size()) </span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>.minHeap.peek();</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>.maxHeap.peek();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>배열에서 K번째로 가장 작은/큰 값 찾기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">12</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="number">4</span> ,<span class="number">2</span>, <span class="number">40</span>, <span class="number">23</span>];</span><br><span class="line"><span class="keyword">const</span> getKthSmallestElement = <span class="function">(<span class="params">arr, k</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> minH = <span class="keyword">new</span> MinHeap();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">        minH.add(arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; k; i++) &#123;</span><br><span class="line">        minH.poll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> minH.poll();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getKthSmallestElement = <span class="function">(<span class="params">arr, k</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> maxH = <span class="keyword">new</span> MaxHeap();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">        maxH.add(arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; k; i++) &#123;</span><br><span class="line">        maxH.poll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> maxH.poll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="17장-그래프"><a href="#17장-그래프" class="headerlink" title="17장 그래프"></a>17장 그래프</h3></li>
-<li>그래프를 사용하면 객체 간의 연결을 다양하게 나타낼 수 있다</li>
-<li>그래프 기본 용어 및 개념</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>단어</th>
-<th>뜻</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>정점</td>
-<td>그래프를 형성하는 노드로 원으로 표기</td>
-</tr>
-<tr>
-<td>간선</td>
-<td>그래프에서 노드 간의 연결로 정점(원)사이의 선으로 표기</td>
-</tr>
-<tr>
-<td>정점 차수</td>
-<td>해당 점점에 연결된 간선의 개수</td>
-</tr>
-<tr>
-<td>희소 그래프</td>
-<td>정점들 간 가능한 연결 중 일부만 존재하는 경우</td>
-</tr>
-<tr>
-<td>밀집 그래프</td>
-<td>다양한 정점들 간에 연결이 많은 경우</td>
-</tr>
-<tr>
-<td>순환 그래프</td>
-<td>어떤 정점에서 출발해 해당 정점으로 다시 돌아오는 경로가 있는 지향성 그래프</td>
-</tr>
-<tr>
-<td>가중치</td>
-<td>간선에 대한 값으로 문맥에 따라 다양한 것을 나타냄(정점 간 거리 등)</td>
-</tr>
-</tbody></table>
-<ul>
-<li>무지향성 그래프는 간선 간에 방향이 없는 그래프로 노드 간 방향 없이 상호 연결을 뜻한다</li>
-<li>인접 행렬과 인접 리스트를 사용하여 무지향성 그래프를 자료 구조 클래스로 표현할 수 있다</li>
-<li>가중치가 있는 무지향성 그래프에 정점과 간선을 추가하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UndirectedGraph</span> </span>&#123;</span><br><span class="line">    <span class="title">constructor</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addVertext</span>(<span class="params">vertex</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex] = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addEdge</span>(<span class="params">vertex1, vertex2, weight</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (weight === <span class="literal">undefined</span>)</span><br><span class="line">            weight = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex1][vertex2] = weight;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex2][vertex1] = weight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">removeEdge</span>(<span class="params">vertex1, vertex2</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.edges[vertex1] &amp;&amp; <span class="built_in">this</span>.edges[vertex1][vertex2] !== <span class="literal">undefined</span>) </span><br><span class="line">            <span class="keyword">delete</span> <span class="built_in">this</span>.edges[vertex1][vertex2]</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.edges[vertex2] &amp;&amp; <span class="built_in">this</span>.edges[vertex2][vertex1] !== <span class="literal">undefined</span>)</span><br><span class="line">            <span class="keyword">delete</span> <span class="built_in">this</span>.deges[vertex2][vertex1]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    removeVertex = <span class="function"><span class="keyword">function</span>(<span class="params">vertex</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex]) &#123;</span><br><span class="line">            <span class="built_in">this</span>.removeEdge(adjacentVertex, vertex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">delete</span> <span class="built_in">this</span>.edges[vertex];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>정점간에 방향이 있는 지향성 그래프를 구현하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DirectedGraph</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addVertex</span>(<span class="params">vertex</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.edges[vertex] = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">addEdge</span>(<span class="params">origVertex, destVertex, weight</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(weight === <span class="literal">undefined</span>)</span><br><span class="line">            weight = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">this</span>.edges[origVertex][destVertex] = weight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">removeEdge</span>(<span class="params">origVertex, destVertex</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">this</span>.edges[origVertex] &amp;&amp; <span class="built_in">this</span>.edges[origVertex][destVertex] !== <span class="literal">undefined</span>)</span><br><span class="line">            <span class="keyword">delete</span> <span class="built_in">this</span>.deges[origVertex][destVertex];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">removeVertex</span>(<span class="params">vertex</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex])</span><br><span class="line">            <span class="built_in">this</span>.removeEdge(adjacentVertex, vertex);</span><br><span class="line">        <span class="keyword">delete</span> <span class="built_in">this</span>.edges[vertex];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">traverseBFS</span>(<span class="params">vertex, fn</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> queue = [], visited = &#123;&#125;;</span><br><span class="line">        queue.push(vertex);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(queue.length) &#123;</span><br><span class="line">            vertex = queue.shift();</span><br><span class="line">            <span class="keyword">if</span>(!visited[vertex]) &#123;</span><br><span class="line">                visited[vertex] = <span class="literal">true</span>;</span><br><span class="line">                fn(vertex);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex]) &#123;</span><br><span class="line">                    queue.push(adjacentVertex);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">traverseDFS</span>(<span class="params">vertex, fn</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> visited = &#123;&#125;;</span><br><span class="line">        <span class="built_in">this</span>._traverseDFS(vertex, visited, fn);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">_traverseDFS</span>(<span class="params">vertex, visited, fn</span>)</span> &#123;</span><br><span class="line">        visited[vertex] = <span class="literal">true</span>;</span><br><span class="line">        fn(vertex);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> adjacentVertex <span class="keyword">in</span> <span class="built_in">this</span>.edges[vertex]) &#123;</span><br><span class="line">            <span class="keyword">if</span>(!visited[adjacentVertex])</span><br><span class="line">                <span class="built_in">this</span>. _traverseDFS(adjacentVertex, visited, fn)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>가중치가 있는 그래프와 최단 경로</li>
-<li>다익스트라 알고리즘은 목적지에 도달하기 위해 각 단계에서 최단 경로를 취하는 방식으로 동작한다</li>
-<li>처음에는 일부 노드에 도달할 수 없을 수도 있기 때문에 거리를 무한으로 표기한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_isEmpty</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(obj).length === <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_extractMin</span>(<span class="params">Q, dist</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> minimumDistance = <span class="literal">Infinity</span>,</span><br><span class="line">        nodeWithMinimumDistance = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> node <span class="keyword">in</span> Q) &#123;</span><br><span class="line">        <span class="keyword">if</span> (dist[node] &lt;= minimumDistance) &#123;</span><br><span class="line">            minimumDistance = dist[node];</span><br><span class="line">            nodeWithMinimumDistance = node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nodeWithMinimumDistance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// class DirectedGraph 내부라고 가정</span></span><br><span class="line">    <span class="function"><span class="title">Dijkstra</span>(<span class="params">source</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> Q = &#123;&#125;, dist = &#123;&#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> vertex <span class="keyword">in</span> <span class="built_in">this</span>.edges) &#123;</span><br><span class="line">            dist[vertex] = <span class="literal">Infinity</span>;</span><br><span class="line">            Q[vertex] = <span class="built_in">this</span>.edges[vertex];</span><br><span class="line">        &#125;</span><br><span class="line">        dist[source] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (!_isEmpty(Q)) &#123;</span><br><span class="line">            <span class="keyword">let</span> u = _extractMin(Q, dist);</span><br><span class="line">            <span class="keyword">delete</span> Q[u];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> neighbor <span class="keyword">in</span> <span class="built_in">this</span>.edges[u])&#123;</span><br><span class="line">                <span class="keyword">let</span> alt = dist[u] + <span class="built_in">this</span>.edges[u][neighbor];</span><br><span class="line">                <span class="keyword">if</span> (alt &lt; dist[neighbor]) </span><br><span class="line">                    dist[neighbor] = alt;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dist;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-<li>위상 정렬 알고리즘은 순서를 기록하기 위해 스택을 사용하는 수정된 버전의 깊이 우선 정렬</li>
-<li>이 알고리즘은 어떤 노드로부터 깊이 우선 정렬을 수행해 해당 노드와 연결된 모든 노드들을 재귀적으로 방문하면서 해당 노드들을 스택에 추가한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// class DirectedGraph 내부라고 가정</span></span><br><span class="line">    <span class="function"><span class="title">topologicalSortUtil</span>(<span class="params">v, visited, stack</span>)</span> &#123;</span><br><span class="line">        visited.add(v);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">in</span> <span class="built_in">this</span>.edges[v])&#123;</span><br><span class="line">            <span class="keyword">if</span> (visited.has(item) === <span class="literal">false</span>) &#123;</span><br><span class="line">                <span class="built_in">this</span>.topologicalSortUtil(item, visited, stack)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stack.unshift(v);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">topologicalSort</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> visited = <span class="keyword">new</span> <span class="built_in">Set</span>(), stack = [];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">in</span> <span class="built_in">this</span>.edges) &#123;</span><br><span class="line">            <span class="keyword">if</span> (visited.has(item) === <span class="literal">false</span>) &#123;</span><br><span class="line">                <span class="built_in">this</span>.topologicalSortUtil(item, visited, stack);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stack;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/03/14/21-03-14-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-9/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
