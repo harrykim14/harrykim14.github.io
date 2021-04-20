@@ -337,6 +337,102 @@
 </div>
 </details>
 
+<h3 id="오후-강의-AWS-실습"><a href="#오후-강의-AWS-실습" class="headerlink" title="오후 강의 : AWS 실습"></a>오후 강의 : AWS 실습</h3><details>
+<summary>열어보기</summary>
+<div markdown="4">
+
+<p><strong>실습 과정</strong></p>
+<ul>
+<li>네트워크 구성</li>
+<li>웹 서버 생성</li>
+<li>로드 밸런서 구성</li>
+<li>모니터링 (옵션)</li>
+<li>오토 스케일링 (옵션)</li>
+<li>정적 웹 사이트 호스팅 (옵션)</li>
+</ul>
+<p><strong>AWS 시작하기</strong></p>
+<ul>
+<li>10분 자습서로 AWS 빠르게 시작</li>
+<li>AWS 프리 티어 (12개월 무료)</li>
+</ul>
+<p><strong>AWS 실습</strong></p>
+<ol>
+<li>네트워크 구성하기</li>
+</ol>
+<ul>
+<li>VPC 콘솔에서 <strong>VPC 마법사 시작</strong></li>
+<li><strong>단일 퍼블릭 서브넷이 있는 VPC</strong></li>
+<li>해당 서브넷에 대한 <strong>CIDR 블록</strong>을 지정</li>
+<li>CIDR이란? <a target="_blank" rel="noopener" href="https://dev.classmethod.jp/articles/vpc-3/">참고자료</a></li>
+</ul>
+<blockquote>
+<p>CIDR(Classless Inter-Domain Routing)는 클래스 없는 도메인 간 라우팅 기법으로 1993년 도입되기 시작한 최신의 IP주소 할당 방법으로 CIDR는 기존의 IP 주소 할당 방식이었던 네트워크 클래스를 방법을 대체한 방식.<br>CIDR는 IP Address의 영역을 나눌 때 기존방식보다 유연하게 자신이 원하는 Network Address와 Host Address를 나눌 수 있다.</p>
+</blockquote>
+<ul>
+<li><p>서브넷 메뉴에서 <strong>서브넷 생성</strong>으로 추가 서브넷 생성 시작</p>
+</li>
+<li><p>VPC 아이디에서 방금 생성한 VPC를 선택(추가 서브넷이므로)</p>
+</li>
+<li><p>CIDR는 기존 서브넷의 IP와 앞자리 두 블럭(고정 범위의 네트워크 주소)이 같도록 하고 뒷 두 블럭(가변 범위의 호스트 주소)이 다르게 설정</p>
+</li>
+<li><p>VPC 라우팅 테이블을 통해 방금 생성한 VPC의 라우팅 테이블 ID와 동일하도록 설정</p>
+</li>
+</ul>
+<ol start="2">
+<li>보안 그룹 생성하기</li>
+</ol>
+<ul>
+<li><strong>보안 그룹</strong> 메뉴에서 <strong>보안 그룹 생성</strong></li>
+<li>보안 그룹 이름과 설명을 작성하고 1번에서 생성한 VPC ID로 설정</li>
+<li><strong>인바운드 규칙</strong>에 <strong>HTTP/SSH</strong>을 <strong>위치 무관</strong>(소스)으로 설정</li>
+</ul>
+<ol start="3">
+<li>웹 서버 생성하기</li>
+</ol>
+<ul>
+<li><strong>EC2 콘솔</strong>에서 <strong>인스턴스 시작</strong>으로 인스턴스를 생성</li>
+<li>Amazon Machine Image(AMI) 선택에서 <strong>Amazon Linux 2 AMI</strong>를 선택</li>
+<li><strong>t2.micro</strong>(프리 티어 사용 가능)를 선택한 후, 다음: 인스턴스 세부 정보 구성 버튼을 클릭</li>
+<li>네트워크와 서브넷을 선택하고 <strong>퍼블릭 IP 자동 할당</strong>을 <strong>활성화</strong>로 설정</li>
+<li>고급 세부 정보에 <code>#include https://s3.amazonaws.com/immersionday-labs/bootstrap.sh</code>를 입력</li>
+<li>태그 추가까지 넘어가 키와 값을 입력</li>
+<li>보안 그룹 구성에서 <strong>기존 보안 그룹 선택</strong>을 통해 2번에서 만든 보안 그룹을 선택하고 <strong>검토 및 시작</strong></li>
+<li><strong>새 키 페어 생성</strong>을 선택하고 키 페어 이름을 입력한 후 <strong>키 페어 다운로드</strong></li>
+<li><strong>인스턴스 시작</strong>으로 인스턴스를 생성(인스턴스 연결로 연결하여 CLI를 볼 수 있음)</li>
+</ul>
+<ol start="4">
+<li>AMI 생성하고 AMI 기반 인스턴스 생성하기</li>
+</ol>
+<ul>
+<li>Amazon Machine Image(AMI)는 인스턴스를 시작하는데 필요한 정보를 제공</li>
+<li>인스턴스를 선택하고 우측 상단 작업 메뉴에서 <strong>이미지 및 템플릿</strong> → <strong>이미지 생성</strong></li>
+<li>이미지 생성 페이지에서 이미지 이름을 입력하고 우측 하단의 <strong>이미지 생성</strong> 버튼을 클릭</li>
+<li>왼쪽 AMI 메뉴에서 상태가 available인지 확인하고 <strong>시작하기</strong></li>
+<li>단계 3에서 VPC 네트워크를 선택하고 추가 서브넷을 서브넷으로 설정 및 퍼블릭 IP 자동 할당을 활성화로 설정</li>
+<li>단계 5에서 태그를 추가하여 값을 입력하고 보안 그룹을 설정(3번의 보안 그룹 설정 과정과 동일)</li>
+<li>키 페어는 위에서 생성한 키 페어를 사용</li>
+</ul>
+<ol start="5">
+<li>로드밸런서(Elastic Load Balancing) 구성하기</li>
+</ol>
+<ul>
+<li>로드밸런서는 애플리케이션 트래픽을 EC2 인스턴스, 컨테이너, IP 주소, Lambda 함수, 가상 어플라이언스와 같은 여러 대상에 자동으로 분산시킴</li>
+<li><strong>로드 밸런서 메뉴</strong>에서 <strong>Load Balancer 생성</strong></li>
+<li>Load Balancer 유형 선택에서 <strong>Application Load Balancer</strong>를 선택</li>
+<li>1단계에서는 로드 밸런서 이름과 ip 주소 유형으로 <strong>ipv4</strong>를 선택, 리스너로는 HTTP가 선택되었는지 확인</li>
+<li>가용 영역 파트에서 VPC를 선택하고 가용 영역을 체크하여 서브넷들을 선택</li>
+<li>단계 3 보안 그룹 구성에서 새 보안 그룹 생성 선택하고 이름과 설명을 작성한 후 HTTP 유형의 위치 무관(소스)를 선택</li>
+<li>단계 4 라우팅 구성에서 이름을 작성하고 인스턴스를 대상으로 하는 HTTP 프로토콜로 설정</li>
+<li>단계 5 대상 등록에서 두 개의 인스턴스를 선택하고 <strong>등록된 항목에 추가</strong></li>
+<li>검토 및 <strong>생성</strong></li>
+<li>보안 그룹 메뉴 → <strong>인바운드 규칙 편집</strong></li>
+<li>로드밸런서의 트래픽만 받을 수 있도록 소스 부분에서 사용자 지정 → 로드 밸런서 보안 그룹을 선택</li>
+<li>밑의 HTTP 규칙을 삭제</li>
+<li>로드밸런서가 active로 상태가 변하면 DNS로 접속 해 보기</li>
+</ul>
+</div>
+</details>
+
                     
                         
 

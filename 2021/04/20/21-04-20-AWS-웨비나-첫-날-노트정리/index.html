@@ -11,7 +11,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"[AWS Builders 프로그램] 클라우드 기초교육 및 실습\n교육 일자 : 2021. 04. 20(화)\nAWS에서는 컴퓨팅, 스토리지, 데이터베이스 및 여러 개발 관련 서비스들을 제공함\n이 강의에서는 AWS의 서비스를 훑어보고 AWS의 보안 모델 등에 대해 배움\n\n오전 강의 : AWS 서비스 톺아보기\n열어보기\n\n\n1. Amazon EC2\n\n웹 호스팅, 인증 서비스 등을 지원\n컴퓨팅 자원을 탄력적으로 이용 가능 (Instance Stop을 통해 비용 절감 가능)\n다양한 AWS 내 다른 모듈들과 혼용 가능\n\n2. Amazon EBS(Elastic Block Store)\n\n인스턴스용 영구 블록 스토리지로 복제를 통해 보호됨\n데이터 소실을 대비해 두 개 이상의 가용영역을 사용하는 것을 권장함\n\n3. Amazon S3\n\nOne Drive, Dropbox와 유사한 서비스\n데이터는 버킷 내에 객체로 저장됨 (파일 시스템이 아님)\n무제한 스토리지(단일 객체는 5TB로 제한됨)\n객체에 대해 빠르고 내구성과 가용성이 높은 키 기반 액세스\nCLI가 S3 API를 통해 RESTful 요청을 전송하면 S3 버킷이 객체를 반환\n백업 및 스토리지, 애플리케이션 및 미디어 호스팅, 소프트웨어 전송 등에 사용 가능\nGlacier 클래스는 매우 저렴하게 데이터를 보관할 수 있고 장기 백업이 가능함 (보관용이기 때문에 읽기에는 비싼 요금이 듦)\n\n\n아키텍처 구성 예시: EC2 웹 어플리케이션에 S3 버킷을 통해 정적 콘텐츠를, EBS 볼륨을 통해 파일을 저장하는 DB로 사용, EC2를 호스팅하는 인스턴스 스토어를 사용\n\n4. Amazon VPC(Virtual Private Cloud)\n\n인스턴스 수준에서 작용하는 보안 그룹을 설정하여 인/아웃바운드 규칙을 따로 설정 가능\n보안 그룹은 화이트 리스트 방식으로 거부 규칙을 지정할 수는 없음\n기본 값으로 인바운드 허용 안 함 / 아웃바운드 허용을 가짐\n\n5. AWS CloudWatch\n\nAWS 리소스, 실행중인 어플리케이션등에서 지표등을 수집하거나 추적하며 사용자에게 알림을 전송할 수 있음\n\n6. Amazon Relational DB service\n\n클라우드에서 RDBMS의 설정, 운영 및 확장을 손쉽게 해주는 DB 서비스\nAmazon Aurora, PostgreSQL, MariaDB, ORACLE 등 6가지의 DB를 사용 가능\n\n7. Amazon SNS(Simple Notification Service)\n\n분산/서버리스 어플리케이션을 위한 완전 관리형 게시/구독 메시징(푸쉬)\n\n8. Amazon CloudFront\n\n빠르고 안전한 글로벌 콘텐츠 전송 네트워크(CDN)\n사용자가 요청한다면 엣지 로케이션으로 라우팅하고 캐시에 있다면 사용자에게 바로 반환, 없다면 S3 버킷에 원본 파일을 요청해 캐싱하고 사용자에게 반환\n\n\n예시) 미디어 스트리밍 서비스\n\n인코딩된 비디오 수집 → 여러 형식의 비디오 코드 변환 → 카탈로그 비디오 메타 데이터 → 클라이언트로 비디오 스트리밍\nAWS Lambda에 코드를 업로드 → 이벤트 소스에서 코드가 트리거되도록 설정 → 트리거된 경우에만 Lambda에서 코드 실행 → 사용한 컴퓨팅 시간에 대해서만 비용 지불\n\n\n\n\n\n오전 강의 : AWS의 보안\n열어보기\n\n\n1. 클라우드 자체의 보안\n\n호스트, 네트워크, 소프트웨어, 시설\nAWS 글로벌 인프라 보호는 최고 우선 순위\n타사 감사 보고서 제공\n\n2. 클라우드 내부의 보안\n\n무엇을 저장해야하는가\n어떤 AWS 서비스를 사용해야 하는가\n어느 리전에 저장해야 하는가\n콘텐츠 형식과 구조는 어떻게 되는가\n누가 액세스 할 수 있는가\n\n3. 인증 및 권한 관리\n\nIAM(Identity and Access Management)를 통해 AWS 리소스에 대한 액세스를 안전하게 제어 (추가비용 없음)\nIAM 사용자, 그룹, 역할을 나누어 적용할 수 있음\nIAM 정책을 통해 IAM 사용자, 그룹 또는 역할이 AWS CLI나 S3 버킷에 접근하거나 조작할 수 있게 된다\nAWS 계정 루트 사용자는 모든 AWS 서비스에 대한 완전한 액세스 권한을 가짐 → 루트 사용자 액세스 키를 삭제, IAM 사용자를 생성하여 관리자 액세스 권한을 부여하고 IAM 자격 증명을 사용하여 AWS와 상호작용하도록 권장됨\n\n\n\n\n오전 강의 : AWS의 요금 정책\n열어보기\n\n\n\n사용량에 따라 지불, 예약을 통한 비용 절감, 사용량이 많을수록 비용 절감\n온디맨드, NURI(No up-front), PURI(Partial up-front), AURI(All up-front)\n서비스마다 요금이 다름\n\nEC2의 네 가지 구매 유형\n\n온디맨드 인스턴스 (시간/초당 청구, 단기)\n예약 인스턴스 (1~3년 약정 할인)\n스팟 인스턴스 (최대 90% 할인되는 예비 AWS 용량, 시작 및 종료 시간이 자유로은 애플리케이션)\n전용 호스트 (고객 전용 물리서버, 특정 규정 준수 요구사항이 있는 애플리케이션)\n\nS3의 요금 모델\n\n사용된 스토리지 양\n리전\n스토리지 클래스\n요청 수 및 유형 (GET, PUT, COPY)\n리전 외부로 전송된 데이터의 양\n\nTrusted Advisor\n\n비용 절감 및 성능 개선 가능\n\nAWS Support\n\nBasic, Developer, Business, Enterprise 클래스로 나뉘며 모든 사용자는 기본값으로 Basic에 해당됨\n\n\n\n","dateCreated":"2021-04-20T09:36:13+09:00","dateModified":"2021-04-20T11:55:23+09:00","datePublished":"2021-04-20T09:36:13+09:00","description":"","headline":"21-04-20 AWS 웨비나 첫날 노트정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/04/20/21-04-20-AWS-%EC%9B%A8%EB%B9%84%EB%82%98-%EC%B2%AB-%EB%82%A0-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/04/20/21-04-20-AWS-%EC%9B%A8%EB%B9%84%EB%82%98-%EC%B2%AB-%EB%82%A0-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"[AWS Builders 프로그램] 클라우드 기초교육 및 실습\n교육 일자 : 2021. 04. 20(화)\nAWS에서는 컴퓨팅, 스토리지, 데이터베이스 및 여러 개발 관련 서비스들을 제공함\n이 강의에서는 AWS의 서비스를 훑어보고 AWS의 보안 모델 등에 대해 배움\n\n오전 강의 : AWS 서비스 톺아보기\n열어보기\n\n\n1. Amazon EC2\n\n웹 호스팅, 인증 서비스 등을 지원\n컴퓨팅 자원을 탄력적으로 이용 가능 (Instance Stop을 통해 비용 절감 가능)\n다양한 AWS 내 다른 모듈들과 혼용 가능\n\n2. Amazon EBS(Elastic Block Store)\n\n인스턴스용 영구 블록 스토리지로 복제를 통해 보호됨\n데이터 소실을 대비해 두 개 이상의 가용영역을 사용하는 것을 권장함\n\n3. Amazon S3\n\nOne Drive, Dropbox와 유사한 서비스\n데이터는 버킷 내에 객체로 저장됨 (파일 시스템이 아님)\n무제한 스토리지(단일 객체는 5TB로 제한됨)\n객체에 대해 빠르고 내구성과 가용성이 높은 키 기반 액세스\nCLI가 S3 API를 통해 RESTful 요청을 전송하면 S3 버킷이 객체를 반환\n백업 및 스토리지, 애플리케이션 및 미디어 호스팅, 소프트웨어 전송 등에 사용 가능\nGlacier 클래스는 매우 저렴하게 데이터를 보관할 수 있고 장기 백업이 가능함 (보관용이기 때문에 읽기에는 비싼 요금이 듦)\n\n\n아키텍처 구성 예시: EC2 웹 어플리케이션에 S3 버킷을 통해 정적 콘텐츠를, EBS 볼륨을 통해 파일을 저장하는 DB로 사용, EC2를 호스팅하는 인스턴스 스토어를 사용\n\n4. Amazon VPC(Virtual Private Cloud)\n\n인스턴스 수준에서 작용하는 보안 그룹을 설정하여 인/아웃바운드 규칙을 따로 설정 가능\n보안 그룹은 화이트 리스트 방식으로 거부 규칙을 지정할 수는 없음\n기본 값으로 인바운드 허용 안 함 / 아웃바운드 허용을 가짐\n\n5. AWS CloudWatch\n\nAWS 리소스, 실행중인 어플리케이션등에서 지표등을 수집하거나 추적하며 사용자에게 알림을 전송할 수 있음\n\n6. Amazon Relational DB service\n\n클라우드에서 RDBMS의 설정, 운영 및 확장을 손쉽게 해주는 DB 서비스\nAmazon Aurora, PostgreSQL, MariaDB, ORACLE 등 6가지의 DB를 사용 가능\n\n7. Amazon SNS(Simple Notification Service)\n\n분산/서버리스 어플리케이션을 위한 완전 관리형 게시/구독 메시징(푸쉬)\n\n8. Amazon CloudFront\n\n빠르고 안전한 글로벌 콘텐츠 전송 네트워크(CDN)\n사용자가 요청한다면 엣지 로케이션으로 라우팅하고 캐시에 있다면 사용자에게 바로 반환, 없다면 S3 버킷에 원본 파일을 요청해 캐싱하고 사용자에게 반환\n\n\n예시) 미디어 스트리밍 서비스\n\n인코딩된 비디오 수집 → 여러 형식의 비디오 코드 변환 → 카탈로그 비디오 메타 데이터 → 클라이언트로 비디오 스트리밍\nAWS Lambda에 코드를 업로드 → 이벤트 소스에서 코드가 트리거되도록 설정 → 트리거된 경우에만 Lambda에서 코드 실행 → 사용한 컴퓨팅 시간에 대해서만 비용 지불\n\n\n\n\n\n오전 강의 : AWS의 보안\n열어보기\n\n\n1. 클라우드 자체의 보안\n\n호스트, 네트워크, 소프트웨어, 시설\nAWS 글로벌 인프라 보호는 최고 우선 순위\n타사 감사 보고서 제공\n\n2. 클라우드 내부의 보안\n\n무엇을 저장해야하는가\n어떤 AWS 서비스를 사용해야 하는가\n어느 리전에 저장해야 하는가\n콘텐츠 형식과 구조는 어떻게 되는가\n누가 액세스 할 수 있는가\n\n3. 인증 및 권한 관리\n\nIAM(Identity and Access Management)를 통해 AWS 리소스에 대한 액세스를 안전하게 제어 (추가비용 없음)\nIAM 사용자, 그룹, 역할을 나누어 적용할 수 있음\nIAM 정책을 통해 IAM 사용자, 그룹 또는 역할이 AWS CLI나 S3 버킷에 접근하거나 조작할 수 있게 된다\nAWS 계정 루트 사용자는 모든 AWS 서비스에 대한 완전한 액세스 권한을 가짐 → 루트 사용자 액세스 키를 삭제, IAM 사용자를 생성하여 관리자 액세스 권한을 부여하고 IAM 자격 증명을 사용하여 AWS와 상호작용하도록 권장됨\n\n\n\n\n오전 강의 : AWS의 요금 정책\n열어보기\n\n\n\n사용량에 따라 지불, 예약을 통한 비용 절감, 사용량이 많을수록 비용 절감\n온디맨드, NURI(No up-front), PURI(Partial up-front), AURI(All up-front)\n서비스마다 요금이 다름\n\nEC2의 네 가지 구매 유형\n\n온디맨드 인스턴스 (시간/초당 청구, 단기)\n예약 인스턴스 (1~3년 약정 할인)\n스팟 인스턴스 (최대 90% 할인되는 예비 AWS 용량, 시작 및 종료 시간이 자유로은 애플리케이션)\n전용 호스트 (고객 전용 물리서버, 특정 규정 준수 요구사항이 있는 애플리케이션)\n\nS3의 요금 모델\n\n사용된 스토리지 양\n리전\n스토리지 클래스\n요청 수 및 유형 (GET, PUT, COPY)\n리전 외부로 전송된 데이터의 양\n\nTrusted Advisor\n\n비용 절감 및 성능 개선 가능\n\nAWS Support\n\nBasic, Developer, Business, Enterprise 클래스로 나뉘며 모든 사용자는 기본값으로 Basic에 해당됨\n\n\n\n\n오후 강의 : AWS 실습\n열어보기\n\n\n실습 과정\n\n네트워크 구성\n웹 서버 생성\n로드 밸런서 구성\n모니터링 (옵션)\n오토 스케일링 (옵션)\n정적 웹 사이트 호스팅 (옵션)\n\nAWS 시작하기\n\n10분 자습서로 AWS 빠르게 시작\nAWS 프리 티어 (12개월 무료)\n\nAWS 실습\n\n네트워크 구성하기\n\n\nVPC 콘솔에서 VPC 마법사 시작\n단일 퍼블릭 서브넷이 있는 VPC\n해당 서브넷에 대한 CIDR 블록을 지정\nCIDR이란? 참고자료\n\n\nCIDR(Classless Inter-Domain Routing)는 클래스 없는 도메인 간 라우팅 기법으로 1993년 도입되기 시작한 최신의 IP주소 할당 방법으로 CIDR는 기존의 IP 주소 할당 방식이었던 네트워크 클래스를 방법을 대체한 방식.CIDR는 IP Address의 영역을 나눌 때 기존방식보다 유연하게 자신이 원하는 Network Address와 Host Address를 나눌 수 있다.\n\n\n서브넷 메뉴에서 서브넷 생성으로 추가 서브넷 생성 시작\n\nVPC 아이디에서 방금 생성한 VPC를 선택(추가 서브넷이므로)\n\nCIDR는 기존 서브넷의 IP와 앞자리 두 블럭(고정 범위의 네트워크 주소)이 같도록 하고 뒷 두 블럭(가변 범위의 호스트 주소)이 다르게 설정\n\nVPC 라우팅 테이블을 통해 방금 생성한 VPC의 라우팅 테이블 ID와 동일하도록 설정\n\n\n\n보안 그룹 생성하기\n\n\n보안 그룹 메뉴에서 보안 그룹 생성\n보안 그룹 이름과 설명을 작성하고 1번에서 생성한 VPC ID로 설정\n인바운드 규칙에 HTTP/SSH을 위치 무관(소스)으로 설정\n\n\n웹 서버 생성하기\n\n\nEC2 콘솔에서 인스턴스 시작으로 인스턴스를 생성\nAmazon Machine Image(AMI) 선택에서 Amazon Linux 2 AMI를 선택\nt2.micro(프리 티어 사용 가능)를 선택한 후, 다음: 인스턴스 세부 정보 구성 버튼을 클릭\n네트워크와 서브넷을 선택하고 퍼블릭 IP 자동 할당을 활성화로 설정\n고급 세부 정보에 #include https://s3.amazonaws.com/immersionday-labs/bootstrap.sh를 입력\n태그 추가까지 넘어가 키와 값을 입력\n보안 그룹 구성에서 기존 보안 그룹 선택을 통해 2번에서 만든 보안 그룹을 선택하고 검토 및 시작\n새 키 페어 생성을 선택하고 키 페어 이름을 입력한 후 키 페어 다운로드\n인스턴스 시작으로 인스턴스를 생성(인스턴스 연결로 연결하여 CLI를 볼 수 있음)\n\n\nAMI 생성하고 AMI 기반 인스턴스 생성하기\n\n\nAmazon Machine Image(AMI)는 인스턴스를 시작하는데 필요한 정보를 제공\n인스턴스를 선택하고 우측 상단 작업 메뉴에서 이미지 및 템플릿 → 이미지 생성\n이미지 생성 페이지에서 이미지 이름을 입력하고 우측 하단의 이미지 생성 버튼을 클릭\n왼쪽 AMI 메뉴에서 상태가 available인지 확인하고 시작하기\n단계 3에서 VPC 네트워크를 선택하고 추가 서브넷을 서브넷으로 설정 및 퍼블릭 IP 자동 할당을 활성화로 설정\n단계 5에서 태그를 추가하여 값을 입력하고 보안 그룹을 설정(3번의 보안 그룹 설정 과정과 동일)\n키 페어는 위에서 생성한 키 페어를 사용\n\n\n로드밸런서(Elastic Load Balancing) 구성하기\n\n\n로드밸런서는 애플리케이션 트래픽을 EC2 인스턴스, 컨테이너, IP 주소, Lambda 함수, 가상 어플라이언스와 같은 여러 대상에 자동으로 분산시킴\n로드 밸런서 메뉴에서 Load Balancer 생성\nLoad Balancer 유형 선택에서 Application Load Balancer를 선택\n1단계에서는 로드 밸런서 이름과 ip 주소 유형으로 ipv4를 선택, 리스너로는 HTTP가 선택되었는지 확인\n가용 영역 파트에서 VPC를 선택하고 가용 영역을 체크하여 서브넷들을 선택\n단계 3 보안 그룹 구성에서 새 보안 그룹 생성 선택하고 이름과 설명을 작성한 후 HTTP 유형의 위치 무관(소스)를 선택\n단계 4 라우팅 구성에서 이름을 작성하고 인스턴스를 대상으로 하는 HTTP 프로토콜로 설정\n단계 5 대상 등록에서 두 개의 인스턴스를 선택하고 등록된 항목에 추가\n검토 및 생성\n보안 그룹 메뉴 → 인바운드 규칙 편집\n로드밸런서의 트래픽만 받을 수 있도록 소스 부분에서 사용자 지정 → 로드 밸런서 보안 그룹을 선택\n밑의 HTTP 규칙을 삭제\n로드밸런서가 active로 상태가 변하면 DNS로 접속 해 보기\n\n\n\n","dateCreated":"2021-04-20T09:36:13+09:00","dateModified":"2021-04-20T15:36:25+09:00","datePublished":"2021-04-20T09:36:13+09:00","description":"","headline":"21-04-20 AWS 웨비나 첫날 노트정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/04/20/21-04-20-AWS-%EC%9B%A8%EB%B9%84%EB%82%98-%EC%B2%AB-%EB%82%A0-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/04/20/21-04-20-AWS-%EC%9B%A8%EB%B9%84%EB%82%98-%EC%B2%AB-%EB%82%A0-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"}</script>
     <meta name="description" content="[AWS Builders 프로그램] 클라우드 기초교육 및 실습 교육 일자 : 2021. 04. 20(화) AWS에서는 컴퓨팅, 스토리지, 데이터베이스 및 여러 개발 관련 서비스들을 제공함 이 강의에서는 AWS의 서비스를 훑어보고 AWS의 보안 모델 등에 대해 배움  오전 강의 : AWS 서비스 톺아보기 열어보기   1. Amazon EC2  웹 호스팅, 인">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="21-04-20 AWS 웨비나 첫날 노트정리">
@@ -20,7 +20,7 @@
 <meta property="og:description" content="[AWS Builders 프로그램] 클라우드 기초교육 및 실습 교육 일자 : 2021. 04. 20(화) AWS에서는 컴퓨팅, 스토리지, 데이터베이스 및 여러 개발 관련 서비스들을 제공함 이 강의에서는 AWS의 서비스를 훑어보고 AWS의 보안 모델 등에 대해 배움  오전 강의 : AWS 서비스 톺아보기 열어보기   1. Amazon EC2  웹 호스팅, 인">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-20T00:36:13.000Z">
-<meta property="article:modified_time" content="2021-04-20T02:55:23.482Z">
+<meta property="article:modified_time" content="2021-04-20T06:36:25.753Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
     
@@ -332,6 +332,102 @@
 <p><strong>AWS Support</strong></p>
 <ul>
 <li>Basic, Developer, Business, Enterprise 클래스로 나뉘며 모든 사용자는 기본값으로 Basic에 해당됨</li>
+</ul>
+</div>
+</details>
+
+<h3 id="오후-강의-AWS-실습"><a href="#오후-강의-AWS-실습" class="headerlink" title="오후 강의 : AWS 실습"></a>오후 강의 : AWS 실습</h3><details>
+<summary>열어보기</summary>
+<div markdown="4">
+
+<p><strong>실습 과정</strong></p>
+<ul>
+<li>네트워크 구성</li>
+<li>웹 서버 생성</li>
+<li>로드 밸런서 구성</li>
+<li>모니터링 (옵션)</li>
+<li>오토 스케일링 (옵션)</li>
+<li>정적 웹 사이트 호스팅 (옵션)</li>
+</ul>
+<p><strong>AWS 시작하기</strong></p>
+<ul>
+<li>10분 자습서로 AWS 빠르게 시작</li>
+<li>AWS 프리 티어 (12개월 무료)</li>
+</ul>
+<p><strong>AWS 실습</strong></p>
+<ol>
+<li>네트워크 구성하기</li>
+</ol>
+<ul>
+<li>VPC 콘솔에서 <strong>VPC 마법사 시작</strong></li>
+<li><strong>단일 퍼블릭 서브넷이 있는 VPC</strong></li>
+<li>해당 서브넷에 대한 <strong>CIDR 블록</strong>을 지정</li>
+<li>CIDR이란? <a target="_blank" rel="noopener" href="https://dev.classmethod.jp/articles/vpc-3/">참고자료</a></li>
+</ul>
+<blockquote>
+<p>CIDR(Classless Inter-Domain Routing)는 클래스 없는 도메인 간 라우팅 기법으로 1993년 도입되기 시작한 최신의 IP주소 할당 방법으로 CIDR는 기존의 IP 주소 할당 방식이었던 네트워크 클래스를 방법을 대체한 방식.<br>CIDR는 IP Address의 영역을 나눌 때 기존방식보다 유연하게 자신이 원하는 Network Address와 Host Address를 나눌 수 있다.</p>
+</blockquote>
+<ul>
+<li><p>서브넷 메뉴에서 <strong>서브넷 생성</strong>으로 추가 서브넷 생성 시작</p>
+</li>
+<li><p>VPC 아이디에서 방금 생성한 VPC를 선택(추가 서브넷이므로)</p>
+</li>
+<li><p>CIDR는 기존 서브넷의 IP와 앞자리 두 블럭(고정 범위의 네트워크 주소)이 같도록 하고 뒷 두 블럭(가변 범위의 호스트 주소)이 다르게 설정</p>
+</li>
+<li><p>VPC 라우팅 테이블을 통해 방금 생성한 VPC의 라우팅 테이블 ID와 동일하도록 설정</p>
+</li>
+</ul>
+<ol start="2">
+<li>보안 그룹 생성하기</li>
+</ol>
+<ul>
+<li><strong>보안 그룹</strong> 메뉴에서 <strong>보안 그룹 생성</strong></li>
+<li>보안 그룹 이름과 설명을 작성하고 1번에서 생성한 VPC ID로 설정</li>
+<li><strong>인바운드 규칙</strong>에 <strong>HTTP/SSH</strong>을 <strong>위치 무관</strong>(소스)으로 설정</li>
+</ul>
+<ol start="3">
+<li>웹 서버 생성하기</li>
+</ol>
+<ul>
+<li><strong>EC2 콘솔</strong>에서 <strong>인스턴스 시작</strong>으로 인스턴스를 생성</li>
+<li>Amazon Machine Image(AMI) 선택에서 <strong>Amazon Linux 2 AMI</strong>를 선택</li>
+<li><strong>t2.micro</strong>(프리 티어 사용 가능)를 선택한 후, 다음: 인스턴스 세부 정보 구성 버튼을 클릭</li>
+<li>네트워크와 서브넷을 선택하고 <strong>퍼블릭 IP 자동 할당</strong>을 <strong>활성화</strong>로 설정</li>
+<li>고급 세부 정보에 <code>#include https://s3.amazonaws.com/immersionday-labs/bootstrap.sh</code>를 입력</li>
+<li>태그 추가까지 넘어가 키와 값을 입력</li>
+<li>보안 그룹 구성에서 <strong>기존 보안 그룹 선택</strong>을 통해 2번에서 만든 보안 그룹을 선택하고 <strong>검토 및 시작</strong></li>
+<li><strong>새 키 페어 생성</strong>을 선택하고 키 페어 이름을 입력한 후 <strong>키 페어 다운로드</strong></li>
+<li><strong>인스턴스 시작</strong>으로 인스턴스를 생성(인스턴스 연결로 연결하여 CLI를 볼 수 있음)</li>
+</ul>
+<ol start="4">
+<li>AMI 생성하고 AMI 기반 인스턴스 생성하기</li>
+</ol>
+<ul>
+<li>Amazon Machine Image(AMI)는 인스턴스를 시작하는데 필요한 정보를 제공</li>
+<li>인스턴스를 선택하고 우측 상단 작업 메뉴에서 <strong>이미지 및 템플릿</strong> → <strong>이미지 생성</strong></li>
+<li>이미지 생성 페이지에서 이미지 이름을 입력하고 우측 하단의 <strong>이미지 생성</strong> 버튼을 클릭</li>
+<li>왼쪽 AMI 메뉴에서 상태가 available인지 확인하고 <strong>시작하기</strong></li>
+<li>단계 3에서 VPC 네트워크를 선택하고 추가 서브넷을 서브넷으로 설정 및 퍼블릭 IP 자동 할당을 활성화로 설정</li>
+<li>단계 5에서 태그를 추가하여 값을 입력하고 보안 그룹을 설정(3번의 보안 그룹 설정 과정과 동일)</li>
+<li>키 페어는 위에서 생성한 키 페어를 사용</li>
+</ul>
+<ol start="5">
+<li>로드밸런서(Elastic Load Balancing) 구성하기</li>
+</ol>
+<ul>
+<li>로드밸런서는 애플리케이션 트래픽을 EC2 인스턴스, 컨테이너, IP 주소, Lambda 함수, 가상 어플라이언스와 같은 여러 대상에 자동으로 분산시킴</li>
+<li><strong>로드 밸런서 메뉴</strong>에서 <strong>Load Balancer 생성</strong></li>
+<li>Load Balancer 유형 선택에서 <strong>Application Load Balancer</strong>를 선택</li>
+<li>1단계에서는 로드 밸런서 이름과 ip 주소 유형으로 <strong>ipv4</strong>를 선택, 리스너로는 HTTP가 선택되었는지 확인</li>
+<li>가용 영역 파트에서 VPC를 선택하고 가용 영역을 체크하여 서브넷들을 선택</li>
+<li>단계 3 보안 그룹 구성에서 새 보안 그룹 생성 선택하고 이름과 설명을 작성한 후 HTTP 유형의 위치 무관(소스)를 선택</li>
+<li>단계 4 라우팅 구성에서 이름을 작성하고 인스턴스를 대상으로 하는 HTTP 프로토콜로 설정</li>
+<li>단계 5 대상 등록에서 두 개의 인스턴스를 선택하고 <strong>등록된 항목에 추가</strong></li>
+<li>검토 및 <strong>생성</strong></li>
+<li>보안 그룹 메뉴 → <strong>인바운드 규칙 편집</strong></li>
+<li>로드밸런서의 트래픽만 받을 수 있도록 소스 부분에서 사용자 지정 → 로드 밸런서 보안 그룹을 선택</li>
+<li>밑의 HTTP 규칙을 삭제</li>
+<li>로드밸런서가 active로 상태가 변하면 DNS로 접속 해 보기</li>
 </ul>
 </div>
 </details>
