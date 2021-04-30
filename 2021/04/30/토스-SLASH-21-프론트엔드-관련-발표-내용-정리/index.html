@@ -6,23 +6,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
-    <title>21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란 - 스터디용 블로그 w/ Harry Kim</title>
+    <title>토스 SLASH 21 프론트엔드 관련 발표 내용 정리 - 스터디용 블로그 w/ Harry Kim</title>
     <meta name="author" content="Harry Kim">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법참고 페이지\n\n꼭 필요한 정보만 받기\n\n\n사용자에게 꼭 받아야 하는 정보가 무엇인지를 따져봐야 한다\n아이디(이메일)을 입력하면 서버에 보내 회원인지를 판별하여 화면을 보여준다\n\n\n간편 로그인(Auth 2.0)을 제공하기\n\n\n사용자가 키보드를 쓰지 않을 수 있는 방법이 있다면 키보드를 사용하지 않도록 디자인 하기\n카카오톡 / 네이버 / 페이스북 / 구글 / 트위터 등의 Auth 2.0의 활용이 필요하다\n생년월일, 나이 등도 키보드 없이 설정할 수 있도록 해야한다\n\n2-1. 사용자에게 간편 로그인을 유도하기\n\nX 버튼은 사용자가 누르기 어렵도록 엄지영역에서 먼 곳으로 위치시키기\n회원가입하면 얻는 이점을 명확하게\n레이블, 플레이스홀더도 할 일을 명확하게 제시\n텍스트 필드 밑줄에는 애니메이션이 필요\n텍스트 필드에 적는 내용을 실시간으로 서버에서 확인하고 판단 후에 가입/계속하기 버튼을 활성화하기\nAuth 2.0을 더 사용하도록 엄지에 가까운 쪽으로 외부 로그인 버튼을 크게 두어 사용을 유도하기\nAuth 2.0을 사용한다면 동의 문구를 반드시 표기\n경고 문구는 되도록 상냥한 문구를 쓸 수 있도록 하기\n\n","dateCreated":"2021-04-27T18:24:47+09:00","dateModified":"2021-04-27T18:38:02+09:00","datePublished":"2021-04-27T18:24:47+09:00","description":"","headline":"21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"}</script>
-    <meta name="description" content="프론트엔드 엔지니어로서 로그인 UI&#x2F;UX를 향상시키는 방법참고 페이지  꼭 필요한 정보만 받기   사용자에게 꼭 받아야 하는 정보가 무엇인지를 따져봐야 한다 아이디(이메일)을 입력하면 서버에 보내 회원인지를 판별하여 화면을 보여준다   간편 로그인(Auth 2.0)을 제공하기   사용자가 키보드를 쓰지 않을 수 있는 방법이 있다면 키보드를 사용하지 않도록">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"토스 | SLASH 21SLASH 페이지\n이 게시물은 4/30 19시 이후에 올라오는 영상을 순차 정리할 예정임\n1. Micro-frontend React, 점진적으로 도입하기\n이 발표에서 소개하는 것\n\n123(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법(2) 마이크로 프론트엔드 아키텍처를 도입한 이유와 후기(3) 프론트엔드 빌드 시간을 효과적으로 단축한 비법\n(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법\n\n토스의 서버사이드에서 HTML 템플릿을 렌더링하는 모놀리식 Django MVC 프로젝트에서 모던 리액트 코드로 어떻게 이전했는지?\n\n\n시작은 create-react-app을 사용해 빠른 프로젝트를 빌드\n복잡한 webpack, Babel, ESLint 등의 설정을 건너뛰게 해 줄 것이라 믿음\n완전한 SPA가 아니고 Django와 함께 사용할 때엔 설정의 충돌이 많이 있었음 → 처음부터 설정을 해보자\n\n\n\nwebpack-bundle-tracker(wbt), django-webpack-loader(dwl)를 사용\nwbt는 빌드 결과물의 chunk 정보를 JSON 파일로 추출해주고 dwl은 이 JSON파일을 토대로 스크립트 태그나 링크 태그를 생성해줌\n많은 부분이 리액트로 바뀌고 나니 패키지 관리가 어려워지고 빌드 시간이 길어짐\n그래서 Micro-frontend 아키텍처를 사용하기로 함\n기존의 거대한 소스 코드를 독립적인 패키지(인프라, 라이브러리, 서비스 패키지)로 각각 분리함\n이를 위해 Yarn 2와 Workspace Plugin을 사용 중\n이로서 소스 코드부터 빌드 설정까지 완벽하게 격리되고, 의존성 지옥을 탈출할 수 있으며, 빌드 속도도 최적화됨\n빌드 시간을 줄이는 가장 좋은 방법은 빌드를 하지 않는 것\n소드코드가 바뀐 패키지만 빌드하고 나머지는 기존 빌드 결과물을 재사용\nGit을 통해 패키지의 변화를 캐치(Git의 해시를 사용)하고 변화가 감지된 패키지만 빌드\n\n2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기3. JavaScript Bundle Diet4. 실무에서 바로 쓰는 Frontend Clean Code","dateCreated":"2021-04-30T09:25:35+09:00","dateModified":"2021-04-30T09:55:56+09:00","datePublished":"2021-04-30T09:25:35+09:00","description":"","headline":"토스 SLASH 21 프론트엔드 관련 발표 내용 정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"}</script>
+    <meta name="description" content="토스 | SLASH 21SLASH 페이지 이 게시물은 4&#x2F;30 19시 이후에 올라오는 영상을 순차 정리할 예정임 1. Micro-frontend React, 점진적으로 도입하기 이 발표에서 소개하는 것  123(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법(2) 마이크로 프론트엔드 아키텍처를 도입한 이유와 후기(3) 프론트엔드 빌드">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="21-04-27 프론트엔드 엔지니어로서 로그인 UI&#x2F;UX를 향상시키는 방법이란">
-<meta property="og:url" content="http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/index.html">
+<meta property="og:title" content="토스 SLASH 21 프론트엔드 관련 발표 내용 정리">
+<meta property="og:url" content="http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/index.html">
 <meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
-<meta property="og:description" content="프론트엔드 엔지니어로서 로그인 UI&#x2F;UX를 향상시키는 방법참고 페이지  꼭 필요한 정보만 받기   사용자에게 꼭 받아야 하는 정보가 무엇인지를 따져봐야 한다 아이디(이메일)을 입력하면 서버에 보내 회원인지를 판별하여 화면을 보여준다   간편 로그인(Auth 2.0)을 제공하기   사용자가 키보드를 쓰지 않을 수 있는 방법이 있다면 키보드를 사용하지 않도록">
+<meta property="og:description" content="토스 | SLASH 21SLASH 페이지 이 게시물은 4&#x2F;30 19시 이후에 올라오는 영상을 순차 정리할 예정임 1. Micro-frontend React, 점진적으로 도입하기 이 발표에서 소개하는 것  123(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법(2) 마이크로 프론트엔드 아키텍처를 도입한 이유와 후기(3) 프론트엔드 빌드">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-04-27T09:24:47.000Z">
-<meta property="article:modified_time" content="2021-04-27T09:38:02.558Z">
+<meta property="og:image" content="http://example.com/images/create-react-app.png">
+<meta property="article:published_time" content="2021-04-30T00:25:35.000Z">
+<meta property="article:modified_time" content="2021-04-30T00:55:56.979Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/create-react-app.png">
     
     
         
@@ -187,14 +189,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란
+            토스 SLASH 21 프론트엔드 관련 발표 내용 정리
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2021-04-27T18:24:47+09:00">
+    <time datetime="2021-04-30T09:25:35+09:00">
 	
-		    Apr 27, 2021
+		    Apr 30, 2021
     	
     </time>
     
@@ -212,34 +214,35 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h2 id="프론트엔드-엔지니어로서-로그인-UI-UX를-향상시키는-방법"><a href="#프론트엔드-엔지니어로서-로그인-UI-UX를-향상시키는-방법" class="headerlink" title="프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법"></a>프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법</h2><p><a target="_blank" rel="noopener" href="https://brunch.co.kr/@dalgudot/101">참고 페이지</a></p>
-<ol>
-<li>꼭 필요한 정보만 받기</li>
-</ol>
-<ul>
-<li><strong>사용자에게 꼭 받아야 하는 정보</strong>가 무엇인지를 따져봐야 한다</li>
-<li>아이디(이메일)을 입력하면 서버에 보내 회원인지를 판별하여 화면을 보여준다</li>
+            <h1 id="토스-SLASH-21"><a href="#토스-SLASH-21" class="headerlink" title="토스 | SLASH 21"></a>토스 | SLASH 21</h1><p><a target="_blank" rel="noopener" href="https://toss.im/slash-21#">SLASH 페이지</a></p>
+<p><em>이 게시물은 4/30 19시 이후에 올라오는 영상을 순차 정리할 예정임</em></p>
+<h3 id="1-Micro-frontend-React-점진적으로-도입하기"><a href="#1-Micro-frontend-React-점진적으로-도입하기" class="headerlink" title="1. Micro-frontend React, 점진적으로 도입하기"></a><strong>1. Micro-frontend React, 점진적으로 도입하기</strong></h3><ul>
+<li>이 발표에서 소개하는 것</li>
 </ul>
-<ol start="2">
-<li>간편 로그인(Auth 2.0)을 제공하기</li>
-</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법</span><br><span class="line">(2) 마이크로 프론트엔드 아키텍처를 도입한 이유와 후기</span><br><span class="line">(3) 프론트엔드 빌드 시간을 효과적으로 단축한 비법</span><br></pre></td></tr></table></figure>
+<p><strong>(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법</strong></p>
+<blockquote>
+<p>토스의 서버사이드에서 HTML 템플릿을 렌더링하는 모놀리식 Django MVC 프로젝트에서 모던 리액트 코드로 어떻게 이전했는지?</p>
+</blockquote>
 <ul>
-<li>사용자가 키보드를 쓰지 않을 수 있는 방법이 있다면 키보드를 사용하지 않도록 디자인 하기</li>
-<li>카카오톡 / 네이버 / 페이스북 / 구글 / 트위터 등의 Auth 2.0의 활용이 필요하다</li>
-<li>생년월일, 나이 등도 키보드 없이 설정할 수 있도록 해야한다</li>
+<li>시작은 create-react-app을 사용해 빠른 프로젝트를 빌드</li>
+<li>복잡한 webpack, Babel, ESLint 등의 설정을 건너뛰게 해 줄 것이라 믿음</li>
+<li>완전한 SPA가 아니고 Django와 함께 사용할 때엔 설정의 충돌이 많이 있었음 → 처음부터 설정을 해보자</li>
 </ul>
-<p>2-1. 사용자에게 간편 로그인을 유도하기</p>
+<p><img src="/images/create-react-app.png" alt="create-react-app"></p>
 <ul>
-<li>X 버튼은 사용자가 누르기 어렵도록 엄지영역에서 먼 곳으로 위치시키기</li>
-<li>회원가입하면 얻는 이점을 명확하게</li>
-<li>레이블, 플레이스홀더도 할 일을 명확하게 제시</li>
-<li>텍스트 필드 밑줄에는 애니메이션이 필요</li>
-<li>텍스트 필드에 적는 내용을 실시간으로 서버에서 확인하고 판단 후에 가입/계속하기 버튼을 활성화하기</li>
-<li>Auth 2.0을 더 사용하도록 엄지에 가까운 쪽으로 외부 로그인 버튼을 크게 두어 사용을 유도하기</li>
-<li>Auth 2.0을 사용한다면 동의 문구를 반드시 표기</li>
-<li>경고 문구는 되도록 상냥한 문구를 쓸 수 있도록 하기</li>
+<li>webpack-bundle-tracker(wbt), django-webpack-loader(dwl)를 사용</li>
+<li>wbt는 빌드 결과물의 chunk 정보를 JSON 파일로 추출해주고 dwl은 이 JSON파일을 토대로 스크립트 태그나 링크 태그를 생성해줌</li>
+<li>많은 부분이 리액트로 바뀌고 나니 패키지 관리가 어려워지고 빌드 시간이 길어짐</li>
+<li>그래서 Micro-frontend 아키텍처를 사용하기로 함</li>
+<li><strong>기존의 거대한 소스 코드를 독립적인 패키지(인프라, 라이브러리, 서비스 패키지)로 각각 분리함</strong></li>
+<li>이를 위해 Yarn 2와 Workspace Plugin을 사용 중</li>
+<li>이로서 소스 코드부터 빌드 설정까지 완벽하게 격리되고, 의존성 지옥을 탈출할 수 있으며, 빌드 속도도 최적화됨</li>
+<li>빌드 시간을 줄이는 가장 좋은 방법은 빌드를 하지 않는 것</li>
+<li><strong>소드코드가 바뀐 패키지만 빌드</strong>하고 나머지는 <strong>기존 빌드 결과물을 재사용</strong></li>
+<li>Git을 통해 패키지의 변화를 캐치(Git의 해시를 사용)하고 변화가 감지된 패키지만 빌드</li>
 </ul>
-
+<h3 id="2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기"><a href="#2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기" class="headerlink" title="2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기"></a>2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기</h3><h3 id="3-JavaScript-Bundle-Diet"><a href="#3-JavaScript-Bundle-Diet" class="headerlink" title="3. JavaScript Bundle Diet"></a>3. JavaScript Bundle Diet</h3><h3 id="4-실무에서-바로-쓰는-Frontend-Clean-Code"><a href="#4-실무에서-바로-쓰는-Frontend-Clean-Code" class="headerlink" title="4. 실무에서 바로 쓰는 Frontend Clean Code"></a>4. 실무에서 바로 쓰는 Frontend Clean Code</h3>
             
 
 
@@ -253,14 +256,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
-                    data-tooltip="토스 SLASH 21 프론트엔드 관련 발표 내용 정리"
-                    aria-label="PREVIOUS: 토스 SLASH 21 프론트엔드 관련 발표 내용 정리"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -270,9 +270,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/04/23/%EB%A7%A4%EC%9D%BC-%EC%9A%B4%EB%8F%99-%EB%A3%A8%ED%8B%B4-%EC%A0%95%EB%A6%AC/"
-                    data-tooltip="매일 운동 루틴 정리"
-                    aria-label="NEXT: 매일 운동 루틴 정리"
+                    href="/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    data-tooltip="21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란"
+                    aria-label="NEXT: 21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -297,7 +297,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -310,7 +310,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -323,7 +323,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -368,14 +368,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
-                    data-tooltip="토스 SLASH 21 프론트엔드 관련 발표 내용 정리"
-                    aria-label="PREVIOUS: 토스 SLASH 21 프론트엔드 관련 발표 내용 정리"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -385,9 +382,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2021/04/23/%EB%A7%A4%EC%9D%BC-%EC%9A%B4%EB%8F%99-%EB%A3%A8%ED%8B%B4-%EC%A0%95%EB%A6%AC/"
-                    data-tooltip="매일 운동 루틴 정리"
-                    aria-label="NEXT: 매일 운동 루틴 정리"
+                    href="/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    data-tooltip="21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란"
+                    aria-label="NEXT: 21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -412,7 +409,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -425,7 +422,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -438,7 +435,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -472,7 +469,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -485,7 +482,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -498,7 +495,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://example.com/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
+                        href="https://plus.google.com/share?url=http://example.com/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

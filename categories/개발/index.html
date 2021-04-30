@@ -188,6 +188,91 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/"
+                            aria-label=": 토스 SLASH 21 프론트엔드 관련 발표 내용 정리"
+                        >
+                            토스 SLASH 21 프론트엔드 관련 발표 내용 정리
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-04-30T09:25:35+09:00">
+	
+		    Apr 30, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EA%B0%9C%EB%B0%9C/">개발</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="토스-SLASH-21"><a href="#토스-SLASH-21" class="headerlink" title="토스 | SLASH 21"></a>토스 | SLASH 21</h1><p><a target="_blank" rel="noopener" href="https://toss.im/slash-21#">SLASH 페이지</a></p>
+<p><em>이 게시물은 4/30 19시 이후에 올라오는 영상을 순차 정리할 예정임</em></p>
+<h3 id="1-Micro-frontend-React-점진적으로-도입하기"><a href="#1-Micro-frontend-React-점진적으로-도입하기" class="headerlink" title="1. Micro-frontend React, 점진적으로 도입하기"></a><strong>1. Micro-frontend React, 점진적으로 도입하기</strong></h3><ul>
+<li>이 발표에서 소개하는 것</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법</span><br><span class="line">(2) 마이크로 프론트엔드 아키텍처를 도입한 이유와 후기</span><br><span class="line">(3) 프론트엔드 빌드 시간을 효과적으로 단축한 비법</span><br></pre></td></tr></table></figure>
+<p><strong>(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법</strong></p>
+<blockquote>
+<p>토스의 서버사이드에서 HTML 템플릿을 렌더링하는 모놀리식 Django MVC 프로젝트에서 모던 리액트 코드로 어떻게 이전했는지?</p>
+</blockquote>
+<ul>
+<li>시작은 create-react-app을 사용해 빠른 프로젝트를 빌드</li>
+<li>복잡한 webpack, Babel, ESLint 등의 설정을 건너뛰게 해 줄 것이라 믿음</li>
+<li>완전한 SPA가 아니고 Django와 함께 사용할 때엔 설정의 충돌이 많이 있었음 → 처음부터 설정을 해보자</li>
+</ul>
+<p><img src="/images/create-react-app.png" alt="create-react-app"></p>
+<ul>
+<li>webpack-bundle-tracker(wbt), django-webpack-loader(dwl)를 사용</li>
+<li>wbt는 빌드 결과물의 chunk 정보를 JSON 파일로 추출해주고 dwl은 이 JSON파일을 토대로 스크립트 태그나 링크 태그를 생성해줌</li>
+<li>많은 부분이 리액트로 바뀌고 나니 패키지 관리가 어려워지고 빌드 시간이 길어짐</li>
+<li>그래서 Micro-frontend 아키텍처를 사용하기로 함</li>
+<li><strong>기존의 거대한 소스 코드를 독립적인 패키지(인프라, 라이브러리, 서비스 패키지)로 각각 분리함</strong></li>
+<li>이를 위해 Yarn 2와 Workspace Plugin을 사용 중</li>
+<li>이로서 소스 코드부터 빌드 설정까지 완벽하게 격리되고, 의존성 지옥을 탈출할 수 있으며, 빌드 속도도 최적화됨</li>
+<li>빌드 시간을 줄이는 가장 좋은 방법은 빌드를 하지 않는 것</li>
+<li><strong>소드코드가 바뀐 패키지만 빌드</strong>하고 나머지는 <strong>기존 빌드 결과물을 재사용</strong></li>
+<li>Git을 통해 패키지의 변화를 캐치(Git의 해시를 사용)하고 변화가 감지된 패키지만 빌드</li>
+</ul>
+<h3 id="2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기"><a href="#2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기" class="headerlink" title="2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기"></a>2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기</h3><h3 id="3-JavaScript-Bundle-Diet"><a href="#3-JavaScript-Bundle-Diet" class="headerlink" title="3. JavaScript Bundle Diet"></a>3. JavaScript Bundle Diet</h3><h3 id="4-실무에서-바로-쓰는-Frontend-Clean-Code"><a href="#4-실무에서-바로-쓰는-Frontend-Clean-Code" class="headerlink" title="4. 실무에서 바로 쓰는 Frontend Clean Code"></a>4. 실무에서 바로 쓰는 Frontend Clean Code</h3>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/04/30/%ED%86%A0%EC%8A%A4-SLASH-21-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B4%80%EB%A0%A8-%EB%B0%9C%ED%91%9C-%EB%82%B4%EC%9A%A9-%EC%A0%95%EB%A6%AC/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/04/27/21-04-27-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4%EB%A1%9C%EC%84%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-UI-UX%EB%A5%BC-%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4%EB%9E%80/"
                             aria-label=": 21-04-27 프론트엔드 엔지니어로서 로그인 UI/UX를 향상시키는 방법이란"
                         >
