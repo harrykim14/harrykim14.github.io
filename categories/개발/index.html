@@ -215,8 +215,11 @@
                 <div class="postShorten-content">
                     <h1 id="토스-SLASH-21"><a href="#토스-SLASH-21" class="headerlink" title="토스 | SLASH 21"></a>토스 | SLASH 21</h1><p>예비 프론트 엔드 개발자로서 보면 좋을 것 같은 발표들을 정리</p>
 <p><a target="_blank" rel="noopener" href="https://toss.im/slash-21#">SLASH 페이지</a></p>
-<h2 id="목차"><a href="#목차" class="headerlink" title="목차"></a>목차</h2><p><a href="#1.-Micro-frontend-React,-%EC%A0%90%EC%A7%84%EC%A0%81%EC%9C%BC%EB%A1%9C-%EB%8F%84%EC%9E%85%ED%95%98%EA%B8%B0">1. Micro-frontend React, 점진적으로 도입하기</a><br><a href="#2.-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%9B%B9-%EC%84%9C%EB%B9%84%EC%8A%A4%EC%97%90%EC%84%9C-%EC%9A%B0%EC%95%84%ED%95%98%EA%B2%8C-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0">2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기</a><br><a href="3.-JavaScript-Bundle-Diet">3. JavaScript Bundle Diet</a><br><a href="4.-%EC%8B%A4%EB%AC%B4%EC%97%90%EC%84%9C-%EB%B0%94%EB%A1%9C-%EC%93%B0%EB%8A%94-Frontend-Clean-Code">4. 실무에서 바로 쓰는 Frontend Clean Code</a></p>
-<h3 id="1-Micro-frontend-React-점진적으로-도입하기"><a href="#1-Micro-frontend-React-점진적으로-도입하기" class="headerlink" title="1. Micro-frontend React, 점진적으로 도입하기"></a><strong>1. Micro-frontend React, 점진적으로 도입하기</strong></h3><ul>
+<h3 id="1-Micro-frontend-React-점진적으로-도입하기"><a href="#1-Micro-frontend-React-점진적으로-도입하기" class="headerlink" title="1. Micro-frontend React, 점진적으로 도입하기"></a><strong>1. Micro-frontend React, 점진적으로 도입하기</strong></h3><details>
+<summary>열어보기</summary>
+<div markdown ="1">
+
+<ul>
 <li>이 발표에서 소개하는 것</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) Django MVC 프로젝트에 점진적으로 React를 도입한 방법</span><br><span class="line">(2) 마이크로 프론트엔드 아키텍처를 도입한 이유와 후기</span><br><span class="line">(3) 프론트엔드 빌드 시간을 효과적으로 단축한 비법</span><br></pre></td></tr></table></figure>
@@ -242,8 +245,15 @@
 <li><strong>소드코드가 바뀐 패키지만 빌드</strong>하고 나머지는 <strong>기존 빌드 결과물을 재사용</strong></li>
 <li>Git을 통해 패키지의 변화를 캐치(Git의 해시를 사용)하고 변화가 감지된 패키지만 빌드</li>
 </ul>
+</div>
+</details>
+
 <hr>
-<h3 id="2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기"><a href="#2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기" class="headerlink" title="2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기"></a>2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기</h3><blockquote>
+<h3 id="2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기"><a href="#2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기" class="headerlink" title="2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기"></a>2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기</h3><details>
+<summary>열어보기</summary>
+<div markdown ="2">
+
+<blockquote>
 <p>웹 서비스에서 가장 다루기 어려운 부분은 무엇인가?</p>
 </blockquote>
 <ul>
@@ -318,8 +328,15 @@
 </li>
 </ul>
 <p>참고자료1 : <a target="_blank" rel="noopener" href="https://ko.reactjs.org/docs/concurrent-mode-suspense.html">데이터를 가져오기 위한 Suspense (실험 단계)</a><br>참고자료2 : <a target="_blank" rel="noopener" href="https://overreacted.io/ko/algebraic-effects-for-the-rest-of-us/">Algebraic Effects for the Rest of Us</a></p>
+</div>
+</details>
+
 <hr>
-<h3 id="3-JavaScript-Bundle-Diet"><a href="#3-JavaScript-Bundle-Diet" class="headerlink" title="3. JavaScript Bundle Diet"></a>3. JavaScript Bundle Diet</h3><ul>
+<h3 id="3-JavaScript-Bundle-Diet"><a href="#3-JavaScript-Bundle-Diet" class="headerlink" title="3. JavaScript Bundle Diet"></a>3. JavaScript Bundle Diet</h3><details>
+<summary>열어보기</summary>
+<div markdown ="3">
+
+<ul>
 <li>사용자는 느린 로딩을 참지 못한다 (5초 초과시 이탈율 38%)</li>
 <li>API 호출이 너무 많거나 이미지 처리 등 다양한 원인으로 느려질 수 있음</li>
 <li>번들 사이즈는 그 중 하나</li>
@@ -341,8 +358,15 @@
 <li>terser를 사용하면 terser가 <code>/*#__PURE__**/</code>를 발견하면 해당 코드에 side effect가 없다고 판단함 (Babel은 이런 pure annotation을 인식하지만 ts는 인식하지 못함)</li>
 <li><strong>무거운 라이브러리의 영향을 줄이기</strong></li>
 </ul>
+</div>
+</details>
+
 <hr>
-<h3 id="4-실무에서-바로-쓰는-Frontend-Clean-Code"><a href="#4-실무에서-바로-쓰는-Frontend-Clean-Code" class="headerlink" title="4. 실무에서 바로 쓰는 Frontend Clean Code"></a>4. 실무에서 바로 쓰는 Frontend Clean Code</h3><ul>
+<h3 id="4-실무에서-바로-쓰는-Frontend-Clean-Code"><a href="#4-실무에서-바로-쓰는-Frontend-Clean-Code" class="headerlink" title="4. 실무에서 바로 쓰는 Frontend Clean Code"></a>4. 실무에서 바로 쓰는 Frontend Clean Code</h3><details>
+<summary>열어보기</summary>
+<div markdown ="4">
+
+<ul>
 <li>이 발표에서 소개하는 것</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 실무에서 클린 코드의 의의</span><br><span class="line">2. 안일한 코드 추가의 함정</span><br><span class="line">3. 로직을 빠르게 찾을 수 있는 코드</span><br><span class="line">4. 액션 아이템</span><br></pre></td></tr></table></figure>
@@ -419,6 +443,16 @@
 <li><strong>큰 그림 보는 연습하기</strong>: 그 때는 맞고 지금은 틀리다. 기능 추가 자체는 클린해도 전체적으로는 어지러울 수 있다</li>
 <li><strong>팀과 함께 공감대 형성하기</strong>: 코드에 정답은 없다. 명시적으로 이야기를 하는 시간이 필요하다</li>
 <li><strong>문서로 적어보기</strong>: 글로 적어야 명확해진다. 향후 어떤 점에서 위험할 수 있는지, 어떻게 개선할 수 있는지를 정리해두기</li>
+</ul>
+</div>
+</details>
+
+<hr>
+<h4 id="느낀점"><a href="#느낀점" class="headerlink" title="느낀점"></a>느낀점</h4><ul>
+<li>프론트엔드 엔지니어는 <strong>끝없이 더 나은 사용자 경험을 위해 투쟁</strong>하는 사람들이다</li>
+<li>개발에 필요한 스킬만이 중요한 것이 아니다, 결국은 협업, <strong>팀플레이</strong>.</li>
+<li>결국 코드를 적는 일도 글쓰기와 다르지 않다. 누군가에게 잘 읽히는 <strong>글</strong>을 써야 하는 것.</li>
+<li>실무 레벨에서 필요한 스킬을 배웠다기 보다는 어떤 마음가짐을 배웠다는 게 더 중요했던 강의들이었다.</li>
 </ul>
 
                     
