@@ -213,8 +213,9 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h1 id="토스-SLASH-21"><a href="#토스-SLASH-21" class="headerlink" title="토스 | SLASH 21"></a>토스 | SLASH 21</h1><p><a target="_blank" rel="noopener" href="https://toss.im/slash-21#">SLASH 페이지</a></p>
-<p><em>이 게시물은 4/30 19시 이후에 올라오는 영상을 순차 정리할 예정임</em></p>
+                    <h1 id="토스-SLASH-21"><a href="#토스-SLASH-21" class="headerlink" title="토스 | SLASH 21"></a>토스 | SLASH 21</h1><p>예비 프론트 엔드 개발자로서 보면 좋을 것 같은 발표들을 정리</p>
+<p><a target="_blank" rel="noopener" href="https://toss.im/slash-21#">SLASH 페이지</a></p>
+<h2 id="목차"><a href="#목차" class="headerlink" title="목차"></a>목차</h2><p><a href="#1.-Micro-frontend-React,-%EC%A0%90%EC%A7%84%EC%A0%81%EC%9C%BC%EB%A1%9C-%EB%8F%84%EC%9E%85%ED%95%98%EA%B8%B0">1. Micro-frontend React, 점진적으로 도입하기</a><br><a href="#2.-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%9B%B9-%EC%84%9C%EB%B9%84%EC%8A%A4%EC%97%90%EC%84%9C-%EC%9A%B0%EC%95%84%ED%95%98%EA%B2%8C-%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0">2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기</a><br><a href="3.-JavaScript-Bundle-Diet">3. JavaScript Bundle Diet</a><br><a href="4.-%EC%8B%A4%EB%AC%B4%EC%97%90%EC%84%9C-%EB%B0%94%EB%A1%9C-%EC%93%B0%EB%8A%94-Frontend-Clean-Code">4. 실무에서 바로 쓰는 Frontend Clean Code</a></p>
 <h3 id="1-Micro-frontend-React-점진적으로-도입하기"><a href="#1-Micro-frontend-React-점진적으로-도입하기" class="headerlink" title="1. Micro-frontend React, 점진적으로 도입하기"></a><strong>1. Micro-frontend React, 점진적으로 도입하기</strong></h3><ul>
 <li>이 발표에서 소개하는 것</li>
 </ul>
@@ -241,6 +242,7 @@
 <li><strong>소드코드가 바뀐 패키지만 빌드</strong>하고 나머지는 <strong>기존 빌드 결과물을 재사용</strong></li>
 <li>Git을 통해 패키지의 변화를 캐치(Git의 해시를 사용)하고 변화가 감지된 패키지만 빌드</li>
 </ul>
+<hr>
 <h3 id="2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기"><a href="#2-프론트엔드-웹-서비스에서-우아하게-비동기-처리하기" class="headerlink" title="2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기"></a>2. 프론트엔드 웹 서비스에서 우아하게 비동기 처리하기</h3><blockquote>
 <p>웹 서비스에서 가장 다루기 어려운 부분은 무엇인가?</p>
 </blockquote>
@@ -315,7 +317,110 @@
 <li><p>하지 못한 이야기들…<br>→ <strong>React Concurrent Mode, useTransition, useDeferredValue</strong> 등<br>→ React에서 부분적으로 렌더 트리를 완성함으로써 더 나은 사용자 경험 향상 가능</p>
 </li>
 </ul>
-<h3 id="3-JavaScript-Bundle-Diet"><a href="#3-JavaScript-Bundle-Diet" class="headerlink" title="3. JavaScript Bundle Diet"></a>3. JavaScript Bundle Diet</h3><h3 id="4-실무에서-바로-쓰는-Frontend-Clean-Code"><a href="#4-실무에서-바로-쓰는-Frontend-Clean-Code" class="headerlink" title="4. 실무에서 바로 쓰는 Frontend Clean Code"></a>4. 실무에서 바로 쓰는 Frontend Clean Code</h3>
+<p>참고자료1 : <a target="_blank" rel="noopener" href="https://ko.reactjs.org/docs/concurrent-mode-suspense.html">데이터를 가져오기 위한 Suspense (실험 단계)</a><br>참고자료2 : <a target="_blank" rel="noopener" href="https://overreacted.io/ko/algebraic-effects-for-the-rest-of-us/">Algebraic Effects for the Rest of Us</a></p>
+<hr>
+<h3 id="3-JavaScript-Bundle-Diet"><a href="#3-JavaScript-Bundle-Diet" class="headerlink" title="3. JavaScript Bundle Diet"></a>3. JavaScript Bundle Diet</h3><ul>
+<li>사용자는 느린 로딩을 참지 못한다 (5초 초과시 이탈율 38%)</li>
+<li>API 호출이 너무 많거나 이미지 처리 등 다양한 원인으로 느려질 수 있음</li>
+<li>번들 사이즈는 그 중 하나</li>
+<li>자바스크립트는 파일을 다운로드하고 파싱한 후에 컴파일을 하고 실행까지 하는 등 같은 용량이더라도 처리 비용이 크다</li>
+<li>Webpack Analyse는 가장 다양한 정보를 주지만 사용하기 어려움</li>
+<li>Webpack Visualizer는 깔끔한 시각화를 보여주지만 기능이 부족함</li>
+<li>그래서 Webpack Bundle Analyzer를 추천함</li>
+<li><strong>번들 용량을 줄일 때 가장 먼저 해야 할 일</strong> : 용량이 큰 라이브러리는 가벼운 라이브러리로, 용도가 겹치는 라이브러리는 하나로 통일</li>
+<li>여러 라이브러리가 다른 버전의 라이브러리를 참조하는 경우 Dependency confilict가 일어남</li>
+<li>npm은 라이브러리를 트리 구조로 저장하기 때문에 node_modules가 과도하게 커지게 됨</li>
+<li>npm dedupe 명령어와 yarn deduplicate 패키지, yarn 2에선 dedupe 명령어가 생김</li>
+<li>webpack alias기능을 이용한다면 동일한 라이브러리의 중복을 피할 수 있음</li>
+<li>lodash는 기능에 비해 용량이 클 수 있다</li>
+<li>따라서 가능한 네이티브 함수를 이용하거나 더 가벼운 함수로 구현하여 사용 중임 (<a target="_blank" rel="noopener" href="https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore">참고자료</a>)</li>
+<li>polyfill도 고려할 것</li>
+<li><a target="_blank" rel="noopener" href="https://bundlephobia.com/">Bundle Phobia</a>를 통해 버전별 번드 용량, 해당 라이브러리의 디펜던시를 분석 할 수 있다</li>
+<li><strong>더 가벼운 라이브러리를 만들 때</strong>엔 tree-shaking를 고려할 것</li>
+<li>하지만 tree-shaking은 side effect가 없을 때에만 가능</li>
+<li>terser를 사용하면 terser가 <code>/*#__PURE__**/</code>를 발견하면 해당 코드에 side effect가 없다고 판단함 (Babel은 이런 pure annotation을 인식하지만 ts는 인식하지 못함)</li>
+<li><strong>무거운 라이브러리의 영향을 줄이기</strong></li>
+</ul>
+<hr>
+<h3 id="4-실무에서-바로-쓰는-Frontend-Clean-Code"><a href="#4-실무에서-바로-쓰는-Frontend-Clean-Code" class="headerlink" title="4. 실무에서 바로 쓰는 Frontend Clean Code"></a>4. 실무에서 바로 쓰는 Frontend Clean Code</h3><ul>
+<li>이 발표에서 소개하는 것</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 실무에서 클린 코드의 의의</span><br><span class="line">2. 안일한 코드 추가의 함정</span><br><span class="line">3. 로직을 빠르게 찾을 수 있는 코드</span><br><span class="line">4. 액션 아이템</span><br></pre></td></tr></table></figure>
+<p><strong>(1) 클린코드가 의미 있는 이유란?</strong></p>
+<blockquote>
+<p>“그 코드는 안건드리시는 게 좋을거에요. 일단 제가 만질게요.^^;;”</p>
+</blockquote>
+<p>→ 흐름 파악이 어렵고, 도메인 맥락 표현이 안 되어 동료에게 물어봐야 알 수 있는 코드<br>→ 이런 코드는 개발 시 병목되고 유지보수 시 오래 걸리고 심한 경우 기능 추가가 불가능한 상태가 됨</p>
+<ul>
+<li>실무에서 클린 코드의 의의는 <strong>유지보수 시간의 단축</strong>을 뜻한다.</li>
+</ul>
+<p><strong>(2) 안일한 코드 추가의 함정</strong></p>
+<ul>
+<li>기존 코드에 기능을 추가하다보면 일어날 수 있는 함정들</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">QP</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [popupOpened, setPopupOpened] = useState(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">handleQuestionSubmit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> 약관동의 = <span class="keyword">await</span> 약관동의_받아오기();</span><br><span class="line">    <span class="keyword">if</span> (!약관동의) &#123;</span><br><span class="line">      <span class="keyword">await</span> 약관동의_팝업열기();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">await</span> 질문전송(questionValue);</span><br><span class="line">    alert(<span class="string">&quot;질문이 등록되었습니다.&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">handleMyExpertQuestionSubmit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> 연결전문가_질문전송(questionValue, 연결전문가.id);</span><br><span class="line">    alert(<span class="string">`<span class="subst">$&#123;연결전문가.name&#125;</span>에게 질문이 등록되었어요.`</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;main&gt;</span><br><span class="line">      &lt;form&gt;</span><br><span class="line">        &lt;textarea placeholder=<span class="string">&quot;어떤 내용이 궁금한가요?&quot;</span> /&gt;</span><br><span class="line">        &lt;Button onclick=&#123;handleQuestionSubmit&#125;&gt;질문하기&lt;/Button&gt;</span><br><span class="line">      &lt;/form&gt;</span><br><span class="line">      &#123;popupOpened &amp;&amp; (</span><br><span class="line">        &lt;연결전문가팝업 onSubmit=&#123;handleMyExpertQuestionSubmit&#125; /&gt;</span><br><span class="line">      )&#125;</span><br><span class="line">    &lt;/main&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>이 코드는…</strong></p>
+<ul>
+<li>하나의 목적인 코드가 여러 블럭으로 흩어져 있음</li>
+<li>하나의 함수가 여러가지 일을 하고 있음</li>
+<li>함수의 세부 구현 단계가 제각각임</li>
+</ul>
+<p><strong>그 때는 맞고 지금은 틀리다</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">QP</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> 연결전문가 = useFetch(연결전문가_받아오기);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 새 함수</span></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">handleNewExpertQuestionSubmit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> 질문전송(questionValue);</span><br><span class="line">    alert(<span class="string">&quot;질문이 등록되었어요.&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">  <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">handleMyExpertQuestionSubmit</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> 연결전문가_질문전송(questionValue, 연결전문가.id);</span><br><span class="line">    alert(<span class="string">`<span class="subst">$&#123;연결전문가.name&#125;</span>에게 질문이 등록되었어요.`</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;main&gt;</span><br><span class="line">      &lt;form&gt;</span><br><span class="line">        &lt;textarea placeholder=<span class="string">&quot;어떤 내용이 궁금한가요?&quot;</span> /&gt;</span><br><span class="line">        &#123;연결전문가.connected ? (</span><br><span class="line">        &lt;PopupTriggerButton</span><br><span class="line">            popup=&#123;&#123;</span><br><span class="line">                &lt;연결전문가팝업</span><br><span class="line">                onButtonSubmit=&#123;handleMyExpertQuestionSubmit&#125;/&gt;</span><br><span class="line">            &#125;&#125;</span><br><span class="line">        &gt;</span><br><span class="line">        질문하기 &lt;/PopupTriggerButton&gt;</span><br><span class="line">        ) : (</span><br><span class="line">        &lt;Button onClick=&#123;<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">            <span class="keyword">await</span> openPopupToNotAgreedUsers();</span><br><span class="line">            <span class="keyword">await</span> handleMyExpertQuestionSubmit();</span><br><span class="line">        &#125;&#125;</span><br><span class="line">        &gt;</span><br><span class="line">        질문하기</span><br><span class="line">        &lt;/Button&gt;</span><br><span class="line">        )&#125;</span><br><span class="line">        &lt;/form&gt;</span><br><span class="line">    &lt;/main&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">openPopupToNotAgreedUsers</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> 약관동의 = <span class="keyword">await</span> 약관동의_받아오기();</span><br><span class="line">    <span class="keyword">if</span>(!약관동의) &#123;</span><br><span class="line">        <span class="keyword">await</span> 약관동의_팝업열기();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>클린코드란 원하는 로직을 빠르게 찾을 수 있는 코드</li>
+</ul>
+<p><strong>(3) 로직을 빠르게 찾을 수 있는 코드</strong></p>
+<ol>
+<li><strong>응집도</strong>: 같은 목적의 코드는 뭉쳐두자</li>
+</ol>
+<ul>
+<li>무엇을? <strong>당장 몰라도 되는 디테일</strong></li>
+<li>코드 파악에 필수적인 핵심 정보를 뭉치면 오히려 답답해짐</li>
+<li>어떻게 응집시킬까?<ul>
+<li>첫번째, 남겨야 할 핵심 데이터와 숨겨야 할 세부 데이터를 나누기</li>
+<li>두번째, 핵심 데이터는 밖에서 전달, 나머지는 뭉친다</li>
+</ul>
+</li>
+<li>이를 <strong>선언적 프로그래밍</strong>이라 한다</li>
+<li>그렇다고 선언적인 코드가 무조건 좋은 것은 아니다</li>
+</ul>
+<ol start="2">
+<li><strong>단일책임</strong>: 하나의 일을 하는 뚜렷한 이름의 함수를 만들자</li>
+</ol>
+<ul>
+<li>일단, 함수 이름을 지어보자 → 함수가 하는 일을 모두 표현할 수 있는 이름을 짓자</li>
+<li>한 가지 일만 하는 명확한 이름의 함수로 쪼개기</li>
+<li>비슷한 방식으로 한 가지 일만 하는 기능성 컴포넌트 만들기 (React Hooks)</li>
+<li>조건이 많아지면 오히려 한글 변수명을 사용하는 게 더 좋을 수도 있다 (마치 주석을 달아놓은 것만 같은 효과도 있음 )</li>
+</ul>
+<ol start="3">
+<li><strong>추상화</strong>: 핵심 개념을 뽑아내자</li>
+</ol>
+<ul>
+<li>컴포넌트로 추상화하기</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 팝업 코드 제로부터 구현</span></span><br><span class="line">&lt;div style=&#123;팝업스타일&#125;&gt;</span><br><span class="line">    &lt;button onClick=&#123;<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> res = <span class="keyword">await</span> 회원가입();</span><br><span class="line">        <span class="keyword">if</span> (res.success) &#123;</span><br><span class="line">            프로필로이동();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;&#125;&gt;전송&lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 중요 개념만 남기고 추상화</span></span><br><span class="line">&lt;Popup</span><br><span class="line">    onSubmit=&#123;회원가입&#125;</span><br><span class="line">    onSuccess=&#123;프로필로이동&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>함수를 추상화하기</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 설계사 라벨을 얻는 함수 구현</span></span><br><span class="line"><span class="keyword">const</span> planner = <span class="keyword">await</span> fetchPlanner(plannerId);</span><br><span class="line"><span class="keyword">const</span> label = planner.name ? <span class="string">&quot;새로운 상담사&quot;</span> : <span class="string">&quot;연결중인 상담사&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 중요 개념을 함수 이름에 담아 추상화</span></span><br><span class="line"><span class="keyword">const</span> label = <span class="keyword">await</span> getPlannerLabel(plannerId);</span><br></pre></td></tr></table></figure>
+<p><strong>얼마나 추상화할 것인가?</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Level 0</span></span><br><span class="line">&lt;Button onClick=&#123;showConfirm&#125;&gt;전송&lt;/Button&gt;;</span><br><span class="line">&#123;</span><br><span class="line">  isShoConfirm &amp;&amp; (</span><br><span class="line">    &lt;Confirm</span><br><span class="line">      onClick=&#123;<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        showMessage(<span class="string">&quot;성공&quot;</span>);</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    /&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Level 1</span></span><br><span class="line">&lt;ConfirmButton</span><br><span class="line">  onConfirm=&#123;<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    showMessage(<span class="string">&quot;성공&quot;</span>);</span><br><span class="line">  &#125;&#125;</span><br><span class="line">&gt;</span><br><span class="line">  전송</span><br><span class="line">&lt;/ConfirmButton&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Level 2</span></span><br><span class="line">&lt;ConfirmButton message=<span class="string">&quot;성공&quot;</span>&gt;전송&lt;/ConfirmButton&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Level 3</span></span><br><span class="line">&lt;ConfirmButton /&gt;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>꼭 레벨3가 정답이 아님 → 상황에 따라 다름</li>
+<li>추상화 수준이 섞여있다면 코드 파악이 어려우니 주의할 것</li>
+</ul>
+<ol start="4">
+<li><strong>액션 아이템</strong></li>
+</ol>
+<ul>
+<li><strong>담대하게 기존 코드 수정하기</strong>: 두려워하지 말고 기존 코드를 씹고 뜯고 맛보고 즐기자</li>
+<li><strong>큰 그림 보는 연습하기</strong>: 그 때는 맞고 지금은 틀리다. 기능 추가 자체는 클린해도 전체적으로는 어지러울 수 있다</li>
+<li><strong>팀과 함께 공감대 형성하기</strong>: 코드에 정답은 없다. 명시적으로 이야기를 하는 시간이 필요하다</li>
+<li><strong>문서로 적어보기</strong>: 글로 적어야 명확해진다. 향후 어떤 점에서 위험할 수 있는지, 어떻게 개선할 수 있는지를 정리해두기</li>
+</ul>
+
                     
                         
 
