@@ -188,6 +188,83 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                            aria-label=": 21-05-12 HTML5 Canvas 기초 (1)"
+                        >
+                            21-05-12 HTML5 Canvas 기초 (1)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-05-12T12:23:02+09:00">
+	
+		    May 12, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EA%B0%9C%EB%B0%9C/">개발</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="HTML5-Canvas-기초-1"><a href="#HTML5-Canvas-기초-1" class="headerlink" title="HTML5 Canvas 기초 (1)"></a>HTML5 Canvas 기초 (1)</h2><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=JFQOgt5DMBY"><img src="http://img.youtube.com/vi/JFQOgt5DMBY/mqdefault.jpg" alt="캔버스라이브강좌"></a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">      <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="css">        <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line">      &#125;</span><br><span class="line">      .canvas &#123;</span><br><span class="line"><span class="css">        <span class="attribute">width</span>: <span class="number">500px</span>;</span></span><br><span class="line"><span class="css">        <span class="attribute">height</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="css">        <span class="attribute">background</span>: <span class="number">#eee</span>;</span></span><br><span class="line">      &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>캔버스 사이즈 설정<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">class</span>=<span class="string">&quot;canvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;500&quot;</span> <span class="attr">height</span>=<span class="string">&quot;300&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">class</span>=<span class="string">&quot;canvas canvas2&quot;</span> <span class="attr">width</span>=<span class="string">&quot;1000&quot;</span> <span class="attr">height</span>=<span class="string">&quot;600&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> canvas2 = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas2&quot;</span>);</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> context = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> context2 = canvas2.getContext(<span class="string">&quot;2d&quot;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">      context.arc(<span class="number">100</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">0</span>, <span class="built_in">Math</span>.PI * <span class="number">2</span>, <span class="literal">false</span>);</span></span><br><span class="line"><span class="javascript">      context2.arc(<span class="number">100</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">0</span>, <span class="built_in">Math</span>.PI * <span class="number">2</span>, <span class="literal">false</span>);</span></span><br><span class="line">      context.fill();</span><br><span class="line">      context2.fill();</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas01.JPG"></p>
+<ul>
+<li>캔버스를 지정하고 queryselector로 캔버스 객체를 지정, 특정 함수를 이용함으로써 해당 객체 내에서 도형을 그릴 수 있다</li>
+<li>자세한 내용은 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes">MDN 문서</a>를 참고</li>
+<li>arc(호) 함수는 arc(x, y, radius, startAngle, endAngle, anticlockwise)와 같은 형식으로 사용하며 (x, y)가 원점이고 반지름이 r인 anticlockwise 방향으로 향하는 (기본값은 시계방향 회전) 호를 그리게 된다. 이 원은 startAngle 에서 시작하여 endAngle 에서 끝남</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> context = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line">context.fillRect(<span class="number">50</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">context.fillStyle = <span class="string">&quot;red&quot;</span>;</span><br><span class="line">context.fillRect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">context.clearRect(<span class="number">80</span>, <span class="number">80</span>, <span class="number">50</span>, <span class="number">50</span>);</span><br><span class="line">context.strokeRect(<span class="number">150</span>, <span class="number">150</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas02.JPG"></p>
+<ul>
+<li>fillRect(사각형)함수는 fillRect(x, y, width, height)와 같은 형식으로 사용함 x, y 위치에 width, height에 맞는 사각형을 그린다</li>
+<li>clearRect는 특정한 부분을 지우는 함수로 받는 인자는 fillRect와 같다. 마찬가지로 strokeRect는 사각형의 외선만 그리는 함수.</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ctx = <span class="built_in">document</span>.getElementById(<span class="string">&quot;canvas&quot;</span>).getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">6</span>; j++) &#123;</span><br><span class="line">      ctx.fillStyle =</span><br><span class="line">        <span class="string">&quot;rgb(&quot;</span> +</span><br><span class="line">        <span class="built_in">Math</span>.floor(<span class="number">255</span> - <span class="number">42.5</span> * i) +</span><br><span class="line">        <span class="string">&quot;, &quot;</span> +</span><br><span class="line">        <span class="built_in">Math</span>.floor(<span class="number">255</span> - <span class="number">42.5</span> * j) +</span><br><span class="line">        <span class="string">&quot;, 0)&quot;</span>;</span><br><span class="line">      ctx.fillRect(j * <span class="number">25</span>, i * <span class="number">25</span>, <span class="number">25</span>, <span class="number">25</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas03.JPG"></p>
+<ul>
+<li>fillStyle은 한번 설정되면 그 색으로만 도형을 그리기 때문에 각각 다른 색깔로 그리고 싶다면 매번 새로 설정해주어야한다.</li>
+<li>위의 draw 함수를 사용한다면 색상 팔레트와 유사한 결과를 얻을 수 있다.</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/05/10/21-05-10-%EC%98%AC-%ED%95%B4%EC%97%90%EB%8A%94-%EA%B3%A0%EC%B3%90%EC%95%BC-%ED%95%A0-10%EA%B0%80%EC%A7%80-%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%B2%84%EB%A6%87/"
                             aria-label=": 올 해에는 고쳐야 할 10가지 타입스크립트 버릇"
                         >

@@ -1,0 +1,557 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="스터디용 블로그 w/ Harry Kim">
+    <title>21-05-12 HTML5 Canvas 기초 (1) - 스터디용 블로그 w/ Harry Kim</title>
+    <meta name="author" content="Harry Kim">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"HTML5 Canvas 기초 (1)\n123456789101112131415161718192021222324252627282930313233343536&lt;!DOCTYPE html&gt;&lt;html&gt;  &lt;head&gt;    &lt;title&gt;Canvas&lt;/title&gt;    &lt;meta charset=&quot;UTF-8&quot; /&gt;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;    &lt;style&gt;      body &#123;        margin: 0;      &#125;      .canvas &#123;        width: 500px;        height: 300px;        background: #eee;      &#125;    &lt;/style&gt;  &lt;/head&gt;  &lt;body&gt;    &lt;h1&gt;캔버스 사이즈 설정&lt;/h1&gt;    &lt;canvas class=&quot;canvas&quot; width=&quot;500&quot; height=&quot;300&quot;&gt;&lt;/canvas&gt;    &lt;canvas class=&quot;canvas canvas2&quot; width=&quot;1000&quot; height=&quot;600&quot;&gt;&lt;/canvas&gt;    &lt;script&gt;      const canvas = document.querySelector(&quot;.canvas&quot;);      const canvas2 = document.querySelector(&quot;.canvas2&quot;);      const context = canvas.getContext(&quot;2d&quot;);      const context2 = canvas2.getContext(&quot;2d&quot;);      context.arc(100, 100, 50, 0, Math.PI * 2, false);      context2.arc(100, 100, 50, 0, Math.PI * 2, false);      context.fill();      context2.fill();    &lt;/script&gt;  &lt;/body&gt;&lt;/html&gt;\n\n\n캔버스를 지정하고 queryselector로 캔버스 객체를 지정, 특정 함수를 이용함으로써 해당 객체 내에서 도형을 그릴 수 있다\n자세한 내용은 MDN 문서를 참고\narc(호) 함수는 arc(x, y, radius, startAngle, endAngle, anticlockwise)와 같은 형식으로 사용하며 (x, y)가 원점이고 반지름이 r인 anticlockwise 방향으로 향하는 (기본값은 시계방향 회전) 호를 그리게 된다. 이 원은 startAngle 에서 시작하여 endAngle 에서 끝남\n\n12345678const canvas = document.querySelector(&quot;.canvas&quot;);const context = canvas.getContext(&quot;2d&quot;);context.fillRect(50, 50, 100, 100);context.fillStyle = &quot;red&quot;;context.fillRect(0, 0, 100, 100);context.clearRect(80, 80, 50, 50);context.strokeRect(150, 150, 100, 100);\n\n\nfillRect(사각형)함수는 fillRect(x, y, width, height)와 같은 형식으로 사용함 x, y 위치에 width, height에 맞는 사각형을 그린다\nclearRect는 특정한 부분을 지우는 함수로 받는 인자는 fillRect와 같다. 마찬가지로 strokeRect는 사각형의 외선만 그리는 함수.\n\n1234567891011121314function draw() &#123;  var ctx = document.getElementById(&quot;canvas&quot;).getContext(&quot;2d&quot;);  for (var i = 0; i &lt; 6; i++) &#123;    for (var j = 0; j &lt; 6; j++) &#123;      ctx.fillStyle =        &quot;rgb(&quot; +        Math.floor(255 - 42.5 * i) +        &quot;, &quot; +        Math.floor(255 - 42.5 * j) +        &quot;, 0)&quot;;      ctx.fillRect(j * 25, i * 25, 25, 25);    &#125;  &#125;&#125;\n\n\nfillStyle은 한번 설정되면 그 색으로만 도형을 그리기 때문에 각각 다른 색깔로 그리고 싶다면 매번 새로 설정해주어야한다.\n위의 draw 함수를 사용한다면 색상 팔레트와 유사한 결과를 얻을 수 있다.\n\n","dateCreated":"2021-05-12T12:23:02+09:00","dateModified":"2021-05-12T13:06:22+09:00","datePublished":"2021-05-12T12:23:02+09:00","description":"","headline":"21-05-12 HTML5 Canvas 기초 (1)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"}</script>
+    <meta name="description" content="HTML5 Canvas 기초 (1) 123456789101112131415161718192021222324252627282930313233343536&lt;!DOCTYPE html&gt;&lt;html&gt;  &lt;head&gt;    &lt;title&gt;Canvas&lt;&#x2F;title&gt;    &lt;meta charset&#x3D;&quot;UTF-8&amp;">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="21-05-12 HTML5 Canvas 기초 (1)">
+<meta property="og:url" content="http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/index.html">
+<meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
+<meta property="og:description" content="HTML5 Canvas 기초 (1) 123456789101112131415161718192021222324252627282930313233343536&lt;!DOCTYPE html&gt;&lt;html&gt;  &lt;head&gt;    &lt;title&gt;Canvas&lt;&#x2F;title&gt;    &lt;meta charset&#x3D;&quot;UTF-8&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://img.youtube.com/vi/JFQOgt5DMBY/mqdefault.jpg">
+<meta property="og:image" content="http://example.com/images/canvas01.JPG">
+<meta property="og:image" content="http://example.com/images/canvas02.JPG">
+<meta property="og:image" content="http://example.com/images/canvas03.JPG">
+<meta property="article:published_time" content="2021-05-12T03:23:02.000Z">
+<meta property="article:modified_time" content="2021-05-12T04:06:22.661Z">
+<meta property="article:author" content="Harry Kim">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://img.youtube.com/vi/JFQOgt5DMBY/mqdefault.jpg">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/all.css">
+
+    
+<link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+
+    
+<link rel="stylesheet" href="/assets/css/thumbs.css">
+
+    
+<link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            스터디용 블로그 w/ Harry Kim
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/harrykim14"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            21-05-12 HTML5 Canvas 기초 (1)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2021-05-12T12:23:02+09:00">
+	
+		    May 12, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EA%B0%9C%EB%B0%9C/">개발</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="HTML5-Canvas-기초-1"><a href="#HTML5-Canvas-기초-1" class="headerlink" title="HTML5 Canvas 기초 (1)"></a>HTML5 Canvas 기초 (1)</h2><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=JFQOgt5DMBY"><img src="http://img.youtube.com/vi/JFQOgt5DMBY/mqdefault.jpg" alt="캔버스라이브강좌"></a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Canvas<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">      <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="css">        <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line">      &#125;</span><br><span class="line">      .canvas &#123;</span><br><span class="line"><span class="css">        <span class="attribute">width</span>: <span class="number">500px</span>;</span></span><br><span class="line"><span class="css">        <span class="attribute">height</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="css">        <span class="attribute">background</span>: <span class="number">#eee</span>;</span></span><br><span class="line">      &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>캔버스 사이즈 설정<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">class</span>=<span class="string">&quot;canvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;500&quot;</span> <span class="attr">height</span>=<span class="string">&quot;300&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">class</span>=<span class="string">&quot;canvas canvas2&quot;</span> <span class="attr">width</span>=<span class="string">&quot;1000&quot;</span> <span class="attr">height</span>=<span class="string">&quot;600&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> canvas2 = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas2&quot;</span>);</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> context = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> context2 = canvas2.getContext(<span class="string">&quot;2d&quot;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">      context.arc(<span class="number">100</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">0</span>, <span class="built_in">Math</span>.PI * <span class="number">2</span>, <span class="literal">false</span>);</span></span><br><span class="line"><span class="javascript">      context2.arc(<span class="number">100</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">0</span>, <span class="built_in">Math</span>.PI * <span class="number">2</span>, <span class="literal">false</span>);</span></span><br><span class="line">      context.fill();</span><br><span class="line">      context2.fill();</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas01.JPG"></p>
+<ul>
+<li>캔버스를 지정하고 queryselector로 캔버스 객체를 지정, 특정 함수를 이용함으로써 해당 객체 내에서 도형을 그릴 수 있다</li>
+<li>자세한 내용은 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes">MDN 문서</a>를 참고</li>
+<li>arc(호) 함수는 arc(x, y, radius, startAngle, endAngle, anticlockwise)와 같은 형식으로 사용하며 (x, y)가 원점이고 반지름이 r인 anticlockwise 방향으로 향하는 (기본값은 시계방향 회전) 호를 그리게 된다. 이 원은 startAngle 에서 시작하여 endAngle 에서 끝남</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> context = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line">context.fillRect(<span class="number">50</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">context.fillStyle = <span class="string">&quot;red&quot;</span>;</span><br><span class="line">context.fillRect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">context.clearRect(<span class="number">80</span>, <span class="number">80</span>, <span class="number">50</span>, <span class="number">50</span>);</span><br><span class="line">context.strokeRect(<span class="number">150</span>, <span class="number">150</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas02.JPG"></p>
+<ul>
+<li>fillRect(사각형)함수는 fillRect(x, y, width, height)와 같은 형식으로 사용함 x, y 위치에 width, height에 맞는 사각형을 그린다</li>
+<li>clearRect는 특정한 부분을 지우는 함수로 받는 인자는 fillRect와 같다. 마찬가지로 strokeRect는 사각형의 외선만 그리는 함수.</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ctx = <span class="built_in">document</span>.getElementById(<span class="string">&quot;canvas&quot;</span>).getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; <span class="number">6</span>; j++) &#123;</span><br><span class="line">      ctx.fillStyle =</span><br><span class="line">        <span class="string">&quot;rgb(&quot;</span> +</span><br><span class="line">        <span class="built_in">Math</span>.floor(<span class="number">255</span> - <span class="number">42.5</span> * i) +</span><br><span class="line">        <span class="string">&quot;, &quot;</span> +</span><br><span class="line">        <span class="built_in">Math</span>.floor(<span class="number">255</span> - <span class="number">42.5</span> * j) +</span><br><span class="line">        <span class="string">&quot;, 0)&quot;</span>;</span><br><span class="line">      ctx.fillRect(j * <span class="number">25</span>, i * <span class="number">25</span>, <span class="number">25</span>, <span class="number">25</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas03.JPG"></p>
+<ul>
+<li>fillStyle은 한번 설정되면 그 색으로만 도형을 그리기 때문에 각각 다른 색깔로 그리고 싶다면 매번 새로 설정해주어야한다.</li>
+<li>위의 draw 함수를 사용한다면 색상 팔레트와 유사한 결과를 얻을 수 있다.</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/05/10/21-05-10-%EC%98%AC-%ED%95%B4%EC%97%90%EB%8A%94-%EA%B3%A0%EC%B3%90%EC%95%BC-%ED%95%A0-10%EA%B0%80%EC%A7%80-%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%B2%84%EB%A6%87/"
+                    data-tooltip="올 해에는 고쳐야 할 10가지 타입스크립트 버릇"
+                    aria-label="NEXT: 올 해에는 고쳐야 할 10가지 타입스크립트 버릇"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2021 Harry Kim. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/05/10/21-05-10-%EC%98%AC-%ED%95%B4%EC%97%90%EB%8A%94-%EA%B3%A0%EC%B3%90%EC%95%BC-%ED%95%A0-10%EA%B0%80%EC%A7%80-%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%B2%84%EB%A6%87/"
+                    data-tooltip="올 해에는 고쳐야 할 10가지 타입스크립트 버릇"
+                    aria-label="NEXT: 올 해에는 고쳐야 할 10가지 타입스크립트 버릇"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://example.com/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <h4 id="about-card-name">Harry Kim</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/jquery.js"></script>
+
+
+<script src="/assets/js/jquery.fancybox.js"></script>
+
+
+<script src="/assets/js/thumbs.js"></script>
+
+
+<script src="/assets/js/tranquilpeak.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
