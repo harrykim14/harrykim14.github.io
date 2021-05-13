@@ -188,6 +188,77 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/05/13/21-05-13-HTML5-Canvas-%EA%B8%B0%EC%B4%88-2/"
+                            aria-label=": 21-05-13 HTML5 Canvas 기초 (2)"
+                        >
+                            21-05-13 HTML5 Canvas 기초 (2)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-05-13T09:46:31+09:00">
+	
+		    May 13, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EA%B0%9C%EB%B0%9C/">개발</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="HTML5-Canvas-기초-2"><a href="#HTML5-Canvas-기초-2" class="headerlink" title="HTML5 Canvas 기초 (2)"></a>HTML5 Canvas 기초 (2)</h2><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ovf8cbKtBH0"><img src="http://img.youtube.com/vi/ovf8cbKtBH0/mqdefault.jpg" alt="캔버스라이브강좌"></a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ctx = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>).getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> imgElem = <span class="keyword">new</span> Image();</span><br><span class="line">imgElem.src = <span class="string">&quot;./dog.jpg&quot;</span>;</span><br><span class="line">imgElem.addEventListener(<span class="string">&quot;load&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  ctx.drawImage(imgElem, <span class="number">50</span>, <span class="number">50</span>, <span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas06.JPG"></p>
+<ul>
+<li>drawImage함수는 세 가지 패턴으로 나뉘고 아래와 같다</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ctx.drawImage(image, dx, dy);</span><br><span class="line"><span class="comment">// 이미지 객체를 캔버스 내 x, y 좌표에 그림</span></span><br><span class="line"><span class="keyword">void</span> ctx.drawImage(image, dx, dy, dWidth, dHeight);</span><br><span class="line"><span class="comment">// 이미지 객체를 캔버스 내 x, y 좌표에 dWidth * dHeight로 그림</span></span><br><span class="line"><span class="keyword">void</span> ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);</span><br><span class="line"><span class="comment">// 이미지 객체를 (sx, sy) 좌표로부터 sWidth * sHeight만큼 크롭하여</span></span><br><span class="line"><span class="comment">// 캔버스 내 (x, y)에 dWidth * dHeight로 그림</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> control = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.control&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> drawingMode = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">let</span> colorVal = <span class="string">&quot;black&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">moveHandler</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!drawingMode) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  ctx.beginPath();</span><br><span class="line">  ctx.arc(e.layerX, e.layerY, <span class="number">10</span>, <span class="number">0</span>, <span class="built_in">Math</span>.PI * <span class="number">2</span>, <span class="literal">false</span>);</span><br><span class="line">  ctx.fill();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">downHandler</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  drawingMode = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">upHandler</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  drawingMode = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setColor</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  colorVal = e.target.getAttribute(<span class="string">&quot;data-color&quot;</span>);</span><br><span class="line">  ctx.fillStyle = colorVal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">canvas.addEventListener(<span class="string">&quot;mousedown&quot;</span>, downHandler);</span><br><span class="line">canvas.addEventListener(<span class="string">&quot;mousemove&quot;</span>, moveHandler);</span><br><span class="line">canvas.addEventListener(<span class="string">&quot;mouseup&quot;</span>, upHandler);</span><br><span class="line">control.addEventListener(<span class="string">&quot;click&quot;</span>, setColor);</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas07.JPG"></p>
+<ul>
+<li>색상 버튼을 이용해 선 색상을 바꾸기</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createIamge</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> url = canvas.toDataURL(<span class="string">&quot;image/png&quot;</span>); <span class="comment">// 이미지 타입을 정의하여 매개변수로</span></span><br><span class="line">  <span class="keyword">const</span> imgElem = <span class="keyword">new</span> Image(); <span class="comment">// 이미지 객체를 새로 생성하고</span></span><br><span class="line">  imgElem.src = url; <span class="comment">// 해당 url을 할당</span></span><br><span class="line">  resultImage.appendChild(imgElem); <span class="comment">// 자식으로 추가</span></span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas08.JPG"></p>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/05/13/21-05-13-HTML5-Canvas-%EA%B8%B0%EC%B4%88-2/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/05/12/21-05-12-HTML5-Canvas-%EA%B8%B0%EC%B4%88-1/"
                             aria-label=": 21-05-12 HTML5 Canvas 기초 (1)"
                         >
