@@ -188,6 +188,92 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/05/15/21-05-15-HTML5-Canvas-%EA%B8%B0%EC%B4%88-4/"
+                            aria-label=": 21-05-15 HTML5 Canvas 기초 (4)"
+                        >
+                            21-05-15 HTML5 Canvas 기초 (4)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-05-15T13:33:13+09:00">
+	
+		    May 15, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EA%B0%9C%EB%B0%9C/">개발</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=IeN-m2hMO-g"><img src="http://img.youtube.com/vi/IeN-m2hMO-g/mqdefault.jpg" alt="캔버스라이브강좌"></a></p>
+<ul>
+<li>캔버스내에서 Translate 사용하기</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> scaleValue = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  ctx.clearRect(<span class="number">0</span>, <span class="number">0</span>, canvas.width, canvas.height);</span><br><span class="line">  ctx.save();</span><br><span class="line">  ctx.setTransform(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">  ctx.translate(<span class="number">250</span>, <span class="number">250</span>);</span><br><span class="line">  ctx.scale(scaleValue, scaleValue);</span><br><span class="line">  scaleValue += <span class="number">0.01</span>;</span><br><span class="line">  ctx.strokeRect(-<span class="number">50</span>, -<span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">  ctx.restore();</span><br><span class="line"></span><br><span class="line">  requestAnimationFrame(draw);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">draw();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas10.gif"></p>
+<blockquote>
+<p>ctx.setTransform(a, b, c, d, e, f)</p>
+</blockquote>
+<ul>
+<li>a ~ f의 매개변수는 각각 수평 확장, 수직 왜곡, 수평으로 기울이기, 수직 확장, 수평 이동, 수직이동을 뜻한다</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> scaleValue = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> rotationValue = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">toRadian</span>(<span class="params">degree</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (degree * <span class="built_in">Math</span>.PI) / <span class="number">180</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  ctx.clearRect(<span class="number">0</span>, <span class="number">0</span>, canvas.width, canvas.height); <span class="comment">// 캔버스 초기화</span></span><br><span class="line">  ctx.save();</span><br><span class="line">  <span class="comment">// 디폴트 값을 저장 (색상이나 폰트 스타일 등)</span></span><br><span class="line">  ctx.setTransform(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">  ctx.translate(<span class="number">250</span>, <span class="number">250</span>); <span class="comment">// 중앙으로 위치시킴</span></span><br><span class="line">  ctx.scale(scaleValue, scaleValue);</span><br><span class="line">  <span class="comment">// scale함수는 도형의 크기를 변화시킴. 여기서는 매 draw 실행마다 0.01씩 가로세로가 커짐.</span></span><br><span class="line">  ctx.rotate(toRadian(rotationValue));</span><br><span class="line">  <span class="comment">// rotateValue의 radian 값 만큼 회전, 마이너스가 된다면 시계 반대방향으로 회전할 것</span></span><br><span class="line">  ctx.strokeRect(-<span class="number">50</span>, -<span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">  <span class="comment">// 해당 도형 내 기준점(0, 0 이라면 좌측상단이 됨)에서 100, 100 크기의 사각형을 그림</span></span><br><span class="line">  ctx.restore();</span><br><span class="line">  <span class="comment">// 저장된 디폴트값을 불러옴</span></span><br><span class="line"></span><br><span class="line">  scaleValue += <span class="number">0.01</span>;</span><br><span class="line">  rotationValue -= <span class="number">2</span>;</span><br><span class="line">  requestAnimationFrame(draw);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">draw();</span><br></pre></td></tr></table></figure>
+<p><img src="/images/canvas11.JPG"><br><img src="/images/canvas12.gif"></p>
+<ul>
+<li>clearRect를 실행하지 않았을 때와 실행했을 때의 차이</li>
+</ul>
+<p><strong>해당 함수의 MDN 문서 링크</strong></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/save">ctx.save()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/restore">ctx.restore()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale">ctx.scale()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate">ctx.rotate()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/stroke">ctx.stroke()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillRect">ctx.fillRect()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/transform">ctx.transform()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/translate">ctx.translate()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/strokeRect">ctx.strokeRect()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect">ctx.clearRect()</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform">ctx.setTransform()</a></p>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/05/15/21-05-15-HTML5-Canvas-%EA%B8%B0%EC%B4%88-4/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/05/14/21-05-14-HTML5-Canvas-%EA%B8%B0%EC%B4%88-3/"
                             aria-label=": 21-05-14 HTML5 Canvas 기초 (3)"
                         >
@@ -223,12 +309,6 @@
 </ul>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> videoElem = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.video&quot;</span>);</span><br><span class="line">videoElem.addEventListener(<span class="string">&quot;canplaythrough&quot;</span>, render);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> btnsElem = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.btns&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> imageData;</span><br><span class="line"><span class="keyword">const</span> particles = [];</span><br><span class="line"><span class="keyword">let</span> particle;</span><br><span class="line"><span class="keyword">let</span> colorValue;</span><br><span class="line"><span class="keyword">let</span> leng;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  ctx.drawImage(videoElem, <span class="number">0</span>, <span class="number">0</span>, <span class="number">600</span>, <span class="number">400</span>);</span><br><span class="line">  imageData = ctx.getImageData(<span class="number">0</span>, <span class="number">0</span>, <span class="number">600</span>, <span class="number">400</span>);</span><br><span class="line">  leng = imageData.data.length / <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; leng; i++) &#123;</span><br><span class="line">    <span class="keyword">switch</span> (colorValue) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&quot;red&quot;</span>:</span><br><span class="line">        imageData.data[i * <span class="number">4</span> + <span class="number">0</span>] = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&quot;green&quot;</span>:</span><br><span class="line">        imageData.data[i * <span class="number">4</span> + <span class="number">1</span>] = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&quot;blue&quot;</span>:</span><br><span class="line">        imageData.data[i * <span class="number">4</span> + <span class="number">2</span>] = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ctx.putImageData(imageData, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">  requestAnimationFrame(render);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">btnsElem.addEventListener(<span class="string">&quot;click&quot;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  colorValue = e.target.getAttribute(<span class="string">&quot;data-color&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p><img src="/images/canvas09.JPG"></p>
-<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=IeN-m2hMO-g"><img src="http://img.youtube.com/vi/IeN-m2hMO-g/mqdefault.jpg" alt="캔버스라이브강좌"></a></p>
-<ul>
-<li>캔버스내에서 Translate 사용하기</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">const</span> canvas = <span class="built_in">document</span>.querySelector(<span class="string">&quot;.canvas&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> ctx = canvas.getContext(<span class="string">&quot;2d&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> scaleValue = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  ctx.clearRect(<span class="number">0</span>, <span class="number">0</span>, canvas.width, canvas.height);</span><br><span class="line">  ctx.save();</span><br><span class="line">  ctx.setTransform(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">  ctx.translate(<span class="number">250</span>, <span class="number">250</span>);</span><br><span class="line">  ctx.scale(scaleValue, scaleValue);</span><br><span class="line">  scaleValue += <span class="number">0.01</span>;</span><br><span class="line">  ctx.strokeRect(-<span class="number">50</span>, -<span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">  ctx.restore();</span><br><span class="line"></span><br><span class="line">  requestAnimationFrame(draw);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">draw();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p><img src="/images/canvas10.gif"></p>
 
                     
                         

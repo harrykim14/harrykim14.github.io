@@ -187,6 +187,115 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/09/21-03-09-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-1/"
+                            aria-label=": 21-03-08 자바스크립트로 하는 자료구조와 알고리즘(1)"
+                        >
+                            21-03-08 자바스크립트로 하는 자료구조와 알고리즘(1)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-09T16:07:40+09:00">
+	
+		    Mar 09, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>, <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%84%9C%EC%A0%81/">서적</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="1장-빅오-표기법"><a href="#1장-빅오-표기법" class="headerlink" title="1장 빅오 표기법"></a>1장 빅오 표기법</h3><p><strong><center>O(1)은 신성하다 - 하미드 티주쉬</center></strong></p>
+<ul>
+<li><p>빅오 표기법 기초</p>
+<ul>
+<li>빅오 표기법에서 n은 입력의 개수를 나타낸다</li>
+<li>“n이 무한으로 접근할 때 무슨 일이 일어날까?”<br><img src="/images/bigO.jpg"><center>일반적인 빅오 복잡도 그래프</center>
+</li>
+</ul>
+</li>
+<li><p>계수 법칙 : “상수를 제거하라”</p>
+</li>
+<li><p>*<center>상수 k &gt; 0인 경우 f(n)이 O(g(n)이면 kf(n)은 O(g(n))이다</center>**</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Coefficient</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) count += <span class="number">1</span></span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Coefficient(n)의 복잡도는 O(n)</span></span><br></pre></td></tr></table></figure></li>
+<li><p>합의 법칙 : “빅오를 더하라”</p>
+</li>
+<li><p>*<center>f(n)이 O(h(n))이고 g(n)이 O(p(n))이라면 f(n)+g(n)은 O(h(n)+p(n))이다</center>**</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">SumBigO</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) count += <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>*n; i++) count += <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// SumBigO(n)의 복잡도는 O(n + 5n) = O(n)이 된다</span></span><br></pre></td></tr></table></figure></li>
+<li><p>곱의 법칙 : “빅오를 곱하라”</p>
+</li>
+<li><p>*<center>f(n)이 O(h(n))이고 g(n)이 O(p(n))이라면 f(n)g(n)은 O(h(n)p(n))이다</center>**</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MultipleBigO</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) &#123; </span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>*n; i++) </span><br><span class="line">      count += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// MultipleBigO(n)의 복잡도는 O(n^2)</span></span><br></pre></td></tr></table></figure></li>
+<li><p>다항 법칙 : “빅오의 k승”</p>
+</li>
+<li><p>*<center>f(n)이 k차 다항식이라면 f(n)은 O(n^k)이다</center>**</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PolynomialBigO</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n*n; i++) &#123; </span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// PolynomialBigO(n)의 복잡도는 O(n^2)</span></span><br></pre></td></tr></table></figure>
+<h3 id="2장-자바스크립트의-독특한-특징"><a href="#2장-자바스크립트의-독특한-특징" class="headerlink" title="2장 자바스크립트의 독특한 특징"></a>2장 자바스크립트의 독특한 특징</h3></li>
+<li><p>자바스크립트는 동적 인터프리터 프로그래밍 언어이기 때문에 다른 객체지향 프로그래밍 언어들과는 구문이 다름</p>
+</li>
+<li><p>자바스크립트의 범위(scope)</p>
+<ul>
+<li><strong>전역 선언</strong>: 전역 범위<br>→ 전역 선언은 안좋은 방법이므로 되도록 사용하지 말 것</li>
+<li><strong>var를 사용해 선언</strong> : 함수 범위<br>→ var를 사용하면 변수를 어디에 선언하더라도 함수의 맨 앞으로 이동한다<br>→ 이를 변수 호이스팅(variable hoisting)이라고도 한다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scope1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> top = <span class="string">&quot;top&quot;</span></span><br><span class="line">  bottom = <span class="string">&quot;bottom&quot;</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(bottom)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> bottom;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// bottom은 맨 마지막에 선언되었지만 </span></span><br><span class="line"><span class="comment">// console.log() 앞으로 hoisting되며 오류 없이 실행된다</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>var로 선언된 해당 변수의 범위가 가장 가까운 함수 범위가 된다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scope2</span>(<span class="params">print</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (print) &#123;</span><br><span class="line">    <span class="keyword">var</span> insideIf = <span class="string">&#x27;12&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(insideIf);</span><br><span class="line">&#125;</span><br><span class="line">scope2(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scope2_copy</span>(<span class="params">print</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> insideIf;</span><br><span class="line">  <span class="keyword">if</span> (print) &#123;</span><br><span class="line">    insideIf = <span class="string">&#x27;12&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(insideIf);</span><br><span class="line">&#125;</span><br><span class="line">scope2_copy(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// scope2와 scope2_copy는 동일하게 실행된다</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><strong>let를 사용해 선언</strong> : 블록 범위<br>→ 변수가 선언된 블록 범위({})내에서 유효하다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scope3</span>(<span class="params">print</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(print) &#123;</span><br><span class="line">    <span class="keyword">let</span> insideIf = <span class="string">&#x27;12&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(insideIf);</span><br><span class="line">&#125;</span><br><span class="line">scope3(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 오류가 발생함 let은 블록 범위에서만 유효하기 때문에</span></span><br><span class="line"><span class="comment">// if문을 벗어나면 해당 변수를 읽을 수 없다</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>등가와 형</p>
+<ul>
+<li>자바스크립트에는 boolean, number, string, undefined, object, function, symbol과 같은 일곱가지의 기본 자료형이 존재함</li>
+<li>값이 선언만 되고 값이 할당되지 않으면 undefined가 됨</li>
+<li>타 언어에서 대개 if문 내 매개변수는 boolean형이어야 하지만 자바스크립트에서는 해당 변수가 비었거나 null이거나 undefined라면 false로 평가된다</li>
+<li>false로 인식되는 값은 false 외에 0, ‘’(혹은 “”), NaN, undefined, null가 있고 0이 아닌 숫자, 비어있지 않은 문자열이나 객체를 true로 평가한다</li>
+<li>자바스크립트는 스크립트 언어이기 때문에 코드가 실행될 때 해당 변수의 형이 해석된다 </li>
+<li>==는 값만 확인하지만 ===는 <strong>형과 값을 모두 확인</strong> 한다<br><code>&quot;5&quot; == 5 // true</code> vs <code>&quot;5&quot; === 5 // false</code></li>
+<li>자바스크립트에서 동일한 속성과 값을 갖는 두 객체가 동일한지 확인하고자 ==를 사용한다면 변수의 메모리 주소가 다르기 때문에 false를 리턴할 것이다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isEquivalent</span>(<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> aProps = <span class="built_in">Object</span>.getOwnPropertyNames(a);</span><br><span class="line">  <span class="keyword">var</span> bProps = <span class="built_in">Object</span>.getOwnPropertyNames(b);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 길이가 다르다면 두 객체는 다른 객체임</span></span><br><span class="line">  <span class="keyword">if</span> (aProps.length != bProps.length) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; aProps.length; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> propName = aProps[i];</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 속성값이 다른 경우 두 객체는 같지 않다</span></span><br><span class="line">      <span class="keyword">if</span>(a[propName] !== b[propName]) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line">isEquivalent(&#123;<span class="string">&#x27;hi&#x27;</span>:<span class="number">12</span>&#125;,&#123;<span class="string">&#x27;hi&#x27;</span>:<span class="number">12</span>&#125;); <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/09/21-03-09-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-1/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/08/21-03-08-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%95%EC%9D%98-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC-2/"
                             aria-label=": 21-03-08 알고리즘 강의 노트정리(2)"
                         >
@@ -930,76 +1039,6 @@
                         <p>
                             <a
                                 href="/2021/03/03/21-03-03-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/03/02/21-03-02-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
-                            aria-label=": 21-03-02 알고리즘 기초강의"
-                        >
-                            21-03-02 알고리즘 기초강의
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-03-02T17:33:31+09:00">
-	
-		    Mar 02, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="부분집합의-합-구하기"><a href="#부분집합의-합-구하기" class="headerlink" title="부분집합의 합 구하기"></a>부분집합의 합 구하기</h3><ul>
-<li><p>Sum-of-Subset Problem</p>
-<ul>
-<li>원소가 n개인 양의 정수 집합 w와 양의 정수 W가 주어졌을 때 합이 W가 되는 w의 부분집합을 모두 찾기</li>
-</ul>
-</li>
-<li><p>backtracking approach로 해결하기</p>
-<ul>
-<li>상태공간트리를 만들어 풀기 (리프 노드가 모든 부분집합이 됨)</li>
-<li>가지치기 전략을 사용하기<br>→ 검색하기 전에 정수 원소를 오름차순으로 정렬해 놓으면 노드의 유망여부를 탐색 가능하게 됨<br>→ i번째 레벨에서 w<del>i+1</del>은 남아있는 정수 원소 중에서 가장 작은 값<br>→ 남아있는 원소 합이 W보다 작다면 하위 노드는 더이상 방문 할 필요가 없다 (유망하지 않기 때문에)<br>→ weight를 레벨 i까지의 정수 합이라 하고 weight가 W와 같지 않다면 <strong>weight + w<del>i+1</del> &gt; W</strong> 이라면 그 노드는 유망하지 않음<br>→ total이 정수 원소의 합일 때 weight를 더했을 때 W와 같아지지 않으므로 <strong>weight + total &lt; W</strong> 이라면 이 노드도 유망하지 않다</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># i = level, subset의 weight, 남은 원소의 합 total</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_of_subsets</span> (<span class="params">i, weight, total</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(w) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> (promising(i, weight, total)):</span><br><span class="line">        <span class="keyword">if</span> (weight == W):</span><br><span class="line">            print(include[<span class="number">1</span>: n+<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># left subtree</span></span><br><span class="line">            include[i + <span class="number">1</span>] = <span class="literal">True</span> </span><br><span class="line">            sum_of_subsets (i+<span class="number">1</span>, weight + w[i+<span class="number">1</span>], total - w[i+<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># right subtree</span></span><br><span class="line">            include[i + <span class="number">1</span>] = <span class="literal">False</span></span><br><span class="line">            sum_of_subsets (i+<span class="number">1</span>, weight, total - w[i+<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">promising</span>(<span class="params">i,weight, total</span>):</span></span><br><span class="line">    <span class="keyword">if</span>((weight + total &gt;= W) <span class="keyword">and</span> </span><br><span class="line">        (weight == W <span class="keyword">or</span> weight + w[i+<span class="number">1</span>] &lt;= W)):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/03/02/21-03-02-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
