@@ -11,20 +11,20 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"\n\n캔버스내에서 Translate 사용하기\n\n1234567891011121314151617181920...const canvas = document.querySelector(&quot;.canvas&quot;);const ctx = canvas.getContext(&quot;2d&quot;);let scaleValue = 1;function draw() &#123;  ctx.clearRect(0, 0, canvas.width, canvas.height);  ctx.save();  ctx.setTransform(1, 0, 0, 1, 0, 0);  ctx.translate(250, 250);  ctx.scale(scaleValue, scaleValue);  scaleValue += 0.01;  ctx.strokeRect(-50, -50, 100, 100);  ctx.restore();  requestAnimationFrame(draw);&#125;draw();...\n\n\nctx.setTransform(a, b, c, d, e, f)\n\n\na ~ f의 매개변수는 각각 수평 확장, 수직 왜곡, 수평으로 기울이기, 수직 확장, 수평 이동, 수직이동을 뜻한다\n\n12345678910111213141516171819202122232425262728293031const canvas = document.querySelector(&quot;.canvas&quot;);const ctx = canvas.getContext(&quot;2d&quot;);let scaleValue = 1;let rotationValue = 0;function toRadian(degree) &#123;  return (degree * Math.PI) / 180;&#125;function draw() &#123;  ctx.clearRect(0, 0, canvas.width, canvas.height); // 캔버스 초기화  ctx.save();  // 디폴트 값을 저장 (색상이나 폰트 스타일 등)  ctx.setTransform(1, 0, 0, 1, 0, 0);  ctx.translate(250, 250); // 중앙으로 위치시킴  ctx.scale(scaleValue, scaleValue);  // scale함수는 도형의 크기를 변화시킴. 여기서는 매 draw 실행마다 0.01씩 가로세로가 커짐.  ctx.rotate(toRadian(rotationValue));  // rotateValue의 radian 값 만큼 회전, 마이너스가 된다면 시계 반대방향으로 회전할 것  ctx.strokeRect(-50, -50, 100, 100);  // 해당 도형 내 기준점(0, 0 이라면 좌측상단이 됨)에서 100, 100 크기의 사각형을 그림  ctx.restore();  // 저장된 디폴트값을 불러옴  scaleValue += 0.01;  rotationValue -= 2;  requestAnimationFrame(draw);&#125;draw();\n\n\nclearRect를 실행하지 않았을 때와 실행했을 때의 차이\n\n해당 함수의 MDN 문서 링크\nctx.save()\nctx.restore()\nctx.scale()\nctx.rotate()\nctx.stroke()\nctx.fillRect()\nctx.transform()\nctx.translate()\nctx.strokeRect()\nctx.clearRect()\nctx.setTransform()\n","dateCreated":"2021-05-15T13:33:13+09:00","dateModified":"2021-05-15T14:03:48+09:00","datePublished":"2021-05-15T13:33:13+09:00","description":"","headline":"21-05-15 HTML5 Canvas 기초 (4)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/05/15/21-05-15-HTML5-Canvas-%EA%B8%B0%EC%B4%88-4/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/05/15/21-05-15-HTML5-Canvas-%EA%B8%B0%EC%B4%88-4/"}</script>
-    <meta name="description" content="캔버스내에서 Translate 사용하기  1234567891011121314151617181920...const canvas &#x3D; document.querySelector(&quot;.canvas&quot;);const ctx &#x3D; canvas.getContext(&quot;2d&quot;);let scaleValue &#x3D; 1;function draw() &amp;">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"articleBody":"HTML5 Canvas 기초 (4)\n\n캔버스내에서 Translate 사용하기\n\n1234567891011121314151617181920...const canvas = document.querySelector(&quot;.canvas&quot;);const ctx = canvas.getContext(&quot;2d&quot;);let scaleValue = 1;function draw() &#123;  ctx.clearRect(0, 0, canvas.width, canvas.height);  ctx.save();  ctx.setTransform(1, 0, 0, 1, 0, 0);  ctx.translate(250, 250);  ctx.scale(scaleValue, scaleValue);  scaleValue += 0.01;  ctx.strokeRect(-50, -50, 100, 100);  ctx.restore();  requestAnimationFrame(draw);&#125;draw();...\n\n\nctx.setTransform(a, b, c, d, e, f)\n\n\na ~ f의 매개변수는 각각 수평 확장, 수직 왜곡, 수평으로 기울이기, 수직 확장, 수평 이동, 수직이동을 뜻한다\n\n12345678910111213141516171819202122232425262728293031const canvas = document.querySelector(&quot;.canvas&quot;);const ctx = canvas.getContext(&quot;2d&quot;);let scaleValue = 1;let rotationValue = 0;function toRadian(degree) &#123;  return (degree * Math.PI) / 180;&#125;function draw() &#123;  ctx.clearRect(0, 0, canvas.width, canvas.height); // 캔버스 초기화  ctx.save();  // 디폴트 값을 저장 (색상이나 폰트 스타일 등)  ctx.setTransform(1, 0, 0, 1, 0, 0);  ctx.translate(250, 250); // 중앙으로 위치시킴  ctx.scale(scaleValue, scaleValue);  // scale함수는 도형의 크기를 변화시킴. 여기서는 매 draw 실행마다 0.01씩 가로세로가 커짐.  ctx.rotate(toRadian(rotationValue));  // rotateValue의 radian 값 만큼 회전, 마이너스가 된다면 시계 반대방향으로 회전할 것  ctx.strokeRect(-50, -50, 100, 100);  // 해당 도형 내 기준점(0, 0 이라면 좌측상단이 됨)에서 100, 100 크기의 사각형을 그림  ctx.restore();  // 저장된 디폴트값을 불러옴  scaleValue += 0.01;  rotationValue -= 2;  requestAnimationFrame(draw);&#125;draw();\n\n\nclearRect를 실행하지 않았을 때와 실행했을 때의 차이\n\n해당 함수의 MDN 문서 링크\nctx.save()\nctx.restore()\nctx.scale()\nctx.rotate()\nctx.stroke()\nctx.fillRect()\nctx.transform()\nctx.translate()\nctx.strokeRect()\nctx.clearRect()\nctx.setTransform()\n","dateCreated":"2021-05-15T13:33:13+09:00","dateModified":"2021-05-17T18:28:48+09:00","datePublished":"2021-05-15T13:33:13+09:00","description":"","headline":"21-05-15 HTML5 Canvas 기초 (4)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2021/05/15/21-05-15-HTML5-Canvas-%EA%B8%B0%EC%B4%88-4/"},"publisher":{"@type":"Organization","name":"Harry Kim","sameAs":["https://github.com/harrykim14"]},"url":"http://example.com/2021/05/15/21-05-15-HTML5-Canvas-%EA%B8%B0%EC%B4%88-4/"}</script>
+    <meta name="description" content="HTML5 Canvas 기초 (4)  캔버스내에서 Translate 사용하기  1234567891011121314151617181920...const canvas &#x3D; document.querySelector(&quot;.canvas&quot;);const ctx &#x3D; canvas.getContext(&quot;2d&quot;);let scaleValue &#x3D;">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="21-05-15 HTML5 Canvas 기초 (4)">
 <meta property="og:url" content="http://example.com/2021/05/15/21-05-15-HTML5-Canvas-%EA%B8%B0%EC%B4%88-4/index.html">
 <meta property="og:site_name" content="스터디용 블로그 w&#x2F; Harry Kim">
-<meta property="og:description" content="캔버스내에서 Translate 사용하기  1234567891011121314151617181920...const canvas &#x3D; document.querySelector(&quot;.canvas&quot;);const ctx &#x3D; canvas.getContext(&quot;2d&quot;);let scaleValue &#x3D; 1;function draw() &amp;">
+<meta property="og:description" content="HTML5 Canvas 기초 (4)  캔버스내에서 Translate 사용하기  1234567891011121314151617181920...const canvas &#x3D; document.querySelector(&quot;.canvas&quot;);const ctx &#x3D; canvas.getContext(&quot;2d&quot;);let scaleValue &#x3D;">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://img.youtube.com/vi/IeN-m2hMO-g/mqdefault.jpg">
 <meta property="og:image" content="http://example.com/images/canvas10.gif">
 <meta property="og:image" content="http://example.com/images/canvas11.JPG">
 <meta property="og:image" content="http://example.com/images/canvas12.gif">
 <meta property="article:published_time" content="2021-05-15T04:33:13.000Z">
-<meta property="article:modified_time" content="2021-05-15T05:03:48.031Z">
+<meta property="article:modified_time" content="2021-05-17T09:28:48.118Z">
 <meta property="article:author" content="Harry Kim">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://img.youtube.com/vi/IeN-m2hMO-g/mqdefault.jpg">
@@ -217,7 +217,7 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=IeN-m2hMO-g"><img src="http://img.youtube.com/vi/IeN-m2hMO-g/mqdefault.jpg" alt="캔버스라이브강좌"></a></p>
+            <h2 id="HTML5-Canvas-기초-4"><a href="#HTML5-Canvas-기초-4" class="headerlink" title="HTML5 Canvas 기초 (4)"></a>HTML5 Canvas 기초 (4)</h2><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=IeN-m2hMO-g"><img src="http://img.youtube.com/vi/IeN-m2hMO-g/mqdefault.jpg" alt="캔버스라이브강좌"></a></p>
 <ul>
 <li>캔버스내에서 Translate 사용하기</li>
 </ul>
@@ -260,11 +260,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/05/17/21-05-17-HTML5-Canvas-%EA%B8%B0%EC%B4%88-5/"
+                    data-tooltip="21-05-17 HTML5 Canvas 기초 (5)"
+                    aria-label="PREVIOUS: 21-05-17 HTML5 Canvas 기초 (5)"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -372,11 +375,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2021/05/17/21-05-17-HTML5-Canvas-%EA%B8%B0%EC%B4%88-5/"
+                    data-tooltip="21-05-17 HTML5 Canvas 기초 (5)"
+                    aria-label="PREVIOUS: 21-05-17 HTML5 Canvas 기초 (5)"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>

@@ -187,6 +187,144 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/04/21/21-04-21-AWS-%EC%9B%A8%EB%B9%84%EB%82%98-%EB%91%98%EC%A7%B8%EB%82%A0-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
+                            aria-label=": 21-04-21 AWS 웨비나 둘째날 노트정리"
+                        >
+                            21-04-21 AWS 웨비나 둘째날 노트정리
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-04-21T09:26:09+09:00">
+	
+		    Apr 21, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/AWS/">AWS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="AWS-Builders-프로그램-데이터베이스-이론-및-실습"><a href="#AWS-Builders-프로그램-데이터베이스-이론-및-실습" class="headerlink" title="[AWS Builders 프로그램] 데이터베이스 이론 및 실습"></a>[AWS Builders 프로그램] 데이터베이스 이론 및 실습</h2><ul>
+<li>교육 일자 : 2021. 04. 21(수)</li>
+<li>이 강의에서는 AWS의 완전관리형 데이터베이스인 Aurora 서비스에 대해 알아보고 실습을 진행 (오전 강의)</li>
+<li>또, 효율적인 Aurora의 활용을 위해 인터널 아키텍처의 구조를 알아보고 상세 기능의 사용법에 대해 배움 (오후 강의)</li>
+</ul>
+<h3 id="오전-강의-AWS의-Aurora-서비스"><a href="#오전-강의-AWS의-Aurora-서비스" class="headerlink" title="오전 강의 : AWS의 Aurora 서비스"></a>오전 강의 : AWS의 Aurora 서비스</h3><details>
+<summary>열어보기</summary>
+<div markdown="1">
+
+<p><strong>AWS RDS 서비스의 특징</strong></p>
+<ul>
+<li>자체 관리형 DB의 경우 많은 작업들을 부담해야 하지만 AWS의 완전 관리형 DB를 사용한다면 개발자는 스키마 디자인, 쿼리 구성, 쿼리 최적화만 담당하고 그 외의 일은 AWS에서 담당하게 된다</li>
+<li>AWS에서 담당하는 것은 자동 백업 및 복구, 보안 및 격리, 산업 규정 준수, 자동 패치, 모니터링, 서버 유지관리 등</li>
+<li>Amazon RDS(이하 RDS)에서 제공하는 DB: Aurora, MySQL, PostgreSQL, MariaDB, SQLServer, ORACLE</li>
+<li>AWS 콘솔에서 몇 분 만에 서비스에 필요한 데이터베이스를 구성할 수 있으며, 서버나 네트워크 OS, DB의 설치 등 모든 작업은 불필요함</li>
+<li>DB 인스턴스에 대한 CloudWatch 지표로 모니터링이 가능하며 SNS와 연계해 이벤트가 발생할 때 경보 수신이 가능</li>
+<li>데이터베이스 성능 개선 도우미를 제공하며 로드를 유발하는 SQL문과 그 이유를 찾기에 용이함</li>
+<li>물리적으로 분리된 가용영역에 standby DB를 운영하며 동기식 복제 및 자동 Failover를 수행함</li>
+<li>또한 읽기 전용 DB를 제공(MySQL, MariaDB, PostgreSQL, Oracle에서 지원)하며, 장애 발생 시에 빠른 복구를 위해 읽기 전용 복제본을 마스터로 승격 가능함</li>
+<li>매일 전체 인스턴스에 대한 볼륨을 백업, DB변경 로그가 저장 됨 (기본 7일 최대 35일 보관)</li>
+</ul>
+<p><strong>AWS Aurora 서비스</strong></p>
+<ul>
+<li>클라우드 용으로 구축된 MySQL, PostgreSQL 호환 관계형 데이터베이스</li>
+<li>3개의 가용 영역에 복제본을 하나씩 갖는 6벌의 데이터 베이스로 내구성이 매우 높다</li>
+<li>Aurora Serverless 서비스가 새로 런칭, 필요할 때만 사용하고 사용하지 않을 때는 Shutdown되는 초당 과금 서비스</li>
+</ul>
+<p><strong>Amazon Redshift 서비스</strong></p>
+<ul>
+<li>빠르고 강력한 페타 바이트 규모의 데이터 웨어하우스</li>
+<li>2PB까지 데이터 확장 가능(SSD 및 SAS 디스크 옵션 존재)</li>
+</ul>
+<p><strong>Amazon Dynamo DB 서비스</strong></p>
+<ul>
+<li>완전관리형 key-value, 문서 데이터베이스</li>
+<li>어떤 규모에서도 10밀리초 미만의 성능 제공</li>
+<li>내구성이 뛰어난 다중 리전, 다중 마스터 DB</li>
+<li>하루 10조 개 이상 요청 처리 가능</li>
+</ul>
+<p><strong>Amazon DocumentDB</strong></p>
+<ul>
+<li>JSON 데이터에 최적화된 완전관리형 문서 데이터베이스</li>
+<li>MongoDB와 호환되어 기존 MongoDB 드라이버 사용 가능</li>
+</ul>
+<p><strong>Amazon ElastiCache</strong></p>
+<ul>
+<li>Redis, Memcached와 호환되는 인 메모리 DB</li>
+</ul>
+<p><strong>AWS Schema Conversion Tool</strong></p>
+<ul>
+<li>기존 DB 스키마를 다른 DB 엔진 스키마로 변환하는 툴</li>
+</ul>
+</div>
+</details>
+
+<h3 id="오전-강의-AWS-Aurora-실습"><a href="#오전-강의-AWS-Aurora-실습" class="headerlink" title="오전 강의 : AWS Aurora 실습"></a>오전 강의 : AWS Aurora 실습</h3><details>
+<summary>열어보기</summary>
+<div markdown="2">
+
+<ol>
+<li>CloudFormation Template을 사용해 실습환경 생성 (Stack 생성에 10~20분 정도 걸림)</li>
+<li>Stack이 생성되면 출력(Outputs)에 Key-Value가 표시됨</li>
+<li>Session Manager를 이용해 EC2 인스턴스에 접속</li>
+<li>터미널에서 우분투 유저로 스위칭하기 <code>sudo su -l ubuntu</code></li>
+<li><code>tail -n1 /debug.log</code>로 인스턴스의 정상 기동 확인 <code>* bootstrap complete, rebootin</code></li>
+<li><code>env |grep DB</code>로 DBUSER, DBPASS, DBUS_SESSION_BUS_ADDRESS를 각각 확인</li>
+<li>mysql client를 사용해 aurora 인스턴스로 접속을 확인 clusterEndpoint는 2번에서 확인 가능</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">export DBURL&#x3D;auroralab-mysql-cluster.cluster-cqxoqejlondh.ap-northeast-2.rds.amazonaws.com</span><br><span class="line">mysql -h$DBURL -u$DBUSER -p&quot;$DBPASS&quot; -e&quot;SELECT @@aurora_version;&quot;</span><br><span class="line"></span><br><span class="line">mysql: [Warning] Using a password on the command line interface can be insecure.</span><br><span class="line">+------------------+</span><br><span class="line">| @@aurora_version |</span><br><span class="line">+------------------+</span><br><span class="line">| 2.09.1           |</span><br><span class="line">+------------------+</span><br></pre></td></tr></table></figure>
+<ol start="8">
+<li>스프링을 <code>sudo apt-get install openjdk-11-jdk -y</code>로 설치</li>
+<li>PetClinic을 사용하기 위해 클론 및 빌드</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;kiwonyoon0701&#x2F;spring-petclinic.git</span><br><span class="line">wget https:&#x2F;&#x2F;shared-kiwony.s3.ap-northeast-2.amazonaws.com&#x2F;m2.tar.Z</span><br><span class="line">tar xvfz m2.tar.Z</span><br><span class="line">cd spring-petclinic&#x2F;</span><br><span class="line">.&#x2F;mvnw package -Dmaven.test.skip&#x3D;true</span><br></pre></td></tr></table></figure>
+<ol start="10">
+<li>EC2의 퍼블릭 IP를 <code>curl -s ifconfig.me | awk &#39; &#123; print $1 &quot;\n&quot; &#125;&#39;</code>로 확인 11.<code>java -jar target/*.jar</code>로 어플리케이션 기동</li>
+<li>퍼블릭 IP와 8080포트로 어플리케이션 접속</li>
+</ol>
+<p>→ 이후 DB관련 작업 및 DB복제 등의 작업이 이어짐 (클론 후 이어지는 작업이므로 생략)</p>
+</div>
+</details>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/04/21/21-04-21-AWS-%EC%9B%A8%EB%B9%84%EB%82%98-%EB%91%98%EC%A7%B8%EB%82%A0-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/04/20/21-04-20-AWS-%EC%9B%A8%EB%B9%84%EB%82%98-%EC%B2%AB-%EB%82%A0-%EB%85%B8%ED%8A%B8%EC%A0%95%EB%A6%AC/"
                             aria-label=": 21-04-20 AWS 웨비나 첫날 노트정리"
                         >
@@ -1308,108 +1446,6 @@
                         <p>
                             <a
                                 href="/2021/03/17/21-03-17-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/"
-                            aria-label=": 21-03-16 자바스크립트로 하는 자료구조와 알고리즘(11)"
-                        >
-                            21-03-16 자바스크립트로 하는 자료구조와 알고리즘(11)
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-03-16T15:43:03+09:00">
-	
-		    Mar 16, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>, <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%84%9C%EC%A0%81/">서적</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="19장-동적-프로그래밍"><a href="#19장-동적-프로그래밍" class="headerlink" title="19장 동적 프로그래밍"></a>19장 동적 프로그래밍</h3><ul>
-<li>동적 프로그래밍(이하 DP)은 문제를 더 작은 부분들로 쪼개는 과정이 포함된다</li>
-<li>해시 테이블을 사용한다면 이미 계산된 피보나치 숫자를 저장할 수 있고 계산 없이 O(1)의 시간으로 그 값을 불러올 수 있기 때문에 더 빠르게 구현할 수 있다<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> cache = &#123;&#125;;</span><br><span class="line"><span class="keyword">const</span> fiboBest = <span class="function"><span class="params">n</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> n;</span><br><span class="line">  <span class="keyword">if</span>(cache[n]) <span class="keyword">return</span> cache[n];</span><br><span class="line">  <span class="keyword">return</span> (cache[n] = fiboBest(n-<span class="number">1</span>) + fiboBest(n-<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>DP는 재계산을 피하기 위해 이미 계산된 값들을 저장하고 해당 값들을 사용하는 방법이다<ul>
-<li>중복 부분 문제 : DP에서 보통 문제의 해결책으로 해시 테이블과 배열, 행렬에 저장하는 방식을 사용하는데, 이 방식을 메모이제이션이라고 부른다</li>
-<li>최적 부분 구조 : 문제의 부분 최적 해결책을 통해 큰 문제를 해결하는 방법</li>
-</ul>
-</li>
-<li>배낭 문제 알고리즘은 대표적인 DP의 예로 무게와 가치를 지니는 n개의 항목이 주어졌을 때 최대 w의 무게를 담을 수 있는 배낭에 가치의 최대값을 담는 문제</li>
-<li>배열(배낭)에 담긴 n개의 항목이 최대값이 되려면<ol>
-<li>n번째 항목이 제외되는 경우: n-1개의 항목에서 얻은 최대값</li>
-<li>n번째 항목을 포함하는 경우: n-1개의 항목에서 얻은 최대값 + n번째 항목의 값</li>
-</ol>
-</li>
-<li>동적 프로그래밍의 구현은 현재 배열 인덱스와 목표치를 객체에 대한 키로 사용해 결과를 저장함 (메모이제이션 활용)<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> knapsackDP = <span class="function">(<span class="params">idx, weights, values, target, matrix</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span>(matrix[idx + <span class="string">&#x27;-&#x27;</span> + target]) &#123;</span><br><span class="line">    <span class="keyword">return</span> matrix[idx + <span class="string">&#x27;-&#x27;</span> + target]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(idx &lt;= -<span class="number">1</span> || target &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (weights[idx] &gt; target) &#123;</span><br><span class="line">    result = knapsackDP(idx - <span class="number">1</span>, weights, values, target, matrix);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> current = knapsackDP(idx - <span class="number">1</span>, weights, values, target, matrix),</span><br><span class="line">        currentPlusOther = values[idx] + knapsackDP(idx - <span class="number">1</span>, weights, values, target - weights[idx], matrix);</span><br><span class="line">    result= <span class="built_in">Math</span>.max(current, currentPlusOther);</span><br><span class="line">  &#125;</span><br><span class="line">  matrix[idx + <span class="string">&#x27;-&#x27;</span> + target] = result</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
-<li>최장 공통 부분 수열 알고리즘</li>
-<li>두 개의 수열이 있을 때 두 수열의 가장 긴 공통 부분 수열의 길이를 찾는 알고리즘</li>
-<li>부분 수열 내 항목들이 연속일 필요는 없고 순서만 맞으면 됨</li>
-<li>길이 m인 문자열 str1과 길이 n인 문자열 str2가 함수 LCS를 통해 최장 공통 부분을 구한다면<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (두 수열의 마지막 글자가 일치한다면) &#123;</span><br><span class="line">  result &#x3D; 1 + LCS(X[0:m-2], Y[0:n-2])</span><br><span class="line">&#125;</span><br><span class="line">if (두 수열의 마지막 글자가 일치하지 않는다면) &#123;</span><br><span class="line">  result &#x3D; Math.max(LCS(X[0:m-1], Y[0:n-1]), LCS(X[0:m-2], Y[0:n-2]))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>재귀를 기반으로 의사 코드를 구현<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> LCSNaive = <span class="function">(<span class="params">str1, str2, str1Length, str2Length</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (str1Length === <span class="number">0</span> || str2Length === <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (str1[str1Length-<span class="number">1</span>] === str2[str2Length-<span class="number">1</span>]) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> + LCSNavie(str1, str2, str1Length - <span class="number">1</span>, str2Length - <span class="number">1</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.max(</span><br><span class="line">      LCSNavie(str1, str2, str1Length, str2Length - <span class="number">1</span>),</span><br><span class="line">      LCSNavie(str1, str2, str1Length - <span class="number">1</span>, str2Length)</span><br><span class="line">      )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> LCSNaiveWrapper = <span class="function">(<span class="params">str1, str2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> LCSNaive(str1, str2, str1.length, str2.length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>DP식 접근법<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> longestCommonSequenceLength = <span class="function">(<span class="params">str1, str2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> matrix = <span class="built_in">Array</span>(str.length + <span class="number">1</span>).fill(<span class="built_in">Array</span>(str2.length + <span class="number">1</span>).fill(<span class="number">0</span>)), </span><br><span class="line">      rowLength = str1.length + <span class="number">1</span>,</span><br><span class="line">      colLength = str2.length + <span class="number">1</span>,</span><br><span class="line">      max = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> row = <span class="number">1</span>; row &lt; rowLength; row++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> col = <span class="number">1</span>; col &lt; colLength; col++) &#123;</span><br><span class="line">      <span class="keyword">let</span> str1Char = str1.charAt(row - <span class="number">1</span>),</span><br><span class="line">          str2Char = str2.charAt(col - <span class="number">1</span>);</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (str1Char === str2Char) &#123;</span><br><span class="line">        matrix[row][col] = matrix[row - <span class="number">1</span>][col - <span class="number">1</span>] + <span class="number">1</span>;</span><br><span class="line">        max = <span class="built_in">Math</span>.max(matrix[row][col], max);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>동전 교환 알고리즘 : 동전의 금액 종류 M개가 들어있는 객체 S가 주어질때 금액 n을 동전으로 교환하기 위한 조합을 구하는 문제</li>
-<li>이때 이 문제의 최적 부분 구조는 (1) M번째 동전이 포함되지 않는 해결책과 (2) M번째 동전이 최소 한 개 포함되는 해결책 으로 나눌 수 있다<br><code>coinChange(S, M, n) = coinChange(S, M-1, N) + coinChanges(S, M, N-Sm)</code><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// coinArr의 인덱스는 [0, ..., coinIndex]</span></span><br><span class="line"><span class="keyword">const</span> countCoinWays = <span class="function">(<span class="params">coinArr, coinIndex, total</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (total === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// total 값이 0에 도달한 경우에는 아무 동전도 포함하지 않는 것</span></span><br><span class="line">  <span class="keyword">if</span> (total &lt; <span class="number">0</span> || (coinIndex &lt;= <span class="number">0</span> &amp;&amp; total &gt;= <span class="number">1</span>)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// total값이 0 보다 작다는 것은 M번째 동전이 포함되거나 포함되지 않을 때의 해결책이 없다는 뜻</span></span><br><span class="line">  <span class="comment">// 남은 동전이 없을 때 (index값은 coinArr.length에서 점점 줄어드므로) total값을 채우지 못해도 해결책이 없다는 뜻</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> countCoinWays(coinArr, coinIndex - <span class="number">1</span>, total) +</span><br><span class="line">        countCoinWays(coinArr, coinIndex - <span class="number">1</span>, total - coinArr[coinIndex - <span class="number">1</span>])</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> countCoinWaysWrapper = <span class="function">(<span class="params">coinArr, total</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> countCoinWays(coinArr, coinArr.length, total);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>하지만 이 방법을 사용한다면 중복 부분 문제가 많다</li>
-<li>동전 교환 알고리즘을 DP로 구현하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> countCoinWaysDP = <span class="function">(<span class="params">coinArr, coinIndex, total</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> dpMatrix = [];</span><br><span class="line">  <span class="comment">// 메모이제이션용 행렬, 추후 2차원 배열이 된다</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt;= total; i++) &#123;</span><br><span class="line">    dpMatrix[i] = [];</span><br><span class="line">    <span class="comment">// 원하는 값까지 전부 배열이 들어가게 된다</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; coinIndex; j++) &#123;</span><br><span class="line">      dpMatrix[i][j] = <span class="literal">undefined</span>;</span><br><span class="line">      <span class="comment">// undefined로 초기화</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; coinIndex; i++) &#123;</span><br><span class="line">    <span class="comment">// 맨 윗줄을 1로 채움 (undefined에서 기본값으로)</span></span><br><span class="line">    dpMatrix[<span class="number">0</span>][i] = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; total + <span class="number">1</span>; i++) &#123;</span><br><span class="line">    <span class="comment">// 행렬의 세로이동</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; coinIndex; j++) &#123;</span><br><span class="line">      <span class="comment">// 행렬의 가로이동</span></span><br><span class="line">      <span class="keyword">let</span> temp1 = <span class="number">0</span>, temp2 = <span class="number">0</span>;</span><br><span class="line">      <span class="comment">// 두 가지의 부분 방법으로 나뉘므로 temp값도 두개가 필요함</span></span><br><span class="line">      <span class="keyword">if</span> (i - coinArr[j] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        temp1 = dpMatrix[i - coinArr[j]][j];</span><br><span class="line">        <span class="comment">// temp1값에 dpMatrix[0][0] 번값부터 가로줄 값을 저장</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (j &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        temp2 = dpMatrix[i][j-<span class="number">1</span>];</span><br><span class="line">        <span class="comment">// temp2값에 dpMatrix[1][0] 값부터  세로줄 값을 저장</span></span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// dpMatrix[1][0] 값부터 temp1(M번째 동전이 포함되지 않는 해결책)값과 </span></span><br><span class="line">      <span class="comment">// temp2(M번째 동전이 최소한 한 개 포함되는 해결책)값을 더해 저장</span></span><br><span class="line">      dpMatrix[i][j] = temp1 + temp2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 결과값이 저장되어있는 것 중에서 total값을 만족하는 행의 max값을 리턴함 </span></span><br><span class="line">  <span class="comment">// if()에서도 i &lt; coinIndex 와 같이 리턴하였으므로 여기서도 -1 해주어야 함</span></span><br><span class="line">  <span class="keyword">return</span> dpMatrix[total][coinIndex - <span class="number">1</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> countCoinWaysDPWrapper = <span class="function">(<span class="params">coinArr, coinValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> countCoinWaysDP(coinArr, coinArr.length, coinValue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>편집 거리 알고리즘 (레벤슈타인 거리 알고리즘)</li>
-<li>길이 m인 문자열 str1과 길이 n인 문자열 str2가 주어졌을때 str1을 str2로 변환하기 위환 최소 편집 횟수는? (이 때, 사용가능한 연산은 삽입, 제거, 교환만 가능하다)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">if (문자가 동일하다)</span><br><span class="line">  아무것도하지 않는다</span><br><span class="line">if (문자가 다르다) &#123;</span><br><span class="line">  1) m과 n-1의 삽입</span><br><span class="line">  2) m-1과 n의 제거</span><br><span class="line">  3) m-1과 n-1의 교환 </span><br><span class="line">  세가지를 재귀적으로 고려</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>Brute-force 방법으로 구현하기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> editDistanceRecursive = <span class="function">(<span class="params">str1, str2, length1, length2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 빈문자열이라면 나머지 한 쪽의 문자열을 그대로 복사하면 되므로 나머지 한 쪽 길이값을 리턴함 (length1 or length2번 시행해야 하므로)</span></span><br><span class="line">  <span class="keyword">if</span> (length1 === <span class="number">0</span>) <span class="keyword">return</span> length2;</span><br><span class="line">  <span class="keyword">if</span> (length2 === <span class="number">0</span>) <span class="keyword">return</span> length1;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 마지막 글자가 같다면 마지막 글자를 제외한 나머지 문자만큼 돌면 된다</span></span><br><span class="line">  <span class="comment">// 이 과정은 재귀적으로 반복되므로 맨 마지막 글자부터 첫번째 글자까지 비교를 할 것</span></span><br><span class="line">  <span class="keyword">if</span> (str[length1-<span class="number">1</span>] === str2[length2-<span class="number">1</span>]) </span><br><span class="line">    <span class="keyword">return</span> editDistanceRecursive(str1, str2, length1-<span class="number">1</span>, length2-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span> + <span class="built_in">Math</span>.min(</span><br><span class="line">    editDistanceRecursive(str1, str2, length1, length2-<span class="number">1</span>), <span class="comment">// 삽입</span></span><br><span class="line">    editDistanceRecursive(str1, str2, length1-<span class="number">1</span>, length2), <span class="comment">// 제거</span></span><br><span class="line">    editDistanceRecursive(str1, str2, length1-<span class="number">1</span>, length2-<span class="number">1</span>) <span class="comment">// 교환</span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> editDistanceRecursiveWrapper = <span class="function">(<span class="params">str1, str2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> editDistanceRecursive(str1, str2, str1.length, str2.length)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>DP식 접근법<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> editDistanceDP = <span class="function">(<span class="params">str1, str2, length1 = str1.length, length2 = str2.length2</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> dpMatrix = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; length1+<span class="number">1</span>; i++) &#123;</span><br><span class="line">    dpMatrix[i] = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; length2+<span class="number">1</span>; j++) &#123;</span><br><span class="line">      dpMatrix[i][j] = <span class="literal">undefined</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// let dpMatrix = Array.from(&#123;length: length1+1&#125;, </span></span><br><span class="line">  <span class="comment">//           () =&gt; Array.from(&#123;length:length2+1&#125;, () =&gt; undefined))</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; length+<span class="number">1</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; length2+<span class="number">1</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i === <span class="number">0</span>) &#123;</span><br><span class="line">        dpMatrix[i][j] = j;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j === <span class="number">0</span>) &#123;</span><br><span class="line">        dpMatrix[i][j] = i;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (str1[i-<span class="number">1</span>] === str2[j-<span class="number">1</span>]) &#123;</span><br><span class="line">        dpMatrix[i][j] = dpMatrix[i-<span class="number">1</span>][j-<span class="number">1</span>];</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> insertCost = dpMatrix[i][j-<span class="number">1</span>],</span><br><span class="line">            removeCost = dpMatrix[i-<span class="number">1</span>][j],</span><br><span class="line">            replaceCost = dpMatrix[i-<span class="number">1</span>][j-<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">        dpMatrix[i][j] = <span class="number">1</span> + <span class="built_in">Math</span>.min(insertCost, removeCost, replaceCost)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dpMatrix[length1][length2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="20장-비트-조작"><a href="#20장-비트-조작" class="headerlink" title="20장 비트 조작"></a>20장 비트 조작</h3></li>
-<li>고성능 서버 사이드 코드를 구현하길 원한다면 비트 조작도 알아야 함</li>
-<li>자바스크립트의 비트 연산자</li>
-<li>&amp;는 AND, |는 OR, ~는 NOT, ^는 XOR에 해당하고 왼쪽 이동은 &lt;&lt;로, 오른쪽 이동은 &gt;&gt;로, &gt;&gt;&gt;는 오른쪽 이동 후에 0으로 채운다는 뜻이다</li>
-<li>AND 연산자(&amp;)는 두 개의 비트가 모두 1일때 참이다<br><code>a = 1100, b = 1010일 때, a &amp; b = 1000이다</code></li>
-<li>OR 연산자(|)는 두 개의 비트 중 하나만 1이어도 참이다<br><code>a = 1100, b = 1010일 때, a &amp; b = 1110이다</code></li>
-<li>XOR 연산자(^)는 비트 중 하나가 1일 때만 참이 된다<br><code>a = 1100, b = 1010일 때, a &amp; b = 0110이다</code></li>
-<li>NOT 연산자는 모든 비트를 뒤집는다<br><code>a = 1100일 때 NOT a = 0011이다</code></li>
-<li>왼쪽 이동 연산자(&lt;&lt;)는 모든 비트가 왼쪽으로 이동되고 왼쪽 끝 범위를 벗어나는 비트는 버려진다<br><code> 9(1001) &lt;&lt; 1 = 10010(2) = 18</code>, <code>9 &lt;&lt; 2 = 100100(2) = 36</code></li>
-<li>위 예와 같이 왼쪽 이동 연산자는 해당 항목을 두 배로 증가시킨다 (이진 연산 체계이기 때문) 하지만 왼쪽 이동으로 비트가 넘친다면 버려지므로 값이 작아질 수 있다</li>
-<li>오른쪽 이동 연산자(&gt;&gt;)는 모든 비트가 오른쪽으로 이동되고 오른쪽 끝 범위를 벗어나면 버려진다<br><code> 9(1001) &gt;&gt; 1 = 100(2) = 4</code></li>
-<li>오른쪽 이동 연산자는 항목을 2로 나눈 값이 된다</li>
-<li>비트 연산자를 사용해 연산해보기<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 이진수를 더하기는  두 수를 더한 다음 10을 초과하면 1을 다음 수로 올린다 (carry)</span></span><br><span class="line"><span class="keyword">const</span> BitwiseAdd = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (b !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> carry = (a &amp; b);</span><br><span class="line">    a = a ^ b;</span><br><span class="line">    b = carray &lt;&lt; <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이진수에서 음의 이진수로부터 양의 이진수를 빼려면 모든 비트를 뒤집은 다음 1을 더하면 된다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseNegate = <span class="function"><span class="params">a</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> BitwiseAdd(~a, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 빼기는 음수를 더하는 것이기 때문에 음의 이진수를 구하고 더한다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseSubtract = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> BitwiseAdd(a, BitwiseNegate(b))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 곱셈은 두 수를 곱하고 10이 넘어가는 수는 다음 자릿수로 올리고 다음 자릿수로 이동해 해당 자릿수의 수를 곱한다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseMultiply = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> m = <span class="number">1</span>, c = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (a &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    a = BitwiseNegate(a);</span><br><span class="line">    b = BitwiseNegate(b);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (a &gt;= m &amp;&amp; b) &#123;</span><br><span class="line">    <span class="keyword">if</span> (a &amp; m) </span><br><span class="line">      c = BitwiseAdd(b, c);</span><br><span class="line">    b = b &lt;&lt; <span class="number">1</span>;</span><br><span class="line">    m = m &lt;&lt; <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// a나누기 b는 b를 여러번 빼는 것이라고 생각하면 쉽다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseDividePositive = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> c = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (b !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (a &gt;= b) &#123;</span><br><span class="line">      a = BitwiseSubtract(a, b);</span><br><span class="line">      c++</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 하지만 음의 정수를 나누기한다면 while값이 무한히 반복될 것이기 때문에 부호를 저장할 값이 필요하다</span></span><br><span class="line"><span class="keyword">const</span> BitwiseDivide = <span class="function">(<span class="params">a, b</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> c = <span class="number">0</span>, isNegative = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (a &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    a = BitwiseNegate(a);</span><br><span class="line">    isNegative = !isNegative;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (b &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    b = BitwiseNegate(b);</span><br><span class="line">    isNegative = !isNegative;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (b !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">while</span> (a &gt;= b) &#123;</span><br><span class="line">      a = bitwiseSubstract(a, b);</span><br><span class="line">      c++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isNegative) &#123;</span><br><span class="line">    c = BitwiseNegate(c);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>비트연산자는 Math의 기본 함수보다 빠르다</li>
-<li>최근의 자바스크립트는 Node.js를 활용해 서버 측 프로그래밍에 진입하고 있기 때문에 비트 연산자는 효율적인 코드를 만드는데 도움이 될 것이다</li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/03/16/21-03-16-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%A1%9C-%ED%95%98%EB%8A%94-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-11/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
