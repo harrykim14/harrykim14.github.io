@@ -187,6 +187,92 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/02/26/21-02-26-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
+                            aria-label=": 21-02-26 알고리즘 기초강의"
+                        >
+                            21-02-26 알고리즘 기초강의
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-02-26T16:24:48+09:00">
+	
+		    Feb 26, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="탐욕법과-최소비용신장트리"><a href="#탐욕법과-최소비용신장트리" class="headerlink" title="탐욕법과 최소비용신장트리"></a>탐욕법과 최소비용신장트리</h3><ul>
+<li><p>동전 거스름돈 문제 <strong>슈도코드로 해결해보기</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">while (동전이 남아있고 문제가 미해결):</span><br><span class="line">    가장 가치가 높은 동전을 선택</span><br><span class="line">    if (동전을 더하여 거스름돈의 총액이 거슬러주어야 할 액수를 초과):</span><br><span class="line">        동전을 다시 집어넣는다</span><br><span class="line">    else:</span><br><span class="line">        거스름돈에 동전을 포함시킨다</span><br><span class="line">    if (거스름돈의 총액이 거슬러주어야 할 액수와 같다)</span><br><span class="line">        문제 해결 return</span><br></pre></td></tr></table></figure>
+<p>이는 동전의 구성이 [500, 100, 50, 10, 5, 1]일때는 가능하지만 [500, 100, 80, 10, 5, 1]일 때엔 불가능함</p>
+</li>
+<li><p><strong>탐욕법의 설계전략</strong>: <strong>공집합</strong>에서 시작<br>→ 집합에 추가할 다음 최적의 원소를 고른다 (<strong>선택 과정</strong>)<br>→ 새로운 집합이 해답으로 적절한지 검사한다 (<strong>적절성 검사</strong>)<br>→ 새로운 집합이 문제의 해답인지 판단한다 (<strong>해답 점검</strong>)<br>→ 탐욕법은 <strong>상대적으로 설계하기 쉽지만 반드시 정확성을 증명해야 함</strong></p>
+</li>
+<li><p><strong>최소비용 신장트리</strong> (MST:Minimum Spanning Tree) 문제<br>→ G = (V, E) : 모든 정점이 연결된 가중치가 있는 무방향 그래프<br>→ G의 부분 그래프 T = (V, F), F ⊆ E<br>→ 그래프 G의 모든 정점을 연결하는 트리, 간선의 개수는 n-1개<br>→ 이 때, 모든 신장트리 T 중에 가중치의 합이 최소가 되는 신장트리를 최소비용 신장트리라 함</p>
+</li>
+<li><p>최소비용 신장트리를 Brute-Force 방식으로 풀기<br>→ 모든 신장트리를 찾고 가중치의 합이 가장 작은 것을 선택<br>→ 간선의 개수가 n-1인 연결된 트리가 될때까지 간선을 제거</p>
+</li>
+<li><p>최소비용 신장트리를 Greedy 방식으로 풀기</p>
+</li>
+</ul>
+<ol>
+<li>해답의 집합을 공집합으로 둔다: 간선 집합 E의 부분 집합 F를 공집합으로 둔다</li>
+<li>E에서 최적의 간선 하나를 추출하여 F에 포함시킴<br> → 최적을 선택할 때 사용되는 알고리즘에는 프림, 크루스칼 알고리즘이 있다</li>
+</ol>
+<ul>
+<li><strong>프림 알고리즘</strong></li>
+</ul>
+<ol>
+<li>Y = {V<del>1</del>}: Y는 정점의 집합 V의 부분 집합</li>
+<li>Y에 최적의 원소 하나를 포함시킨다 (가중치가 가장 작은 정점 vnear를 선택)<br>→ F집합에 (nearest(vnear), vnear)를 추가</li>
+<li>해답의 집합이 최종이면 종료하고 아니면 2단계를 반복함<br>→ Y = V가 되면(모든 원소를 포함한다면) 종료</li>
+</ol>
+<ul>
+<li><strong>프림 알고리즘</strong> 어떻게 구현할까?<br>→ W[i][j]: 인접행렬 (간선의 가중치)<br>→ nearest[i] : Y 집합에서 v<del>i</del>에 가장 가까운 정점의 인덱스<br>→ distance[i] : v<del>i</del>와 nearest[i]의 정점을 연결하는 간선의 가중치</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">prim</span> (<span class="params">W</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(W) - <span class="number">1</span></span><br><span class="line">    F = []</span><br><span class="line">    nearest = [-<span class="number">1</span>] * (n + <span class="number">1</span>)</span><br><span class="line">    distance = [-<span class="number">1</span>] * (n + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n+<span class="number">1</span>):</span><br><span class="line">        nearest[i] = <span class="number">1</span></span><br><span class="line">        distance[i] = W[<span class="number">1</span>][i]</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span> (n - <span class="number">1</span>):</span><br><span class="line">        minValue = INF</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> (<span class="number">0</span> &lt;= distance[i] <span class="keyword">and</span> distance[i] &lt; minValue):</span><br><span class="line">                minValue = distance[i]</span><br><span class="line">                vnear = i</span><br><span class="line">        edge = (nearest[vnear], vnear, W[nearest[vnear]][vnear])</span><br><span class="line">        F.append(edge)</span><br><span class="line">        distance[vnear] = -<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> (distance[i] &gt; W[i][vnear]):</span><br><span class="line">                distance[i] = W[i][vnear]</span><br><span class="line">                nearest[i] = vnear</span><br><span class="line">    <span class="keyword">return</span> F</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cost</span> (<span class="params">F</span>):</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> e <span class="keyword">in</span> F:</span><br><span class="line">        total += e[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/02/26/21-02-26-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/02/24/21-02-24-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B8%B0%EC%B4%88%EA%B0%95%EC%9D%98/"
                             aria-label=": 21-02-24 알고리즘 기초강의"
                         >
@@ -1010,79 +1096,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/02/17/Github-%EB%B8%94%EB%A1%9C%EA%B7%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-w-Hexo/"
-                            aria-label=": Github 블로그 시작하기 w/ Hexo"
-                        >
-                            Github 블로그 시작하기 w/ Hexo
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-02-17T15:07:11+09:00">
-	
-		    Feb 17, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EA%B8%B0%EB%B3%B8/">기본</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="새롭게-깃헙-블로그를-만들어보았다-w-hexo"><a href="#새롭게-깃헙-블로그를-만들어보았다-w-hexo" class="headerlink" title="새롭게 깃헙 블로그를 만들어보았다 w/ hexo"></a>새롭게 깃헙 블로그를 만들어보았다 w/ hexo</h2><p><strong>1. 블로그를 시작하게 된 이유</strong></p>
-<ul>
-<li>첫째, 매일 커밋을 하고 있지만 정작 눈에 띄게 남는 것이 보이지 않아서</li>
-<li>둘째, 앞으로 <strong>코딩 테스트</strong>를 준비함에 있어 알고리즘은 똑부러지게 정리를 해야 할 것 같아서</li>
-<li>셋째, 책을 읽고 정리하는데 하나의 Readme.md로는 부족했기 때문에 (이 부분은 <a target="_blank" rel="noopener" href="https://github.com/harrykim14/Refactoring-2nd-Edition">리팩토링 2판</a> 페이지를 참조)</li>
-</ul>
-<p><strong>2. hexo를 택한 이유</strong></p>
-<ul>
-<li>Javascript가 익숙한 언어이고 cli도 잘 되어있으면서 무엇보다 hexo 공식문서가 어느정도 한글을 지원하고 있어 사용하기에 편할 것이라는 생각에 선택하게 됨</li>
-</ul>
-<p><strong>3. 앞으로 올릴 것들 및 올 한해 포부 등</strong></p>
-<ul>
-<li>자료구조 및 알고리즘 관련 내용을 매일같이 공부하고 공부한 만큼 업데이트를 할 예정</li>
-<li>공부하는 도중에 둘러보는 UI/UX 디자인 페이지와 새 기술 등에 관련된 내용도 정리할 예정</li>
-<li>올해에는 원하는 회사에 취업하기!</li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/02/17/Github-%EB%B8%94%EB%A1%9C%EA%B7%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-w-Hexo/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1098,7 +1111,18 @@
           </li>
         
         
-        <li class="pagination-number">page 6 of 6</li>
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/page/7/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 6 of 7</li>
     </ul>
 </div>
 

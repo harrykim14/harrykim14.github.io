@@ -188,6 +188,80 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
+                            aria-label=": 21-03-22 알고리즘 문제풀기 및 노트 정리"
+                        >
+                            21-03-22 알고리즘 문제풀기 및 노트 정리
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-03-22T17:33:08+09:00">
+	
+		    Mar 22, 2021
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/">알고리즘</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="크레인-인형뽑기-게임"><a href="#크레인-인형뽑기-게임" class="headerlink" title="크레인 인형뽑기 게임"></a>크레인 인형뽑기 게임</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/64061?language=javascript">해당 문제 링크</a></p>
+<ul>
+<li>stack 배열을 생성하고 인형을 차례대로 담으면서 이전에 추가한 인형(stack의 마지막값)과 같은지 비교해서 score 계산을 해 주면 된다</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">board, moves</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> score = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; moves.length; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> move = moves[i]-<span class="number">1</span>; <span class="comment">// x좌표를 구함 (index는 1부터 시작하므로 1을 빼줌)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt;board.length; j++)&#123; <span class="comment">// board 길이만큼 돌고</span></span><br><span class="line">            <span class="keyword">if</span> (board[j][move] !== <span class="number">0</span>) &#123; <span class="comment">// 해당 좌표에 있는 인형이 0이 아니고</span></span><br><span class="line">                <span class="keyword">if</span> (board[j][move] === stack[stack.length-<span class="number">1</span>] &amp;&amp; stack.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="comment">// 이전에 추가한 인형과 값이 같다면 stack에서 빼주고 scoring하기</span></span><br><span class="line">                    stack.pop();</span><br><span class="line">                    score += <span class="number">2</span></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 값이 다르다면 그냥 stack에 push만 하기</span></span><br><span class="line">                    stack.push(board[j][move])</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 해당 인형은 옮겼으니 0으로 바꿔 다시 선택하지 않도록 하기</span></span><br><span class="line">                board[j][move] = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="다트-게임"><a href="#다트-게임" class="headerlink" title="다트 게임"></a>다트 게임</h3><p><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/17682?language=javascript">해당 문제 링크</a></p>
+<ul>
+<li>처음에 혼자 풀 때 짰던 코드</li>
+<li>스타상이 <strong>이전 점수</strong>에도 영향을 준다는 것을 고려하지 못함</li>
+<li>또, 10점을 고려하기 위해 같은 코드가 반복되어 지저분해보임<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">dartResult</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> split = dartResult.split(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">    <span class="keyword">let</span> dartScore = <span class="number">0</span>, alphabet = <span class="string">&#x27;&#x27;</span>, powValue = <span class="number">0</span>, starOrSharp = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> (split.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> (split[<span class="number">1</span>] === <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">            dartScore = split.shift() * <span class="number">10</span>;</span><br><span class="line">            split.shift();</span><br><span class="line">            alphabet = split.shift();</span><br><span class="line">            powValue = alphabet === <span class="string">&#x27;S&#x27;</span> ? <span class="number">1</span> : alphabet === <span class="string">&#x27;D&#x27;</span> ? <span class="number">2</span> : <span class="number">3</span></span><br><span class="line">            <span class="keyword">if</span> (split[<span class="number">0</span>] === <span class="string">&#x27;*&#x27;</span> || split[<span class="number">0</span>] === <span class="string">&#x27;#&#x27;</span>) &#123;</span><br><span class="line">                starOrSharp = split.shift() === <span class="string">&#x27;*&#x27;</span> ? <span class="number">2</span> : -<span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                starOrSharp = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            answer += <span class="built_in">Math</span>.pow(dartScore, powValue) * starOrSharp;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (split[<span class="number">1</span>] !== <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">            dartScore = split.shift() * <span class="number">1</span>;</span><br><span class="line">            alphabet = split.shift();</span><br><span class="line">            powValue = alphabet === <span class="string">&#x27;S&#x27;</span> ? <span class="number">1</span> : alphabet === <span class="string">&#x27;D&#x27;</span> ? <span class="number">2</span> : <span class="number">3</span></span><br><span class="line">            <span class="keyword">if</span> (split[<span class="number">0</span>] === <span class="string">&#x27;*&#x27;</span> || split[<span class="number">0</span>] === <span class="string">&#x27;#&#x27;</span>) &#123;</span><br><span class="line">                starOrSharp = split.shift() === <span class="string">&#x27;*&#x27;</span> ? <span class="number">2</span> : -<span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                starOrSharp = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            answer += <span class="built_in">Math</span>.pow(dartScore, powValue) * starOrSharp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> answer;        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>다른분 풀이</li>
+<li>Object로 S, D, T값을 설정해 찾아 쓰는 방식은 O(1)로 가능하므로 보고 배워야겠다는 생각을 함</li>
+<li>스택 구조를 만들고 스택 내에 점수를 하나씩 저장해놓고 스타상이 두번째에 온다면 스택 내 값을 수정하는 방식을 미처 생각치 못함<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">dartResult</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> score = &#123;</span><br><span class="line">        S: <span class="number">1</span>,</span><br><span class="line">        D: <span class="number">2</span>,</span><br><span class="line">        T: <span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">const</span> len = dartResult.length;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> isChar = dartResult.charAt(i);</span><br><span class="line">        <span class="keyword">if</span> (+isChar != isChar) &#123;</span><br><span class="line">            <span class="keyword">if</span>(score[isChar]) &#123;</span><br><span class="line">                stack.push(<span class="built_in">Math</span>.pow(dartResult.slice(i - count, i), score[isChar]));</span><br><span class="line">                count = <span class="number">0</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> sharpOrStar = isChar === <span class="string">&#x27;*&#x27;</span> ? <span class="number">2</span> : -<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">const</span> stackLen = stack.length;</span><br><span class="line">                <span class="keyword">if</span> (sharpOrStar == <span class="number">2</span> &amp;&amp; stackLen &gt; <span class="number">1</span>) &#123;</span><br><span class="line">                    stack[stackLen-<span class="number">2</span>] = stack[stackLen-<span class="number">2</span>] * sharpOrStar;</span><br><span class="line">                &#125;</span><br><span class="line">                stack[stackLen-<span class="number">1</span>] = stack[stackLen-<span class="number">1</span>] * sharpOrStar;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> stack.reduce(<span class="function">(<span class="params">acc, cur</span>) =&gt;</span> acc+ cur, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="폰켓몬"><a href="#폰켓몬" class="headerlink" title="폰켓몬"></a>폰켓몬</h3><a target="_blank" rel="noopener" href="https://programmers.co.kr/learn/courses/30/lessons/1845?language=javascript">해당 문제 링크</a></li>
+<li>처음에 든 생각은 그냥 set에 넣고 unique한 값만 뽑으면 되는 것 아닌가? 했음</li>
+<li>문제에서 폰켓몬은 N/2마리를 선택해야 하므로 만약에 들어오는 배열의 길이를 반으로 나눈 값이 set의 사이즈보다 작다면 단순히 배열 길이를 반으로 나눈 값을 리턴하면 될 일이었음</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solution</span>(<span class="params">nums</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> set = <span class="keyword">new</span> <span class="built_in">Set</span> ();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> number <span class="keyword">of</span> nums)&#123;</span><br><span class="line">        set.add(number);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(set.size &lt; nums.length/<span class="number">2</span>) &#123;</span><br><span class="line">        answer = set.size;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">        answer = nums.length/<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2021/03/22/21-03-22-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2021/03/21/21-03-21-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%AC%B8%EC%A0%9C%ED%92%80%EA%B8%B0-%EB%B0%8F-%EB%85%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/"
                             aria-label=": 21-03-21 알고리즘 문제풀기 및 노트 정리"
                         >
@@ -1007,68 +1081,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2021/03/11/21-03-11-%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98-%EA%B3%B5%EB%B6%80-%EC%B2%AB%EB%B2%88%EC%A7%B8/"
-                            aria-label=": 21-03-11 선형대수 공부, 첫번째"
-                        >
-                            21-03-11 선형대수 공부, 첫번째
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2021-03-11T12:25:58+09:00">
-	
-		    Mar 11, 2021
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98/">선형대수</a>, <a class="category-link" href="/categories/%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98/%EC%84%9C%EC%A0%81/">서적</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="1장-수학-기초"><a href="#1장-수학-기초" class="headerlink" title="1장 수학 기초"></a>1장 수학 기초</h3><ul>
-<li>방정식을 푼다는 것은 방정식에서 미지수를 구하는 것을 의미한다</li>
-<li>등식이 계속 성립하기 위해서는 좌변에 적용하는 모든 변경사항을 우변에도 적용해야 한다</li>
-<li></li>
-</ul>
-
-                    
-                        
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2021/03/11/21-03-11-%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98-%EA%B3%B5%EB%B6%80-%EC%B2%AB%EB%B2%88%EC%A7%B8/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1095,7 +1107,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 3 of 6</li>
+        <li class="pagination-number">page 3 of 7</li>
     </ul>
 </div>
 
